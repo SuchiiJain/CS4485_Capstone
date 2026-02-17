@@ -297,7 +297,7 @@ N/A
 
 **Project Timeline**
 --------------------
-### Phase 1: Planning & Design (Weeks 1–2)
+### Phase 1: Planning & Design (2/20)
 - [ ] Finalize MVP features
 - [ ] Choose language and documentation format
 - [ ] Define system architecture
@@ -309,7 +309,7 @@ N/A
 
 
 
-### Phase 2: Core Scanner MVP (Weeks 3–5)
+### Phase 2: Core Scanner MVP (3/13)
 - [ ] Implement AST parsing
 - [ ] Implement documentation reference extractor
 - [ ] Implement hashing system
@@ -320,7 +320,7 @@ N/A
 
 
 
-### Phase 3: Backend & Database (Weeks 6–7)
+### Phase 3: Backend & Database (3/27)
 - [ ] Design database schema
 - [ ] Build FastAPI backend
 - [ ] Store scan results
@@ -330,7 +330,7 @@ N/A
 
 
 
-### Phase 4: Web Dashboard (Weeks 8–9)
+### Phase 4: Web Dashboard (4/10)
 - [ ] Build React dashboard
 - [ ] Implement issue list view
 - [ ] Add filtering and search
@@ -340,7 +340,7 @@ N/A
 
 
 
-### Phase 5: CI/CD Integration & Automation (Week 10)
+### Phase 5: CI/CD Integration & Automation (4/17)
 - [ ] Configure GitHub Actions
 - [ ] Enable scan on commit
 - [ ] Implement automatic feedback
@@ -349,7 +349,7 @@ N/A
 
 
 
-### Phase 6: AI + Refinement (Weeks 11–12)
+### Phase 6: AI + Refinement (5/1)
 - [ ] Integrate AI suggestions
 - [ ] Optimize performance
 - [ ] Handle edge cases
@@ -362,12 +362,12 @@ N/A
 ------------------------
 
 
-- **Feb 16 – Mar 1, 2026**: Marie Liske  
-- **Mar 2 – Mar 15, 2026**: Samuel Say  
-- **Mar 16 – Mar 29, 2026**: Anusua Halder  
-- **Mar 30 – Apr 12, 2026**: Portia Hamid  
-- **Apr 13 – Apr 26, 2026**: Aaron Santhosh  
-- **Apr 27 – May 1, 2026**: Suchi Jain
+- **2/9 - 2/20**: Marie Liske  
+- **2/21 - 3/6**: Samuel Say  
+- **3/7 - 3/20**: Anusua Halder  
+- **3/21 - 4/3**: Portia Hamid  
+- **4/4 - 4/17**: Aaron Santhosh  
+- **4/18 - 5/1**: Suchi Jain
 
 **Project Team**
 ----------------
