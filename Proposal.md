@@ -199,6 +199,9 @@ Preprocessing Steps
 
 ●       **Cloud & Hosting:** GitHub Actions, AWS + Docker
 
+●       **AI Development Tools:** Copilot & Cursor
+
+
 **Hardware Requirements**
 -------------------------
 
