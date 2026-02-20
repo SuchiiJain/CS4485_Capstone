@@ -8,6 +8,7 @@
 # Week 3 — February 23-27, 2026
 
 **Team Leader for Week 3: Samuel Say**
+
 **Total Hours Spent:**
 
 ---
@@ -63,6 +64,7 @@
 # Week 2 — February 16-20, 2026
 
 **Team Leader for Week 2: Marie Liske**
+
 **Total Hours Spent: 8**
 
 ---
@@ -160,6 +162,7 @@
 # Week 1 — February 9-13, 2026
 
 **Team Leader for Week 1: Marie Liske**
+
 **Total Hours Spent: N/A**
 
 > *Note: Individual hour tracking began Week 2. Week 1 consisted of the initial team meeting, role assignments, and project proposal finalization.*
@@ -211,7 +214,3 @@
 - **Tasks Complete:** N/A
 - **Upcoming Tasks:** N/A
 - **Issues:** N/A
-
----
-
-*Last updated: February 20, 2026 | Maintained by: Anusua Halder*
