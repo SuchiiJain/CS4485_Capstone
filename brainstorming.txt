@@ -1,0 +1,118 @@
+Documentation Rot Detector ("Docrot Detector") - Brainstorming Notes
+
+Date: February 19, 2026
+
+Project Idea
+- Build a tool that detects when code has changed in meaningful ways and flags linked documentation for review.
+- Goal: prevent documentation rot at the source, especially in fast-moving repos.
+
+Problem It Solves
+- Documentation gets stale as code evolves.
+- Outdated docs slow onboarding and increase engineering/training costs.
+- Open source projects and companies both suffer from this.
+
+Who Would Use It
+- Developers
+- Technical writers
+
+Core MVP Behavior
+- On push (or CI run), analyze code changes.
+- Detect whether logic changed in a substantial way.
+- If yes, flag mapped documentation (e.g., README, module docs, API docs) with a reminder to review/update.
+
+High-Level MVP Architecture
+1) Mapping Layer
+- Map source paths/modules to documentation files via config (simple JSON/YAML for MVP).
+
+2) Change Detection Layer
+- Parse old and new code snapshots using AST.
+- Generate semantic fingerprints per function/method.
+- Compare fingerprints and compute a semantic change score.
+
+3) Persistence Layer
+- Store previous fingerprints (DB or file-based store for MVP).
+
+4) Alert Layer
+- Emit warning/status when mapped docs may be stale.
+
+
+Brainstorm Focus: How to Detect "Substantial Logic Change"
+
+Key Principle
+- Use semantic AST deltas, not raw text diffs.
+- Ignore formatting-only and comment-only changes.
+
+Normalization (ignore noise)
+- Strip/ignore:
+	- whitespace/formatting changes
+	- comments/docstrings-only edits
+	- import ordering changes
+	- local variable renames (where safely detectable)
+
+Semantic Fingerprint (per function/method)
+- Function signature (name, params, defaults, return annotation)
+- Control-flow shape (if/elif/else, loop structure, early returns)
+- Operators/conditions used in branching
+- Calls to external APIs/services (db/file/network/auth)
+- Exception behavior (raised/caught/propagated)
+- State mutation signals (writes to files/db/global/shared state)
+
+Scoring Model (starter MVP weights)
+- 0 points:
+	- comments/formatting only
+	- docstring-only change
+	- local rename only
+
+- 1 point:
+	- literal/constant tweak (e.g., 5 -> 10)
+	- default argument tweak
+	- reordering non-exported private helpers
+
+- 3 points:
+	- condition expression changed
+	- loop semantics changed
+	- return expression/branch outcome changed
+
+- 5 points:
+	- public function signature changed
+	- exported/public API added/removed/renamed
+
+- 6 points:
+	- side-effect behavior changed (db/file/network/auth call add/remove)
+	- permission/auth logic changed
+
+- 8 points:
+	- exception behavior changed significantly
+	- core control path added/removed
+
+Critical Event Triggers (always flag)
+- Public API contract changes
+- New/removed side effects (DB/file/network)
+- Auth/permission logic changes
+
+Flagging Rules (MVP)
+- Per function: substantial if score >= 4 OR critical event present.
+- Per push/repo area:
+	- flag docs if any critical event occurs, OR
+	- cumulative semantic score for code mapped to a doc file >= 8.
+
+Why This Should Work
+- Avoids false positives from formatting/comments.
+- Captures meaningful behavioral changes.
+- Gives tunable thresholds for teams with different sensitivity.
+
+MVP Scope Choices (recommended)
+- Start with one language (Python or TypeScript).
+- Start with config-file mapping only (skip dashboard for MVP).
+- Run in CI first (more reliable than local hooks for team adoption), with optional pre-push hook later.
+
+Potential Non-MVP Enhancements
+- Dashboard: history of flagged docs, pending review status.
+- Repo analytics: most stale modules/docs.
+- LLM-assisted suggested doc updates tied to detected semantic changes.
+
+Open Questions for Team
+1) First language target: Python or TypeScript?
+2) CI-only for MVP, or CI + local pre-push hook?
+3) Fingerprint storage: lightweight SQLite vs JSON artifact in repo/CI storage?
+4) Should threshold be global, or configurable per module/doc type?
