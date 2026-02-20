@@ -35,30 +35,51 @@ def on_push_or_ci_run(repo_path, old_ref, new_ref):
 	"""
 	Triggered on git push (hook) or in CI.
 	old_ref/new_ref identify previous and current commit snapshots.
+
+	Comparison strategy (MVP):
+	- Use stored fingerprints from .docrot-fingerprints.json as the "old" baseline.
+	- Extract new fingerprints from current code at new_ref.
+	- This avoids re-parsing old code and makes the persistence layer
+	  the single source of truth for prior state.
 	"""
 	changed_files = get_changed_python_files(repo_path, old_ref, new_ref)
-	previous_fingerprints = load_fingerprints(repo_path, old_ref)
+	previous_fingerprints = load_fingerprints(repo_path)
+
+	# First-run baseline guard:
+	# If no prior fingerprints exist, this is the initial run.
+	# Generate and persist a baseline without emitting any alerts.
+	is_first_run = (previous_fingerprints is None or len(previous_fingerprints) == 0)
 
 	current_fingerprints = {}
 	function_events = []
 
 	for file_path in changed_files:
-		old_code = read_file_at_ref(repo_path, old_ref, file_path)
 		new_code = read_file_at_ref(repo_path, new_ref, file_path)
-
-		old_funcs = extract_function_fingerprints(old_code, file_path)
 		new_funcs = extract_function_fingerprints(new_code, file_path)
+
+		# Look up old fingerprints from stored baseline (not from git old_ref)
+		old_funcs = previous_fingerprints.get(file_path, {})
 
 		# Save current snapshot fingerprints for future comparisons
 		current_fingerprints[file_path] = new_funcs
 
-		# Compare old vs new function fingerprints
-		events = compare_file_functions(old_funcs, new_funcs)
-		function_events.extend(events)
+		if not is_first_run:
+			# Compare stored old fingerprints vs new fingerprints
+			events = compare_file_functions(old_funcs, new_funcs, file_path)
+			function_events.extend(events)
+
+	# Also carry forward fingerprints for unchanged files
+	for file_path, fps in previous_fingerprints.items():
+		if file_path not in current_fingerprints:
+			current_fingerprints[file_path] = fps
+
+	persist_fingerprints(repo_path, current_fingerprints)
+
+	if is_first_run:
+		publish_baseline_notice()
+		return
 
 	doc_alerts = evaluate_doc_flags(function_events, CONFIG["doc_mappings"], CONFIG["thresholds"])
-
-	persist_fingerprints(repo_path, new_ref, current_fingerprints)
 	publish_alerts(doc_alerts)
 
 
@@ -140,9 +161,17 @@ def build_semantic_fingerprint(normalized_fn_node, file_path):
 # Step 3: Compare Old vs New + Score
 # -----------------------------
 
-def compare_file_functions(old_funcs, new_funcs):
+def compare_file_functions(old_funcs, new_funcs, file_path):
 	"""
 	Return event records with weighted semantic deltas per function.
+
+	Each event includes:
+	  - function_id: stable identifier for the function
+	  - code_path: file path (needed by evaluate_doc_flags for doc mapping)
+	  - event_type: what kind of change occurred
+	  - score: weighted semantic change score
+	  - critical: whether this is a critical-event trigger
+	  - reasons: list of human-readable change descriptions
 	"""
 	events = []
 	all_ids = union(old_funcs.keys(), new_funcs.keys())
@@ -152,20 +181,44 @@ def compare_file_functions(old_funcs, new_funcs):
 		new_fp = new_funcs.get(fn_id)
 
 		if old_fp is None:
-			events.append(make_event(fn_id, "function_added", score=5, critical=maybe_public_api(new_fp)))
+			is_critical = maybe_public_api(new_fp)
+			events.append(make_event(
+				function_id=fn_id,
+				code_path=file_path,
+				event_type="function_added",
+				score=5,
+				critical=is_critical,
+				reasons=["function added" + (" (public API)" if is_critical else "")],
+			))
 			continue
 
 		if new_fp is None:
-			events.append(make_event(fn_id, "function_removed", score=5, critical=maybe_public_api(old_fp)))
+			is_critical = maybe_public_api(old_fp)
+			events.append(make_event(
+				function_id=fn_id,
+				code_path=file_path,
+				event_type="function_removed",
+				score=5,
+				critical=is_critical,
+				reasons=["function removed" + (" (public API)" if is_critical else "")],
+			))
 			continue
 
 		if old_fp["hash"] == new_fp["hash"]:
-			events.append(make_event(fn_id, "no_semantic_change", score=0, critical=False))
+			# Skip unchanged functions entirely — no need to create a zero-score event.
+			# This avoids unnecessary doc-mapping lookups in evaluate_doc_flags.
 			continue
 
 		delta = diff_features(old_fp["features"], new_fp["features"])
 		score, reasons, critical = score_semantic_delta(delta)
-		events.append(make_event(fn_id, "semantic_change", score=score, reasons=reasons, critical=critical))
+		events.append(make_event(
+			function_id=fn_id,
+			code_path=file_path,
+			event_type="semantic_change",
+			score=score,
+			critical=critical,
+			reasons=reasons,
+		))
 
 	return events
 
@@ -221,13 +274,15 @@ def score_semantic_delta(delta):
 		reasons.append("auth/permission logic changed")
 		critical = True
 
-	# 8-point high impact control/exception changes
+	# 8-point high impact control/exception changes (also critical)
 	if delta.exception_behavior_changed:
 		score += 8
 		reasons.append("exception behavior changed")
+		critical = True
 	if delta.core_control_path_added_or_removed:
 		score += 8
 		reasons.append("core control path added/removed")
+		critical = True
 
 	return score, reasons, critical
 
@@ -291,9 +346,10 @@ def evaluate_doc_flags(function_events, doc_mappings, thresholds):
 FINGERPRINT_FILE = ".docrot-fingerprints.json"
 
 
-def load_fingerprints(repo_path, ref):
+def load_fingerprints(repo_path):
 	"""
 	MVP: Read prior fingerprint snapshot from JSON file in repo.
+	Returns {} if no fingerprint file exists (first run).
 	Post-MVP: Replace with SQLite for large-codebase support.
 	"""
 	# fingerprint_path = os.path.join(repo_path, FINGERPRINT_FILE)
@@ -304,9 +360,10 @@ def load_fingerprints(repo_path, ref):
 	pass
 
 
-def persist_fingerprints(repo_path, ref, fingerprints):
+def persist_fingerprints(repo_path, fingerprints):
 	"""
 	MVP: Write current fingerprint snapshot to JSON file.
+	This becomes the baseline for the next run.
 	Post-MVP: Replace with SQLite for indexed queries and history.
 	"""
 	# fingerprint_path = os.path.join(repo_path, FINGERPRINT_FILE)
@@ -319,10 +376,18 @@ def publish_alerts(doc_alerts):
 	"""
 	MVP options:
 	- CI log warnings
-	- PR comment
-	- status check summary
+	- Write .docrot-report.json artifact
 	"""
 	# pseudocode: emit one alert per doc
+	pass
+
+
+def publish_baseline_notice():
+	"""
+	Called on the first run when no prior fingerprints exist.
+	Informs the user that a baseline was generated and no alerts are emitted.
+	"""
+	# print("[docrot] First run detected. Baseline fingerprints generated. No alerts.")
 	pass
 
 
@@ -336,3 +401,16 @@ def publish_alerts(doc_alerts):
 # - JSON file (.docrot-fingerprints.json) for fingerprint storage; SQLite post-MVP.
 # - Global thresholds only for MVP; per-module overrides post-MVP.
 # - Track false positives/false negatives and tune scoring weights.
+#
+# Design Notes (from review):
+# - Comparison uses stored fingerprints as the "old" baseline, not git old_ref re-parsing.
+#   This makes the persistence layer the single source of truth and avoids redundant work.
+# - First run generates a baseline only (zero alerts). Subsequent runs compare against it.
+# - Every event carries code_path, function_id, reasons, score, and critical fields
+#   so evaluate_doc_flags has everything it needs.
+# - Zero-score (unchanged) functions are skipped entirely — no wasted doc lookups.
+# - Exception behavior changes (8 pts) and core control path changes (8 pts) are
+#   marked critical, consistent with their high-impact nature.
+# - Renamed/moved function detection is deferred to post-MVP. For now, a function
+#   that moves files registers as removed + added. This is a known false-positive
+#   source that can be mitigated later with signature-similarity matching.

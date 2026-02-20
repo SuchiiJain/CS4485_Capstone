@@ -31,6 +31,9 @@ High-Level MVP Architecture
 
 3) Persistence Layer
 - Store previous fingerprints in a JSON file (.docrot-fingerprints.json) for MVP.
+- This file is the single source of truth for "old" state — on each run, we compare
+  stored fingerprints against freshly-extracted fingerprints from the current code.
+  We do NOT re-parse old code from a git ref; the stored file IS the old baseline.
 - Post-MVP: migrate to SQLite for indexed queries and large-codebase support.
 
 4) Alert Layer
@@ -90,6 +93,8 @@ Critical Event Triggers (always flag)
 - Public API contract changes
 - New/removed side effects (DB/file/network)
 - Auth/permission logic changes
+- Exception behavior changed significantly (e.g., swallowing exceptions, new raises)
+- Core control path added/removed
 
 Flagging Rules (MVP)
 - Per function: substantial if score >= 4 OR critical event present.
@@ -173,11 +178,15 @@ Open MVP Questions
 3) Initial baseline — what happens on first run?
 	- No prior fingerprints exist yet. First run could flag everything or silently generate a baseline.
 	- Recommendation: First run = generate baseline only, zero alerts. Flag on subsequent changes only.
+	- IMPORTANT: This means on first run, new-file flagging (see #4) does NOT apply.
+	  The first run is purely a "learn the codebase" step. New/deleted file flagging
+	  only triggers on the second and subsequent runs, when a real baseline exists.
 
 4) New files and deleted files — how to handle?
-	- New .py file added: flag mapped docs? Likely yes — new code probably needs doc coverage.
-	- .py file deleted entirely: flag mapped docs? Likely yes — docs may reference removed functionality.
+	- New .py file added (after baseline exists): flag mapped docs. New code likely needs doc coverage.
+	- .py file deleted entirely: flag mapped docs. Docs may reference removed functionality.
 	- Recommendation: Flag both for MVP. Better to over-alert than miss a stale doc.
+	- NOTE: On first run (no prior baseline), these do NOT trigger alerts — see #3 above.
 
 5) Class-level and module-level code
 	- Class methods: already covered (treated as functions).
@@ -204,3 +213,17 @@ Open MVP Questions
 		- API signature change (should flag, critical)
 		- side-effect change (should flag, critical)
 		Use it for automated tests AND live demo.
+
+Known Limitations / Caveats (to address post-MVP)
+
+1) Renamed/moved functions cause false positives.
+	- If a function moves from file A to file B, it appears as "removed" in A (score 5)
+	  and "added" in B (score 5). Both map to their respective docs, so the cumulative
+	  score inflates for what may be a no-op refactor.
+	- Mitigation (post-MVP): Use signature-similarity matching to detect likely moves
+	  and suppress duplicate alerts.
+
+2) The early-return for "format/comment only" in score_semantic_delta must be carefully
+   implemented. If a commit changes both formatting AND logic in the same function,
+   the logic change must not be masked by the formatting flag. The implementation
+   should only return 0 if ALL detected changes are non-semantic.
