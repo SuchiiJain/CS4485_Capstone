@@ -406,4 +406,4 @@ N/A
 
 ●       **Jira**: [https://cs4485-team2.atlassian.net/jira/software/projects/SCRUM/summary](https://cs4485-team2.atlassian.net/jira/software/projects/SCRUM/summary)
 
-●       **Design Document:**
+●       **Design Document:**  https://www.figma.com/buzz/mL6QjBH9IeETv4zAOJ3g94/CS4485-Project?t=oaZD6SpJSEi8n9Ey-1
