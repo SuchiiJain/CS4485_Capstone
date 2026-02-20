@@ -30,7 +30,8 @@ High-Level MVP Architecture
 - Compare fingerprints and compute a semantic change score.
 
 3) Persistence Layer
-- Store previous fingerprints (DB or file-based store for MVP).
+- Store previous fingerprints in a JSON file (.docrot-fingerprints.json) for MVP.
+- Post-MVP: migrate to SQLite for indexed queries and large-codebase support.
 
 4) Alert Layer
 - Emit warning/status when mapped docs may be stale.
@@ -102,17 +103,104 @@ Why This Should Work
 - Gives tunable thresholds for teams with different sensitivity.
 
 MVP Scope Choices (recommended)
-- Start with one language (Python or TypeScript).
+- Start with one language (Python for MVP).
 - Start with config-file mapping only (skip dashboard for MVP).
-- Run in CI first (more reliable than local hooks for team adoption), with optional pre-push hook later.
+- Run in CI only for MVP (simplest rollout), with optional pre-push hook later.
+
+Beginner AST Primer (Python)
+- AST = Abstract Syntax Tree: Python source is parsed into a tree of node types representing code structure.
+- This is ideal for MVP because it compares structure/logic instead of plain text.
+
+What AST naturally ignores
+- Whitespace and indentation style differences.
+- Most formatting-only changes.
+- Comments are not represented as normal executable AST nodes.
+
+What AST captures clearly
+- Function definitions and signatures (`FunctionDef`, arguments/defaults/annotations).
+- Conditions/branch logic (`If`, `Compare`, operators like `Gt`, `GtE`, `Eq`).
+- Loops (`For`, `While`), returns (`Return`), exceptions (`Raise`, `Try`).
+- Function calls and expression structure (`Call`, `Attribute`, etc.).
+
+How this maps to our "substantial change" logic
+- Comment/whitespace-only edits:
+	- AST shape remains effectively unchanged -> score 0.
+
+- Constant tweak:
+	- Example: `MAX_RETRIES = 3` -> `MAX_RETRIES = 5`.
+	- AST difference appears in `Constant(value=...)` node -> minor score (e.g., +1).
+
+- Condition expression change:
+	- Example: `if x > 10` -> `if x >= 10`.
+	- AST difference appears in comparison operator (`Gt` -> `GtE`) -> medium score (e.g., +3).
+
+- API contract change:
+	- Example: `def fetch(user_id)` -> `def fetch(user_id, include_deleted=False)`.
+	- AST difference appears in function args/defaults/signature -> high score (e.g., +5) and critical trigger.
+
+Docstring handling note
+- Python docstrings are represented as a leading string expression in module/class/function bodies.
+- We can explicitly detect and ignore docstring-only diffs so they do not trigger substantial-change flags.
+
+Practical caveat (for team discussion)
+- AST is very strong for syntax/structure-level semantics, but not a full runtime behavior proof.
+- For MVP doc-rot detection, AST + weighted scoring is still a practical and credible approach.
 
 Potential Non-MVP Enhancements
+- SQLite fingerprint storage (replace JSON; better for large codebases and analytics).
+- Per-module/doc configurable thresholds (override global defaults for high/low-risk areas).
 - Dashboard: history of flagged docs, pending review status.
 - Repo analytics: most stale modules/docs.
 - LLM-assisted suggested doc updates tied to detected semantic changes.
 
-Open Questions for Team
-1) First language target: Python or TypeScript?
-2) CI-only for MVP, or CI + local pre-push hook?
-3) Fingerprint storage: lightweight SQLite vs JSON artifact in repo/CI storage?
-4) Should threshold be global, or configurable per module/doc type?
+Decisions Made
+1) Fingerprint storage: JSON file for MVP (.docrot-fingerprints.json in repo). Upgrade to SQLite post-MVP.
+2) Thresholds: Global for MVP (single per_function and per_doc value). Per-module overrides post-MVP.
+
+Open MVP Questions
+
+1) Alert delivery — where do flagged warnings appear?
+	- Option A: CI log output only (just print warnings).
+	- Option B: Generate a report file (.docrot-report.json) as a CI artifact.
+	- Option C: Post a PR comment via GitHub API.
+	- Recommendation: A + B for MVP (log warnings AND write a report artifact). PR comments post-MVP.
+
+2) Config format — JSON or YAML for doc mappings?
+	- JSON: no extra dependency, but less human-friendly.
+	- YAML: more readable, but requires pyyaml dependency.
+	- Recommendation: JSON for MVP (zero dependencies, consistent with fingerprint file format).
+
+3) Initial baseline — what happens on first run?
+	- No prior fingerprints exist yet. First run could flag everything or silently generate a baseline.
+	- Recommendation: First run = generate baseline only, zero alerts. Flag on subsequent changes only.
+
+4) New files and deleted files — how to handle?
+	- New .py file added: flag mapped docs? Likely yes — new code probably needs doc coverage.
+	- .py file deleted entirely: flag mapped docs? Likely yes — docs may reference removed functionality.
+	- Recommendation: Flag both for MVP. Better to over-alert than miss a stale doc.
+
+5) Class-level and module-level code
+	- Class methods: already covered (treated as functions).
+	- Class attribute changes, inheritance changes, module-level executable code: additional work.
+	- Recommendation: Defer class attributes, inheritance, and module-level code to post-MVP. Methods are covered.
+
+6) What counts as "documentation"?
+	- External doc files only (.md, .rst, .txt)?
+	- Or also inline docstrings within Python files?
+	- Recommendation: External files only for MVP. Inline docstring staleness is a related but separate problem.
+
+7) CI platform target
+	- GitHub Actions specifically? Or CI-agnostic CLI script?
+	- Recommendation: CLI-first (a Python script/command that CI calls), with a sample GitHub Actions workflow.
+		Keeps it portable and easier to demo locally too.
+
+8) Testing / demo strategy
+	- Need a sample repo with known before/after commits covering each scoring tier.
+	- This doubles as capstone demo material.
+	- Recommendation: Build this early. Create a small test repo with commits for:
+		- formatting-only change (should NOT flag)
+		- constant tweak (should NOT flag alone)
+		- condition change (should flag)
+		- API signature change (should flag, critical)
+		- side-effect change (should flag, critical)
+		Use it for automated tests AND live demo.

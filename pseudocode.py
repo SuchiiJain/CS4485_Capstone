@@ -288,13 +288,30 @@ def evaluate_doc_flags(function_events, doc_mappings, thresholds):
 # Step 5: Store + Notify
 # -----------------------------
 
+FINGERPRINT_FILE = ".docrot-fingerprints.json"
+
+
 def load_fingerprints(repo_path, ref):
-	# pseudocode: read prior snapshot from sqlite/json/artifact store
+	"""
+	MVP: Read prior fingerprint snapshot from JSON file in repo.
+	Post-MVP: Replace with SQLite for large-codebase support.
+	"""
+	# fingerprint_path = os.path.join(repo_path, FINGERPRINT_FILE)
+	# if os.path.exists(fingerprint_path):
+	#     with open(fingerprint_path, "r") as f:
+	#         return json.load(f)
+	# return {}
 	pass
 
 
 def persist_fingerprints(repo_path, ref, fingerprints):
-	# pseudocode: write current snapshot for next comparison
+	"""
+	MVP: Write current fingerprint snapshot to JSON file.
+	Post-MVP: Replace with SQLite for indexed queries and history.
+	"""
+	# fingerprint_path = os.path.join(repo_path, FINGERPRINT_FILE)
+	# with open(fingerprint_path, "w") as f:
+	#     json.dump(fingerprints, f, indent=2, sort_keys=True)
 	pass
 
 
@@ -313,7 +330,9 @@ def publish_alerts(doc_alerts):
 # Optional: Implementation Notes
 # -----------------------------
 
-# - Start with Python built-in 'ast' module for parser.
-# - Use CI as primary trigger first; add local pre-push hook later.
-# - Keep thresholds configurable in config file.
+# MVP Decisions:
+# - Python-first (built-in 'ast' module for parser).
+# - CI-only trigger for MVP; add local pre-push hook post-MVP.
+# - JSON file (.docrot-fingerprints.json) for fingerprint storage; SQLite post-MVP.
+# - Global thresholds only for MVP; per-module overrides post-MVP.
 # - Track false positives/false negatives and tune scoring weights.
