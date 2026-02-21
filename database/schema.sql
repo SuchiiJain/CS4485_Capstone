@@ -1,0 +1,2 @@
+--CS4485 Capstone Database Schema
+-- Tables will be added here
