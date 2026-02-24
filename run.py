@@ -2,9 +2,13 @@
 Docrot Detector — CLI entry point for quick testing.
 
 Usage:
-  python run.py <old_file> <new_file>              Compare two files
-  python run.py <file>                              Fingerprint a single file
+  python run.py <old_file> <new_file>              Compare two files, save results
+  python run.py <file>                              Fingerprint a single file, save baseline
   python run.py examples/sample_code_v1.py examples/sample_code_v2.py
+
+Output files (saved to repo root):
+  .docrot-fingerprints.json   — Stored baseline fingerprints
+  .docrot-report.json         — Alert report (compare mode only)
 """
 
 import sys
@@ -12,11 +16,19 @@ import os
 
 from src.ast_parser import extract_function_fingerprints
 from src.comparator import compare_file_functions
-from src.alerts import evaluate_doc_flags, publish_alerts_to_log
+from src.config import load_config, get_doc_mappings, get_thresholds
+from src.alerts import evaluate_doc_flags, publish_alerts_to_log, publish_alerts_to_report, publish_baseline_notice
+from src.persistence import (
+    load_fingerprints, persist_fingerprints, is_first_run,
+    serialize_file_fingerprints, deserialize_file_fingerprints,
+)
+
+# Repo root is wherever run.py lives
+REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 def fingerprint_file(path):
-    """Parse and print fingerprints for a single file."""
+    """Parse a single file, print fingerprints, and save to baseline."""
     with open(path, "r", encoding="utf-8") as f:
         source = f.read()
 
@@ -39,9 +51,15 @@ def fingerprint_file(path):
         print(f"    hash:        {fp.fingerprint_hash[:16]}...")
         print()
 
+    # Save to baseline
+    stored = load_fingerprints(REPO_ROOT)
+    stored[path] = serialize_file_fingerprints(fps)
+    persist_fingerprints(REPO_ROOT, stored)
+    print(f"Fingerprints saved to .docrot-fingerprints.json")
+
 
 def compare_files(old_path, new_path):
-    """Compare two files and print change events."""
+    """Compare two files, print change events, save new baseline and report."""
     with open(old_path, "r", encoding="utf-8") as f:
         old_source = f.read()
     with open(new_path, "r", encoding="utf-8") as f:
@@ -57,16 +75,35 @@ def compare_files(old_path, new_path):
 
     if not events:
         print("No semantic changes detected.")
-        return
+    else:
+        print(f"{len(events)} change(s) detected:\n")
+        for e in events:
+            tag = " [CRITICAL]" if e.critical else ""
+            print(f"  {e.function_id}{tag}")
+            print(f"    type:    {e.event_type}")
+            print(f"    score:   {e.score}")
+            print(f"    reasons: {', '.join(e.reasons)}")
+            print()
 
-    print(f"{len(events)} change(s) detected:\n")
-    for e in events:
-        tag = " [CRITICAL]" if e.critical else ""
-        print(f"  {e.function_id}{tag}")
-        print(f"    type:    {e.event_type}")
-        print(f"    score:   {e.score}")
-        print(f"    reasons: {', '.join(e.reasons)}")
-        print()
+    # Save new fingerprints as the updated baseline
+    stored = load_fingerprints(REPO_ROOT)
+    stored[code_path] = serialize_file_fingerprints(new_fps)
+    persist_fingerprints(REPO_ROOT, stored)
+    print(f"Updated baseline saved to .docrot-fingerprints.json")
+
+    # Evaluate doc alerts using config (if available)
+    if events:
+        config = load_config(REPO_ROOT)
+        doc_mappings = get_doc_mappings(config)
+        thresholds = get_thresholds(config)
+        alerts = evaluate_doc_flags(events, doc_mappings, thresholds)
+
+        if alerts:
+            print()
+            publish_alerts_to_log(alerts)
+            report_path = publish_alerts_to_report(alerts, REPO_ROOT)
+        else:
+            print("No documentation files flagged (no matching doc mappings or below threshold).")
 
 
 def main():

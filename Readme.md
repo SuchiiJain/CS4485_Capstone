@@ -160,6 +160,15 @@ python run.py src/alerts.py
 python run.py --help
 ```
 
+### Output Files
+
+Both modes automatically save results to the repo root:
+
+| File | When created | Contents |
+|------|-------------|----------|
+| `.docrot-fingerprints.json` | Every run | Stored baseline fingerprints — updated after each run so the next comparison uses the latest state |
+| `.docrot-report.json` | Compare mode only, when doc alerts are triggered | JSON report of flagged documentation files (requires a `.docrot-config.json` with doc mappings) |
+
 ### Programmatic Usage
 
 You can also import the modules directly in Python:
