@@ -51,6 +51,7 @@ On the first run (no prior baseline), Docrot generates and stores fingerprints w
 ├── brainstorming.txt       # Project brainstorming and decisions
 ├── Proposal.md             # Project proposal document
 ├── pseudocode.py           # Pseudocode reference for the pipeline
+├── run.py                  # CLI entry point for testing
 ├── Readme.md               # This file
 ├── database/
 │   └── schema.sql          # Database schema (post-MVP: SQLite)
@@ -135,7 +136,33 @@ If the config file is missing, defaults are used (no doc mappings, standard thre
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-## Quick Start
+## Usage
+
+All commands are run from the repo root directory.
+
+**Compare two files (detect changes):**
+```sh
+python run.py examples/sample_code_v1.py examples/sample_code_v2.py
+```
+
+**Inspect a single file's fingerprints:**
+```sh
+python run.py examples/sample_code_v1.py
+```
+
+**Analyze any Python file:**
+```sh
+python run.py src/alerts.py
+```
+
+**Help:**
+```sh
+python run.py --help
+```
+
+### Programmatic Usage
+
+You can also import the modules directly in Python:
 
 ```python
 from src.ast_parser import extract_function_fingerprints
