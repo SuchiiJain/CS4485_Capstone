@@ -1,0 +1,27 @@
+{
+  "docrot_report": {
+    "alert_count": 1,
+    "alerts": [
+      {
+        "critical_found": true,
+        "cumulative_score": 42,
+        "doc_path": "Readme.md",
+        "functions": [
+          "examples/sample_code_v1.py::authenticate_user",
+          "examples/sample_code_v1.py::calculate_shipping",
+          "examples/sample_code_v1.py::delete_user"
+        ],
+        "message": "Code logic changed; review this documentation for potential rot.",
+        "reasons": [
+          "literal/constant changed",
+          "default argument changed",
+          "branch condition changed",
+          "public signature changed",
+          "exception behavior changed",
+          "core control path added/removed",
+          "function added (public API)"
+        ]
+      }
+    ]
+  }
+}

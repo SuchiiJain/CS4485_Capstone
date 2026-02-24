@@ -1,0 +1,17 @@
+{
+  "language": "python",
+  "doc_mappings": [
+    {
+      "code_glob": "src/*.py",
+      "docs": ["Readme.md", "Architecture.md"]
+    },
+    {
+      "code_glob": "examples/*.py",
+      "docs": ["fakedoc.md"]
+    }
+  ],
+  "thresholds": {
+    "per_function_substantial": 4,
+    "per_doc_cumulative": 8
+  }
+}
