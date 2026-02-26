@@ -1,135 +1,66 @@
 {
-  "docrot_report": {
-    "alert_count": 3,
-    "alerts": [
-      {
-        "critical_found": true,
-        "cumulative_score": 200,
-        "doc_path": "Architecture.md",
-        "functions": [
-          "src/ast_parser.py::_annotate_parents",
-          "src/ast_parser.py::extract_function_fingerprints",
-          "src/ast_parser.py::find_function_nodes",
-          "src/ast_parser.py::get_parent_class",
-          "src/ast_parser.py::is_public_function",
-          "src/ast_parser.py::make_stable_function_id",
-          "src/ast_parser.py::parse_source",
-          "src/ast_parser.py::strip_docstring",
-          "src/comparator.py::compare_file_functions",
-          "src/comparator.py::diff_features",
-          "src/comparator.py::score_semantic_delta",
-          "src/config.py::docs_for_code_path",
-          "src/config.py::get_doc_mappings",
-          "src/config.py::get_thresholds",
-          "src/config.py::load_config",
-          "src/fingerprint.py::_classify_call",
-          "src/fingerprint.py::_resolve_call_name",
-          "src/fingerprint.py::build_fingerprint",
-          "src/fingerprint.py::extract_call_features",
-          "src/fingerprint.py::extract_condition_features",
-          "src/fingerprint.py::extract_control_flow_features",
-          "src/fingerprint.py::extract_exception_features",
-          "src/fingerprint.py::extract_return_features",
-          "src/fingerprint.py::extract_side_effect_features",
-          "src/fingerprint.py::extract_signature_features",
-          "src/fingerprint.py::normalize_function_ast",
-          "src/fingerprint.py::stable_hash",
-          "src/models.py::FunctionFingerprint.from_dict",
-          "src/models.py::FunctionFingerprint.to_dict",
-          "src/persistence.py::_fingerprint_path",
-          "src/persistence.py::deserialize_file_fingerprints",
-          "src/persistence.py::is_first_run",
-          "src/persistence.py::load_fingerprints",
-          "src/persistence.py::persist_fingerprints",
-          "src/persistence.py::serialize_file_fingerprints",
-          "src/run.py::_collect_python_files",
-          "src/run.py::_print_summary_report",
-          "src/run.py::_read_source",
-          "src/run.py::_scan_repo",
-          "src/run.py::run"
+  "meta": {
+    "repo_path": "C:\\Users\\Richard\\CS4485_Capstone",
+    "commit_hash": "unknown",
+    "timestamp": "2026-02-26T13:07:01.646159",
+    "total_issues": 3,
+    "severity_summary": {
+      "high": 2,
+      "medium": 1,
+      "low": 0
+    }
+  },
+  "issues": [
+    {
+      "reason": "docstring_stale",
+      "severity": "high",
+      "code_element": {
+        "name": "src/persistence.py::persist_fingerprints",
+        "file_path": "src/persistence.py",
+        "signature": "persist_fingerprints(repo_path, fingerprints) -> Constant(value=None)",
+        "params": [
+          "repo_path",
+          "fingerprints"
         ],
-        "message": "Code logic changed; review this documentation for potential rot.",
-        "reasons": [
-          "function added",
-          "function added (public API)"
-        ]
+        "return_type": "Constant(value=None)"
       },
-      {
-        "critical_found": true,
-        "cumulative_score": 200,
-        "doc_path": "Readme.md",
-        "functions": [
-          "src/ast_parser.py::_annotate_parents",
-          "src/ast_parser.py::extract_function_fingerprints",
-          "src/ast_parser.py::find_function_nodes",
-          "src/ast_parser.py::get_parent_class",
-          "src/ast_parser.py::is_public_function",
-          "src/ast_parser.py::make_stable_function_id",
-          "src/ast_parser.py::parse_source",
-          "src/ast_parser.py::strip_docstring",
-          "src/comparator.py::compare_file_functions",
-          "src/comparator.py::diff_features",
-          "src/comparator.py::score_semantic_delta",
-          "src/config.py::docs_for_code_path",
-          "src/config.py::get_doc_mappings",
-          "src/config.py::get_thresholds",
-          "src/config.py::load_config",
-          "src/fingerprint.py::_classify_call",
-          "src/fingerprint.py::_resolve_call_name",
-          "src/fingerprint.py::build_fingerprint",
-          "src/fingerprint.py::extract_call_features",
-          "src/fingerprint.py::extract_condition_features",
-          "src/fingerprint.py::extract_control_flow_features",
-          "src/fingerprint.py::extract_exception_features",
-          "src/fingerprint.py::extract_return_features",
-          "src/fingerprint.py::extract_side_effect_features",
-          "src/fingerprint.py::extract_signature_features",
-          "src/fingerprint.py::normalize_function_ast",
-          "src/fingerprint.py::stable_hash",
-          "src/models.py::FunctionFingerprint.from_dict",
-          "src/models.py::FunctionFingerprint.to_dict",
-          "src/persistence.py::_fingerprint_path",
-          "src/persistence.py::deserialize_file_fingerprints",
-          "src/persistence.py::is_first_run",
-          "src/persistence.py::load_fingerprints",
-          "src/persistence.py::persist_fingerprints",
-          "src/persistence.py::serialize_file_fingerprints",
-          "src/run.py::_collect_python_files",
-          "src/run.py::_print_summary_report",
-          "src/run.py::_read_source",
-          "src/run.py::_scan_repo",
-          "src/run.py::run"
+      "doc_reference": null,
+      "message": "[docstring_stale] 'src/persistence.py::persist_fingerprints' \u2014 side-effect behavior changed, exception behavior changed, core control path added/removed (score: 22)",
+      "suggestion": "Review documentation for 'src/persistence.py::persist_fingerprints' \u2014 logic may have changed."
+    },
+    {
+      "reason": "signature_changed",
+      "severity": "high",
+      "code_element": {
+        "name": "src/persistence.py::update_fingerprint_baseline",
+        "file_path": "src/persistence.py",
+        "signature": "update_fingerprint_baseline(repo_path, current_fingerprints) -> Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='int', ctx=Load())], ctx=Load()), ctx=Load())",
+        "params": [
+          "repo_path",
+          "current_fingerprints"
         ],
-        "message": "Code logic changed; review this documentation for potential rot.",
-        "reasons": [
-          "function added",
-          "function added (public API)"
-        ]
+        "return_type": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='int', ctx=Load())], ctx=Load()), ctx=Load())"
       },
-      {
-        "critical_found": true,
-        "cumulative_score": 57,
-        "doc_path": "fakedoc.md",
-        "functions": [
-          "examples/example_compare.py::extract_features",
-          "examples/example_compare.py::get_function",
-          "examples/example_fingerprinting.py::get_call_name",
-          "examples/sample_code_v1.py::authenticate_user",
-          "examples/sample_code_v1.py::calculate_shipping",
-          "examples/sample_code_v1.py::delete_user"
+      "doc_reference": null,
+      "message": "[signature_changed] 'src/persistence.py::update_fingerprint_baseline' \u2014 function added (public API) (score: 5)",
+      "suggestion": "Update documentation for 'src/persistence.py::update_fingerprint_baseline' to reflect the new signature."
+    },
+    {
+      "reason": "docstring_stale",
+      "severity": "medium",
+      "code_element": {
+        "name": "src/run.py::run",
+        "file_path": "src/run.py",
+        "signature": "run(repo_path, commit_hash) -> Name(id='int', ctx=Load())",
+        "params": [
+          "repo_path",
+          "commit_hash"
         ],
-        "message": "Code logic changed; review this documentation for potential rot.",
-        "reasons": [
-          "function added (public API)",
-          "literal/constant changed",
-          "default argument changed",
-          "branch condition changed",
-          "public signature changed",
-          "exception behavior changed",
-          "core control path added/removed",
-          "function removed (public API)"
-        ]
-      }
-    ]
-  }
+        "return_type": "Name(id='int', ctx=Load())"
+      },
+      "doc_reference": null,
+      "message": "[docstring_stale] 'src/run.py::run' \u2014 literal/constant changed (score: 1)",
+      "suggestion": "Review documentation for 'src/run.py::run' \u2014 logic may have changed."
+    }
+  ]
 }

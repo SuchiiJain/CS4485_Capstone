@@ -39,9 +39,10 @@ from src.persistence import (
     persist_fingerprints,
     serialize_file_fingerprints,
     deserialize_file_fingerprints,
+    update_fingerprint_baseline,
 )
 
-from flagging_threshold import (
+from src.flagging_threshold import (
     CodeElement,
     DocReference,
     Flag,
@@ -49,7 +50,7 @@ from flagging_threshold import (
     Severity,
     run_flagging,
 )
-from report_generation import generate_reports
+from src.report_generation import generate_reports
 
 
 # ---------------------------------------------------------------------------
@@ -379,8 +380,13 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
             fp: serialize_file_fingerprints(fps)
             for fp, fps in current_fps.items()
         }
-        persist_fingerprints(repo_path, serialized)
+        baseline_stats = update_fingerprint_baseline(repo_path, serialized)
         publish_baseline_notice()
+        print(
+            "[docrot] Baseline created: "
+            f"files={baseline_stats['total_files']} "
+            f"functions={baseline_stats['total_functions']}"
+        )
         print(f"[docrot] Done in {time.time() - start:.2f}s.")
         return 0
 
@@ -432,8 +438,18 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
         fp: serialize_file_fingerprints(fps)
         for fp, fps in current_fps.items()
     }
-    persist_fingerprints(repo_path, serialized)
-    print("[docrot] Fingerprints updated.")
+    baseline_stats = update_fingerprint_baseline(repo_path, serialized)
+    print(
+        "[docrot] Fingerprints updated: "
+        f"files +{baseline_stats['files_added']} "
+        f"-{baseline_stats['files_removed']} "
+        f"~{baseline_stats['files_changed']} "
+        f"={baseline_stats['files_unchanged']} | "
+        f"functions +{baseline_stats['functions_added']} "
+        f"-{baseline_stats['functions_removed']} "
+        f"~{baseline_stats['functions_changed']} "
+        f"={baseline_stats['functions_unchanged']}"
+    )
 
     return 1 if (doc_alerts or flags) else 0
 

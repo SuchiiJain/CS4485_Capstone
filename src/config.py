@@ -1,8 +1,36 @@
 """
 Config — Load and validate the Docrot Detector configuration.
 
-MVP config is a JSON file (.docrot-config.json) that maps source
-code paths/globs to documentation files, plus global thresholds.
+This module reads `.docrot-config.json` from the repository root and exposes
+helpers used by the scan pipeline:
+
+1) `doc_mappings`:
+     - Maps changed source files to documentation files.
+     - Matching is fnmatch/glob-style against repo-relative source paths.
+
+2) `thresholds`:
+     - `per_function_substantial`: minimum function score considered substantial.
+     - `per_doc_cumulative`: minimum cumulative score required to flag a doc file.
+
+Expected config shape:
+{
+    "language": "python",
+    "doc_mappings": [
+        {
+            "code_glob": "src/*.py",
+            "docs": ["Readme.md", "Architecture.md"]
+        }
+    ],
+    "thresholds": {
+        "per_function_substantial": 4,
+        "per_doc_cumulative": 8
+    }
+}
+
+Threshold behavior:
+- If a threshold is missing, defaults are used.
+- If a threshold is invalid (non-integer, <= 0), defaults are used.
+- Threshold values are always returned as positive integers.
 
 Post-MVP: per-module threshold overrides.
 """
@@ -22,7 +50,65 @@ DEFAULT_CONFIG: Dict[str, Any] = {
     },
 }
 
+DEFAULT_THRESHOLDS: Dict[str, int] = {
+    "per_function_substantial": 4,
+    "per_doc_cumulative": 8,
+}
+
 CONFIG_FILENAME = ".docrot-config.json"
+
+
+def _parse_positive_threshold(value: Any, key: str, default: int) -> int:
+    """
+    Parse and validate a threshold value.
+
+    Args:
+        value:   Candidate threshold value from config.
+        key:     Threshold key name (for warning messages).
+        default: Default value to use on invalid input.
+
+    Returns:
+        A positive integer threshold.
+    """
+    if isinstance(value, bool):
+        print(f"[docrot] Warning: invalid threshold '{key}'={value}; using default {default}.")
+        return default
+
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError):
+        print(f"[docrot] Warning: invalid threshold '{key}'={value}; using default {default}.")
+        return default
+
+    if parsed <= 0:
+        print(f"[docrot] Warning: threshold '{key}' must be > 0; using default {default}.")
+        return default
+
+    return parsed
+
+
+def _normalize_thresholds(thresholds: Dict[str, Any]) -> Dict[str, int]:
+    """
+    Normalize threshold values to validated positive integers.
+
+    Args:
+        thresholds: Raw thresholds dict from config.
+
+    Returns:
+        Dict with validated threshold keys.
+    """
+    return {
+        "per_function_substantial": _parse_positive_threshold(
+            thresholds.get("per_function_substantial"),
+            "per_function_substantial",
+            DEFAULT_THRESHOLDS["per_function_substantial"],
+        ),
+        "per_doc_cumulative": _parse_positive_threshold(
+            thresholds.get("per_doc_cumulative"),
+            "per_doc_cumulative",
+            DEFAULT_THRESHOLDS["per_doc_cumulative"],
+        ),
+    }
 
 
 def load_config(repo_path: str) -> Dict[str, Any]:
@@ -54,16 +140,10 @@ def load_config(repo_path: str) -> Dict[str, Any]:
     merged["doc_mappings"] = user_config.get("doc_mappings", merged["doc_mappings"])
 
     user_thresholds = user_config.get("thresholds", {})
-    merged["thresholds"] = {
-        "per_function_substantial": user_thresholds.get(
-            "per_function_substantial",
-            DEFAULT_CONFIG["thresholds"]["per_function_substantial"],
-        ),
-        "per_doc_cumulative": user_thresholds.get(
-            "per_doc_cumulative",
-            DEFAULT_CONFIG["thresholds"]["per_doc_cumulative"],
-        ),
-    }
+    if not isinstance(user_thresholds, dict):
+        print("[docrot] Warning: 'thresholds' must be an object; using defaults.")
+        user_thresholds = {}
+    merged["thresholds"] = _normalize_thresholds(user_thresholds)
 
     return merged
 
@@ -87,7 +167,7 @@ def get_doc_mappings(config: Dict[str, Any]) -> List[Dict]:
 
 def get_thresholds(config: Dict[str, Any]) -> Dict[str, int]:
     """
-    Extract threshold values from config.
+    Extract and validate threshold values from config.
 
     Keys:
       - per_function_substantial (default 4)
@@ -99,7 +179,43 @@ def get_thresholds(config: Dict[str, Any]) -> Dict[str, int]:
     Returns:
         Thresholds dict.
     """
-    return config.get("thresholds", DEFAULT_CONFIG["thresholds"])
+    thresholds = config.get("thresholds", DEFAULT_THRESHOLDS)
+    if not isinstance(thresholds, dict):
+        return dict(DEFAULT_THRESHOLDS)
+    return _normalize_thresholds(thresholds)
+
+
+def get_threshold_info(config: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+    """
+    Return current threshold values with defaults and descriptions.
+
+    Useful for reporting, diagnostics, and printing config summaries.
+
+    Args:
+        config: The loaded config dict.
+
+    Returns:
+        Dict keyed by threshold name with metadata.
+    """
+    current = get_thresholds(config)
+    return {
+        "per_function_substantial": {
+            "value": current["per_function_substantial"],
+            "default": DEFAULT_THRESHOLDS["per_function_substantial"],
+            "description": (
+                "Minimum function change score considered substantial. "
+                "Functions meeting/exceeding this are included as affected functions."
+            ),
+        },
+        "per_doc_cumulative": {
+            "value": current["per_doc_cumulative"],
+            "default": DEFAULT_THRESHOLDS["per_doc_cumulative"],
+            "description": (
+                "Minimum cumulative score across mapped functions required "
+                "to flag a documentation file."
+            ),
+        },
+    }
 
 
 def docs_for_code_path(code_path: str, doc_mappings: List[Dict]) -> List[str]:
