@@ -14,6 +14,12 @@ from src.models import (
     SemanticDelta,
 )
 
+SCORE_LITERAL_OR_DEFAULT = 1
+SCORE_FLOW_OR_RETURN = 3
+SCORE_PUBLIC_API = 5
+SCORE_SIDE_EFFECT_OR_AUTH = 6
+SCORE_EXCEPTION_OR_CORE_PATH = 8
+
 
 # ---------------------------------------------------------------------------
 # Feature-level diff
@@ -152,50 +158,50 @@ def score_semantic_delta(delta: SemanticDelta) -> Tuple[int, List[str], bool]:
 
     # 1-point minor changes
     if delta.literal_changed:
-        score += 1
+        score += SCORE_LITERAL_OR_DEFAULT
         reasons.append("literal/constant changed")
     if delta.default_arg_changed:
-        score += 1
+        score += SCORE_LITERAL_OR_DEFAULT
         reasons.append("default argument changed")
 
     # 3-point medium changes
     if delta.condition_logic_changed:
-        score += 3
+        score += SCORE_FLOW_OR_RETURN
         reasons.append("branch condition changed")
     if delta.loop_semantics_changed:
-        score += 3
+        score += SCORE_FLOW_OR_RETURN
         reasons.append("loop behavior changed")
     if delta.return_logic_changed:
-        score += 3
+        score += SCORE_FLOW_OR_RETURN
         reasons.append("return behavior changed")
 
     # 5-point API contract changes (critical)
     if delta.public_signature_changed:
-        score += 5
+        score += SCORE_PUBLIC_API
         reasons.append("public signature changed")
         is_critical = True
     if delta.public_api_added_or_removed:
-        score += 5
+        score += SCORE_PUBLIC_API
         reasons.append("public API added/removed")
         is_critical = True
 
     # 6-point side effects / auth changes (critical)
     if delta.side_effect_changed:
-        score += 6
+        score += SCORE_SIDE_EFFECT_OR_AUTH
         reasons.append("side-effect behavior changed")
         is_critical = True
     if delta.auth_or_permission_logic_changed:
-        score += 6
+        score += SCORE_SIDE_EFFECT_OR_AUTH
         reasons.append("auth/permission logic changed")
         is_critical = True
 
     # 8-point high impact control/exception changes (critical)
     if delta.exception_behavior_changed:
-        score += 8
+        score += SCORE_EXCEPTION_OR_CORE_PATH
         reasons.append("exception behavior changed")
         is_critical = True
     if delta.core_control_path_added_or_removed:
-        score += 8
+        score += SCORE_EXCEPTION_OR_CORE_PATH
         reasons.append("core control path added/removed")
         is_critical = True
 
@@ -236,32 +242,26 @@ def compare_file_functions(old_funcs: Dict[str, FunctionFingerprint],
 
         if old_fp is None and new_fp is not None:
             # Function was added
-            is_critical = new_fp.is_public
-            reasons = ["function added"]
-            if is_critical:
-                reasons[0] += " (public API)"
-            events.append(ChangeEvent(
-                function_id=fn_id,
-                code_path=file_path,
-                event_type="function_added",
-                score=5,
-                critical=is_critical,
-                reasons=reasons,
-            ))
+            if new_fp.is_public:
+                events.append(ChangeEvent(
+                    function_id=fn_id,
+                    code_path=file_path,
+                    event_type="function_added",
+                    score=SCORE_PUBLIC_API,
+                    critical=True,
+                    reasons=["function added (public API)"],
+                ))
         elif new_fp is None and old_fp is not None:
             # Function was removed
-            is_critical = old_fp.is_public
-            reasons = ["function removed"]
-            if is_critical:
-                reasons[0] += " (public API)"
-            events.append(ChangeEvent(
-                function_id=fn_id,
-                code_path=file_path,
-                event_type="function_removed",
-                score=5,
-                critical=is_critical,
-                reasons=reasons,
-            ))
+            if old_fp.is_public:
+                events.append(ChangeEvent(
+                    function_id=fn_id,
+                    code_path=file_path,
+                    event_type="function_removed",
+                    score=SCORE_PUBLIC_API,
+                    critical=True,
+                    reasons=["function removed (public API)"],
+                ))
         elif old_fp is not None and new_fp is not None:
             # Both exist — compare hashes first (fast path)
             if old_fp.fingerprint_hash == new_fp.fingerprint_hash:
