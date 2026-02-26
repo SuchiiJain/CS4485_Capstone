@@ -14,10 +14,18 @@
 ---
 
 ### Marie Liske
-- **Hours:**
+- **Hours:** 6
 - **Tasks Complete:**
+  - Implemented config-driven documentation mapping so code file patterns (code_glob) map to related docs and trigger doc-review alerts when mapped code changes.
+  - Strengthened threshold handling by validating config values, applying safe defaults, and normalizing thresholds before scoring.
+  - Expanded fingerprint baseline updates with a dedicated updater that reports file/function deltas (added, removed, changed, unchanged) each run.
+  - Improved persistence reliability by using atomic baseline writes (temp file + replace) and updated README documentation to reflect all new behavior.
 - **Upcoming Tasks:**
+  - Ensure changes in branch are compatable with main before merging
+  - Resolve any potential merge conflicts
+  - Test on created sample repositories
 - **Issues:**
+  - N/A
 
 ---
 
