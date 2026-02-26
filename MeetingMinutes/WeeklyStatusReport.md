@@ -58,10 +58,19 @@
 ---
 
 ### Samuel Say
-- **Hours:**
+- **Hours: 8**
 - **Tasks Complete:**
+  -Implemented run.py, the main entry point for the Documentation Rot Detector that ties together all existing modules into a complete working pipeline
+  -Integrated the flagging_threshold.py severity model (HIGH/MEDIUM/LOW) with the comparator/alerts pipeline via a bridging layer
+  -Connected report_generation.py to produce both .docrot-report.txt and .docrot-report.json output files on each scan
+  -Added CLI argument support including optional commit hash embedding in reports
 - **Upcoming Tasks:**
+  -Testing the full pipeline end-to-end on a real or sample repository
+  -Verifying report output accuracy against known code changes
+  -Any remaining integration work (GitHub hook, dashboard, AI suggestions)
 - **Issues:**
+  -The two detection pipelines (alerts.py and flagging_threshold.py) have some conceptual overlap that may need to be reconciled as the project matures
+  -Doc-file alerting requires manual configuration of doc_mappings in .docrot-config.json — no auto-discovery yet
 
 ---
 
