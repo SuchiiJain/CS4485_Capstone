@@ -22,7 +22,7 @@
 ---
 
 ### Anusua Halder
-- **Hours: 8-9**
+- **Hours: 6**
 - **Tasks Complete:**
   - Attended Meeting #2 (February 20) and reviewed all action items from MOM #1
   - Created and tailored MOM #2, including all discussion summaries, action items, and technical design notes
