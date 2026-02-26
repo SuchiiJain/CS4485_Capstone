@@ -6,23 +6,31 @@ from typing import Optional
 from flagging_threshold import Flag, Severity, FlagReason
 
 
+# --- ScanReport Class ---
+
+# Holds all the data for a single scan run, including repo info and all flags found
 class ScanReport:
     def __init__(self, repo_path: str, commit_hash: Optional[str], flags: list[Flag]):
-        self.repo_path = repo_path
-        self.commit_hash = commit_hash or "unknown"
-        self.timestamp = datetime.now().isoformat()
-        self.flags = flags
+        self.repo_path = repo_path                    # Path to the scanned repository
+        self.commit_hash = commit_hash or "unknown"   # Commit hash at time of scan
+        self.timestamp = datetime.now().isoformat()   # Timestamp of when scan ran
+        self.flags = flags                            # List of all flags found
 
+    # Returns a count of flags grouped by severity level
     def count_by_severity(self) -> dict[str, int]:
         counts = {"high": 0, "medium": 0, "low": 0}
         for f in self.flags:
             counts[f.severity.value] += 1
         return counts
 
+    # Returns True if any flags were found during the scan
     def has_issues(self) -> bool:
         return len(self.flags) > 0
 
 
+# --- Serialization Helper ---
+
+# Converts a single Flag object into a dictionary for JSON output
 def _flag_to_dict(flag: Flag) -> dict:
     return {
         "reason": flag.reason.value,
@@ -34,6 +42,7 @@ def _flag_to_dict(flag: Flag) -> dict:
             "params": flag.code_element.params,
             "return_type": flag.code_element.return_type,
         },
+        # Only include doc_reference if one exists
         "doc_reference": {
             "file_path": flag.doc_reference.file_path,
             "referenced_symbol": flag.doc_reference.referenced_symbol,
@@ -44,12 +53,18 @@ def _flag_to_dict(flag: Flag) -> dict:
     }
 
 
+# --- JSON Report Generator ---
+
+# Generates a JSON report file from the scan results
+# Defaults to .docrot-report.json at the repo root to match project convention
 def generate_json_report(
     report: ScanReport, output_path: str = ".docrot-report.json"
 ) -> str:
     output_dir = os.path.dirname(output_path)
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
+
+    # Build the full report data structure
     data = {
         "meta": {
             "repo_path": report.repo_path,
@@ -60,13 +75,19 @@ def generate_json_report(
         },
         "issues": [_flag_to_dict(f) for f in report.flags],
     }
+
     with open(output_path, "w", encoding="utf-8") as fh:
         json.dump(data, fh, indent=2)
     return output_path
 
 
+# --- TXT Report Formatting ---
+
+# Separator lines used for formatting the text report
 _SEPARATOR = "=" * 60
 _SUB_SEP = "-" * 60
+
+# Display labels for each severity level in the text report
 _SEVERITY_ICONS = {
     Severity.HIGH: "HIGH",
     Severity.MEDIUM: "MEDIUM",
@@ -74,6 +95,7 @@ _SEVERITY_ICONS = {
 }
 
 
+# Builds the header section of the text report
 def _txt_header(report: ScanReport) -> list[str]:
     counts = report.count_by_severity()
     return [
@@ -89,6 +111,7 @@ def _txt_header(report: ScanReport) -> list[str]:
     ]
 
 
+# Builds a single issue block for the text report
 def _txt_flag_block(index: int, flag: Flag) -> list[str]:
     icon = _SEVERITY_ICONS.get(flag.severity, flag.severity.value)
     lines = [
@@ -99,19 +122,23 @@ def _txt_flag_block(index: int, flag: Flag) -> list[str]:
         f" Symbol    : {flag.code_element.name}",
         f" Code file : {flag.code_element.file_path}",
     ]
+    # Only include signature if available
     if flag.code_element.signature:
         lines.append(f" Signature : {flag.code_element.signature}")
+    # Only include doc info if a reference exists
     if flag.doc_reference:
         lines.append(f" Doc file  : {flag.doc_reference.file_path}")
         if flag.doc_reference.snippet:
             lines.append(f" Doc snippet: \"{flag.doc_reference.snippet[:80]}\"")
     lines.append("")
     lines.append(f" ! {flag.message}")
+    # Only include suggestion if one was provided
     if flag.suggestion:
         lines.append(f" > Suggestion: {flag.suggestion}")
     return lines
 
 
+# Builds the footer section of the text report
 def _txt_footer(report: ScanReport) -> list[str]:
     return [
         "",
@@ -122,26 +149,40 @@ def _txt_footer(report: ScanReport) -> list[str]:
     ]
 
 
+# --- TXT Report Generator ---
+
+# Generates a plain text report file from the scan results
+# Defaults to .docrot-report.txt at the repo root to match project convention
 def generate_txt_report(
     report: ScanReport, output_path: str = ".docrot-report.txt"
 ) -> str:
     output_dir = os.path.dirname(output_path)
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
+
     lines: list[str] = []
     lines.extend(_txt_header(report))
+
     if not report.has_issues():
+        # No issues found — print a clean all-clear message
         lines.append("")
         lines.append(" No documentation rot detected. All docs are up to date!")
     else:
+        # Add a block for each flag found
         for i, flag in enumerate(report.flags):
             lines.extend(_txt_flag_block(i, flag))
+
     lines.extend(_txt_footer(report))
+
     with open(output_path, "w", encoding="utf-8") as fh:
         fh.write("\n".join(lines))
     return output_path
 
 
+# --- Main Entry Point ---
+
+# Generates both JSON and TXT reports from a list of flags
+# This is the main function called by the rest of the system
 def generate_reports(
     flags: list[Flag],
     repo_path: str,
@@ -149,7 +190,12 @@ def generate_reports(
     json_path: str = ".docrot-report.json",
     txt_path: str = ".docrot-report.txt",
 ) -> dict[str, str]:
+    # Create the report object with all scan metadata
     report = ScanReport(repo_path=repo_path, commit_hash=commit_hash, flags=flags)
+
+    # Generate both output formats
     generate_txt_report(report, txt_path)
     generate_json_report(report, json_path)
-    return {"txt": txt_path, "json": json_path}
+
+    # Return paths to both generated files
+    return {"txt": txt_path, "json": json_path} 
