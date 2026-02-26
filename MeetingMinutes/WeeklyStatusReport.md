@@ -28,8 +28,8 @@
   - Wrote up MOM #2 with all the discussion notes, action items, and technical decisions from the meeting
   - Created and maintained the weekly meeting tracking file and set up the MeetingMinutes folder in the GitHub repository
   - Attended in-person team meetup on Monday to align on priorities and delegate tasks on Jira
-  - Finalized flagging_threshold.py — includes all core data structures, enums, severity mapping, and detection logic functions
-  - Finalized report_generation.py — handles both .txt and .json report output formats for the scanner
+  - Wrote/finalized flagging_threshold.py — includes all core data structures, enums, severity mapping, and detection logic functions
+  - Wrote/finalized report_generation.py — handles both .txt and .json report output formats for the scanner
   - Added comments throughout both files to make them easier to follow
   - Updated the README to include both files in the folder structure and module table
   - Pushed files to src/ on GitHub
