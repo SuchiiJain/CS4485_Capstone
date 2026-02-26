@@ -64,8 +64,12 @@
 ---
 
 ### Portia Hamid
-- **Hours:**
+- **Hours: 8**
 - **Tasks Complete:**
+  - Pseudocode finalization
+  - Architecture mapping
+  - AST parser and fingerprint generation implementation
+  - Small-scale AST parser testing and example generation
 - **Upcoming Tasks:**
 - **Issues:**
 
