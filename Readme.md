@@ -75,6 +75,8 @@ On the first run (no prior baseline), Docrot generates and stores fingerprints w
     ├── fingerprint.py      # Semantic feature extraction + hashing
     ├── models.py           # Dataclasses (fingerprints, deltas, events, alerts)
     ├── persistence.py      # JSON fingerprint storage (load/save/serialize)
+    ├── flagging_threshold.py  # Flag dataclasses, severity enums, and all check functions
+    ├── report_generation.py   # Generates .txt and .json scan reports from flags
     └── run.py              # Full pipeline entry point (scan entire repo)
 ```
 
@@ -89,6 +91,8 @@ On the first run (no prior baseline), Docrot generates and stores fingerprints w
 | `comparator.py` | `diff_features()` compares fingerprints feature-by-feature; `score_semantic_delta()` applies weighted scoring; `compare_file_functions()` handles added/removed/modified functions |
 | `persistence.py` | JSON-based fingerprint storage with `load_fingerprints()`, `persist_fingerprints()`, `is_first_run()`, and round-trip serialization |
 | `alerts.py` | `evaluate_doc_flags()` accumulates per-doc scores and applies thresholds; `publish_alerts_to_log()` prints CI warnings; `publish_alerts_to_report()` writes `.docrot-report.json` |
+| `flagging_threshold.py` | Flag dataclasses (`Flag`, `CodeElement`, `DocReference`), severity enums, `SEVERITY_MAP`, and all `check_*` detection functions |
+| `report_generation.py` | `ScanReport` class, `generate_txt_report()`, `generate_json_report()`, and `generate_reports()` entry point — outputs `.docrot-report.txt` and `.docrot-report.json` |
 | `src/run.py` | Full pipeline entry point — scans an entire repo directory, extracts fingerprints for all `.py` files, compares against stored baseline, scores changes, maps to docs, prints a summary report, and writes JSON artifacts |
 
 ## Configuration
