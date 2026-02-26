@@ -22,10 +22,20 @@
 ---
 
 ### Anusua Halder
-- **Hours:**
+- **Hours: 8-9**
 - **Tasks Complete:**
+  - Attended Meeting #2 (February 20) and reviewed all action items from MOM #1
+  - Created and tailored MOM #2, including all discussion summaries, action items, and technical design notes
+  - Created and maintained the weekly meeting tracking file and set up the MeetingMinutes folder in the GitHub repository
+  - Attended in-person team meetup on Monday to align on priorities and delegate tasks on Jira
+  - Finalized flagging_threshold.py — includes all core data structures, enums, severity mapping, and detection logic functions
+  - Finalized report_generation.py — handles both .txt and .json report output formats for the scanner
+  - Pushed files to src/ on GitHub
 - **Upcoming Tasks:**
+  - Review pseudocode.py and provide feedback
+  - Begin Figma wireframes
 - **Issues:**
+  - Output path convention (reports/scan_report.json vs .docrot-report.json) needs to be discussed and agreed on with the team 
 
 ---
 
