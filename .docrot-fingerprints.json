@@ -1,4 +1,190 @@
 {
+  "examples/example_compare.py": {
+    "examples/example_compare.py::extract_features": {
+      "calls": {
+        "call_names": [
+          "ast.dump",
+          "ast.walk",
+          "ast.walk",
+          "ast.walk",
+          "ast.walk",
+          "ast.walk",
+          "ast.walk",
+          "ast.walk",
+          "calls.append",
+          "calls.append",
+          "comp_ops.extend",
+          "handlers.append",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "raises.append",
+          "sorted",
+          "sorted",
+          "sum",
+          "sum",
+          "sum",
+          "type"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And",
+          "And",
+          "And"
+        ],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 1,
+        "else_count": 0,
+        "for_count": 4,
+        "if_count": 8,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "examples/example_compare.py",
+      "fingerprint_hash": "0ecf18ce75fb10a8fd11347f98d69986037afcc8ee85231ec50d63b4129970fb",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "extract_features",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "examples/example_compare.py::extract_features"
+    },
+    "examples/example_compare.py::get_function": {
+      "calls": {
+        "call_names": [
+          "ast.parse",
+          "ast.walk",
+          "isinstance"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": [
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "examples/example_compare.py",
+      "fingerprint_hash": "c681553944ced4f41a4d8123810203ec40bc6820246619da5965fd27c9175d2a",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_function",
+        "params": [
+          "code",
+          "name"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "examples/example_compare.py::get_function"
+    }
+  },
+  "examples/example_fingerprinting.py": {
+    "examples/example_fingerprinting.py::get_call_name": {
+      "calls": {
+        "call_names": [
+          "isinstance",
+          "isinstance",
+          "isinstance"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 4,
+        "elif_count": 1,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "examples/example_fingerprinting.py",
+      "fingerprint_hash": "6662101c0edba72ae62a6be1b8934fa0850ad29fae9561e9031b7cd637d10251",
+      "is_public": true,
+      "returns": {
+        "return_count": 4,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_call_name",
+        "params": [
+          "node"
+        ],
+        "return_annotation": "Name(id='str', ctx=Load())"
+      },
+      "stable_id": "examples/example_fingerprinting.py::get_call_name"
+    }
+  },
   "examples/sample_code_v1.py": {
     "examples/sample_code_v1.py::_format_currency": {
       "calls": {
@@ -47,22 +233,17 @@
     "examples/sample_code_v1.py::authenticate_user": {
       "calls": {
         "call_names": [
-          "PermissionError",
           "ValueError",
           "ValueError",
-          "audit_log.record",
-          "audit_log.record",
           "db.find_user",
           "generate_token",
-          "verify_mfa",
           "verify_password"
         ]
       },
       "conditions": {
         "boolean_ops": [],
         "comparison_ops": [
-          "Is",
-          "IsNot"
+          "Is"
         ]
       },
       "control_flow": {
@@ -70,20 +251,19 @@
         "elif_count": 0,
         "else_count": 0,
         "for_count": 0,
-        "if_count": 4,
+        "if_count": 2,
         "while_count": 0
       },
       "exceptions": {
         "except_handlers": [],
         "has_bare_except": false,
         "raises": [
-          "PermissionError",
           "ValueError",
           "ValueError"
         ]
       },
       "file_path": "examples/sample_code_v1.py",
-      "fingerprint_hash": "c92044c89d0398594aac3b8660d418f54f20b25e9d45d9c26184623f60c1ba4b",
+      "fingerprint_hash": "4239d0a5ee16579f71b2fd361ce5d39ad06240c9394328fd2012636c350889b0",
       "is_public": true,
       "returns": {
         "return_count": 1,
@@ -96,14 +276,11 @@
         "network_calls": []
       },
       "signature": {
-        "defaults": [
-          "Constant(value=None)"
-        ],
+        "defaults": [],
         "name": "authenticate_user",
         "params": [
           "username",
-          "password",
-          "mfa_code"
+          "password"
         ],
         "return_annotation": null
       },
@@ -119,17 +296,16 @@
         "boolean_ops": [],
         "comparison_ops": [
           "Eq",
-          "Eq",
           "Gt",
-          "GtE"
+          "Gt"
         ]
       },
       "control_flow": {
         "early_return_count": 1,
-        "elif_count": 2,
+        "elif_count": 1,
         "else_count": 1,
         "for_count": 0,
-        "if_count": 4,
+        "if_count": 3,
         "while_count": 0
       },
       "exceptions": {
@@ -138,7 +314,7 @@
         "raises": []
       },
       "file_path": "examples/sample_code_v1.py",
-      "fingerprint_hash": "bdd06cfde6f2e1df837f2d46fd776feed42ba7c762eb9cc7698d4d4b409f6067",
+      "fingerprint_hash": "bf67c7a86677def44dd36981213f8fa09678854d1bb65c72d5e39b6fd140340c",
       "is_public": true,
       "returns": {
         "return_count": 1,
@@ -160,63 +336,6 @@
         "return_annotation": null
       },
       "stable_id": "examples/sample_code_v1.py::calculate_shipping"
-    },
-    "examples/sample_code_v1.py::delete_user": {
-      "calls": {
-        "call_names": [
-          "ValueError",
-          "audit_log.record",
-          "db.find_user_by_id",
-          "db.hard_delete",
-          "db.soft_delete"
-        ]
-      },
-      "conditions": {
-        "boolean_ops": [],
-        "comparison_ops": [
-          "Is"
-        ]
-      },
-      "control_flow": {
-        "early_return_count": 1,
-        "elif_count": 0,
-        "else_count": 1,
-        "for_count": 0,
-        "if_count": 2,
-        "while_count": 0
-      },
-      "exceptions": {
-        "except_handlers": [],
-        "has_bare_except": false,
-        "raises": [
-          "ValueError"
-        ]
-      },
-      "file_path": "examples/sample_code_v1.py",
-      "fingerprint_hash": "98e0ead7ce93535ad4c259baf3b10a13876e808bb2d60a518f55c3387fbbd7f8",
-      "is_public": true,
-      "returns": {
-        "return_count": 1,
-        "returns_none": false
-      },
-      "side_effects": {
-        "auth_calls": [],
-        "db_calls": [],
-        "file_calls": [],
-        "network_calls": []
-      },
-      "signature": {
-        "defaults": [
-          "Constant(value=False)"
-        ],
-        "name": "delete_user",
-        "params": [
-          "user_id",
-          "hard_delete"
-        ],
-        "return_annotation": null
-      },
-      "stable_id": "examples/sample_code_v1.py::delete_user"
     },
     "examples/sample_code_v1.py::get_user_profile": {
       "calls": {
@@ -535,6 +654,844 @@
       "stable_id": "examples/sample_code_v2.py::get_user_profile"
     }
   },
+  "pseudocode.py": {
+    "pseudocode.py::build_semantic_fingerprint": {
+      "calls": {
+        "call_names": [
+          "classify_public_vs_private",
+          "extract_call_features",
+          "extract_condition_features",
+          "extract_control_flow_features",
+          "extract_exception_features",
+          "extract_return_features",
+          "extract_side_effect_features",
+          "extract_signature_features",
+          "stable_hash"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "45cccc912764e69d62a7b74b137ed7d8c08c2ffa8cee775fda1d903aac6fda50",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "build_semantic_fingerprint",
+        "params": [
+          "normalized_fn_node",
+          "file_path"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::build_semantic_fingerprint"
+    },
+    "pseudocode.py::compare_file_functions": {
+      "calls": {
+        "call_names": [
+          "diff_features",
+          "events.append",
+          "events.append",
+          "events.append",
+          "make_event",
+          "make_event",
+          "make_event",
+          "maybe_public_api",
+          "maybe_public_api",
+          "new_funcs.get",
+          "new_funcs.keys",
+          "old_funcs.get",
+          "old_funcs.keys",
+          "score_semantic_delta",
+          "union"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq",
+          "Is",
+          "Is"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "13944648841783d54e0d61776b1175d45f250722a404da6c3c9759253abf8c98",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "new_funcs.get",
+          "old_funcs.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "compare_file_functions",
+        "params": [
+          "old_funcs",
+          "new_funcs",
+          "file_path"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::compare_file_functions"
+    },
+    "pseudocode.py::evaluate_doc_flags": {
+      "calls": {
+        "call_names": [
+          "alerts_by_doc.items",
+          "append",
+          "docs_for_code_path",
+          "extend",
+          "final_alerts.append",
+          "unique",
+          "unique"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "Or",
+          "Or",
+          "Or"
+        ],
+        "comparison_ops": [
+          "GtE",
+          "GtE",
+          "NotIn"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 3,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "92b89ddc7eb53f5a88392a5a256d11395fac7fb14936f1a93b4da39d33a54bfa",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "evaluate_doc_flags",
+        "params": [
+          "function_events",
+          "doc_mappings",
+          "thresholds"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::evaluate_doc_flags"
+    },
+    "pseudocode.py::extract_function_fingerprints": {
+      "calls": {
+        "call_names": [
+          "build_semantic_fingerprint",
+          "find_function_and_method_nodes",
+          "make_stable_function_id",
+          "normalize_function_ast",
+          "parse_python_ast"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Is"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "f5e4b50204581433f62de70a2273ecc5162fa29cb3b3dce2bfa4af99ee9f7cc9",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "extract_function_fingerprints",
+        "params": [
+          "source_code",
+          "file_path"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::extract_function_fingerprints"
+    },
+    "pseudocode.py::get_changed_python_files": {
+      "calls": {
+        "call_names": []
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "a7a7b1dd065afda185faf94bab049c96c5e4af3951326dfdab39ab8db4325be9",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_changed_python_files",
+        "params": [
+          "repo_path",
+          "old_ref",
+          "new_ref"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::get_changed_python_files"
+    },
+    "pseudocode.py::load_fingerprints": {
+      "calls": {
+        "call_names": []
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "6f442621ec3152a1284b4373ba1986920d80d274294104ce7655c969f0589ad3",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "load_fingerprints",
+        "params": [
+          "repo_path"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::load_fingerprints"
+    },
+    "pseudocode.py::normalize_function_ast": {
+      "calls": {
+        "call_names": []
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "f71b810597b1c3652da80cbd5071799e0e1c5c7788b8e64ba7b2badb58609c8a",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "normalize_function_ast",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::normalize_function_ast"
+    },
+    "pseudocode.py::on_push_or_ci_run": {
+      "calls": {
+        "call_names": [
+          "compare_file_functions",
+          "evaluate_doc_flags",
+          "extract_function_fingerprints",
+          "function_events.extend",
+          "get_changed_python_files",
+          "len",
+          "load_fingerprints",
+          "persist_fingerprints",
+          "previous_fingerprints.get",
+          "previous_fingerprints.items",
+          "publish_alerts",
+          "publish_baseline_notice",
+          "read_file_at_ref"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "Or"
+        ],
+        "comparison_ops": [
+          "Eq",
+          "Is",
+          "NotIn"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 2,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "4a3d9b86ffd8f92fe8357e779bd855782a47108acdaabd58ad2ad02dfb82dfad",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "previous_fingerprints.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "on_push_or_ci_run",
+        "params": [
+          "repo_path",
+          "old_ref",
+          "new_ref"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::on_push_or_ci_run"
+    },
+    "pseudocode.py::persist_fingerprints": {
+      "calls": {
+        "call_names": []
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "87f04f2cbb388ff3889341cbf1dcaf08c729f6536eeac74195ec22dab25ad28f",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "persist_fingerprints",
+        "params": [
+          "repo_path",
+          "fingerprints"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::persist_fingerprints"
+    },
+    "pseudocode.py::publish_alerts": {
+      "calls": {
+        "call_names": []
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "40211da81d255f1cf87ef47b236b73b1b3a4aa990ce761603f874d3a11d378db",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "publish_alerts",
+        "params": [
+          "doc_alerts"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::publish_alerts"
+    },
+    "pseudocode.py::publish_baseline_notice": {
+      "calls": {
+        "call_names": []
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "f0094ad249c9586c5f3cb1a009cba680a59b499283f3137e0ec1f31709292a2c",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "publish_baseline_notice",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::publish_baseline_notice"
+    },
+    "pseudocode.py::score_semantic_delta": {
+      "calls": {
+        "call_names": [
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 12,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "pseudocode.py",
+      "fingerprint_hash": "c09621716b9e52f41e15d28e299fa947e74339a61e11f35ba343c2f6ab9f73ae",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "score_semantic_delta",
+        "params": [
+          "delta"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "pseudocode.py::score_semantic_delta"
+    }
+  },
+  "run.py": {
+    "run.py::compare_files": {
+      "calls": {
+        "call_names": [
+          "compare_file_functions",
+          "evaluate_doc_flags",
+          "extract_function_fingerprints",
+          "extract_function_fingerprints",
+          "f.read",
+          "f.read",
+          "get_doc_mappings",
+          "get_thresholds",
+          "join",
+          "len",
+          "load_config",
+          "load_fingerprints",
+          "open",
+          "open",
+          "persist_fingerprints",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "publish_alerts_to_log",
+          "publish_alerts_to_report",
+          "serialize_file_fingerprints"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 2,
+        "for_count": 1,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "run.py",
+      "fingerprint_hash": "cf338b6b01fe3f3f6d7aeeef45eab29186df1c506ea9455cc727db2aab378005",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [
+          "f.read",
+          "f.read",
+          "open",
+          "open"
+        ],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "compare_files",
+        "params": [
+          "old_path",
+          "new_path"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "run.py::compare_files"
+    },
+    "run.py::fingerprint_file": {
+      "calls": {
+        "call_names": [
+          "extract_function_fingerprints",
+          "f.read",
+          "fps.items",
+          "len",
+          "load_fingerprints",
+          "open",
+          "persist_fingerprints",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "serialize_file_fingerprints"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "run.py",
+      "fingerprint_hash": "436d0993ed1ef8ef8b580e8eee07a4ed54899ff08fc96cea365f4dcba3994e3b",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [
+          "f.read",
+          "open"
+        ],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "fingerprint_file",
+        "params": [
+          "path"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "run.py::fingerprint_file"
+    },
+    "run.py::main": {
+      "calls": {
+        "call_names": [
+          "__doc__.strip",
+          "compare_files",
+          "fingerprint_file",
+          "len",
+          "len",
+          "print",
+          "print",
+          "sys.exit",
+          "sys.exit"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "Or"
+        ],
+        "comparison_ops": [
+          "Eq",
+          "Eq",
+          "In"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 1,
+        "else_count": 1,
+        "for_count": 0,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "run.py",
+      "fingerprint_hash": "95d541dd8a3699e9be22f3f620127d44616574814fbf1aae9c0144cf14bd9d23",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "main",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "run.py::main"
+    }
+  },
   "src/alerts.py": {
     "src/alerts.py::evaluate_doc_flags": {
       "calls": {
@@ -762,6 +1719,2309 @@
         "return_annotation": "Constant(value=None)"
       },
       "stable_id": "src/alerts.py::publish_baseline_notice"
+    }
+  },
+  "src/ast_parser.py": {
+    "src/ast_parser.py::_annotate_parents": {
+      "calls": {
+        "call_names": [
+          "ast.iter_child_nodes",
+          "ast.walk",
+          "id"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 2,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/ast_parser.py",
+      "fingerprint_hash": "802992ee65636a2e7397ebba43b588b9d5afd915cabb441a4bda7c9fbcb5323c",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_annotate_parents",
+        "params": [
+          "tree"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='int', ctx=Load()), Attribute(value=Name(id='ast', ctx=Load()), attr='AST', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/ast_parser.py::_annotate_parents"
+    },
+    "src/ast_parser.py::extract_function_fingerprints": {
+      "calls": {
+        "call_names": [
+          "_annotate_parents",
+          "build_fingerprint",
+          "find_function_nodes",
+          "get_parent_class",
+          "is_public_function",
+          "make_stable_function_id",
+          "parse_source"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Is",
+          "Is"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 3,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/ast_parser.py",
+      "fingerprint_hash": "3c5b2d166e978c52d41b6476a834b70c00549db42bacdd767540944850464a15",
+      "is_public": true,
+      "returns": {
+        "return_count": 3,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "extract_function_fingerprints",
+        "params": [
+          "source_code",
+          "file_path"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='FunctionFingerprint', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/ast_parser.py::extract_function_fingerprints"
+    },
+    "src/ast_parser.py::find_function_nodes": {
+      "calls": {
+        "call_names": [
+          "ast.walk",
+          "function_nodes.append",
+          "isinstance"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/ast_parser.py",
+      "fingerprint_hash": "6c843795f881a5bfad4a91a737ba71936be8fc596218eb69b0a5116583928f3b",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "find_function_nodes",
+        "params": [
+          "tree"
+        ],
+        "return_annotation": "Subscript(value=Name(id='List', ctx=Load()), slice=Attribute(value=Name(id='ast', ctx=Load()), attr='FunctionDef', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/ast_parser.py::find_function_nodes"
+    },
+    "src/ast_parser.py::get_parent_class": {
+      "calls": {
+        "call_names": [
+          "_annotate_parents",
+          "id",
+          "isinstance",
+          "parent_map.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": [
+          "Is",
+          "IsNot"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/ast_parser.py",
+      "fingerprint_hash": "951d2786b56af341cd8fd89384f4ddca7a5fcd1060352b784acbad34c6f66e95",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "parent_map.get"
+        ]
+      },
+      "signature": {
+        "defaults": [
+          "Constant(value=None)"
+        ],
+        "name": "get_parent_class",
+        "params": [
+          "tree",
+          "fn_node",
+          "parent_map"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/ast_parser.py::get_parent_class"
+    },
+    "src/ast_parser.py::is_public_function": {
+      "calls": {
+        "call_names": [
+          "fn_node.name.startswith"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/ast_parser.py",
+      "fingerprint_hash": "0b26f63cc38719e8b7e963068a1be4a2a148a633866a22b9331e7d00135b916f",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "is_public_function",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": "Name(id='bool', ctx=Load())"
+      },
+      "stable_id": "src/ast_parser.py::is_public_function"
+    },
+    "src/ast_parser.py::make_stable_function_id": {
+      "calls": {
+        "call_names": [
+          "file_path.replace"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/ast_parser.py",
+      "fingerprint_hash": "6b30bb3ccc1bcc669ff79c1fad3b62b129801e9640ebc7cb0e7cd273591db7cb",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [
+          "Constant(value=None)"
+        ],
+        "name": "make_stable_function_id",
+        "params": [
+          "file_path",
+          "fn_node",
+          "class_name"
+        ],
+        "return_annotation": "Name(id='str', ctx=Load())"
+      },
+      "stable_id": "src/ast_parser.py::make_stable_function_id"
+    },
+    "src/ast_parser.py::parse_source": {
+      "calls": {
+        "call_names": [
+          "ast.parse",
+          "print"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "SyntaxError"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/ast_parser.py",
+      "fingerprint_hash": "1a43bc5c3924ea91e173c0880cde472627869e0bf75b55aeae0bc288986cb2b8",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "parse_source",
+        "params": [
+          "source_code"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Attribute(value=Name(id='ast', ctx=Load()), attr='Module', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/ast_parser.py::parse_source"
+    },
+    "src/ast_parser.py::strip_docstring": {
+      "calls": {
+        "call_names": [
+          "isinstance",
+          "isinstance",
+          "isinstance"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/ast_parser.py",
+      "fingerprint_hash": "a517cdd50ce7e86983ba51355f8842c7c12b818f83b64c1130578e5039190a18",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "strip_docstring",
+        "params": [
+          "body"
+        ],
+        "return_annotation": "Subscript(value=Name(id='List', ctx=Load()), slice=Attribute(value=Name(id='ast', ctx=Load()), attr='stmt', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/ast_parser.py::strip_docstring"
+    }
+  },
+  "src/comparator.py": {
+    "src/comparator.py::compare_file_functions": {
+      "calls": {
+        "call_names": [
+          "ChangeEvent",
+          "ChangeEvent",
+          "ChangeEvent",
+          "diff_features",
+          "events.append",
+          "events.append",
+          "events.append",
+          "new_funcs.get",
+          "new_funcs.keys",
+          "old_funcs.get",
+          "old_funcs.keys",
+          "score_semantic_delta",
+          "set",
+          "set",
+          "sorted"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And",
+          "And",
+          "And",
+          "Or"
+        ],
+        "comparison_ops": [
+          "Eq",
+          "Gt",
+          "Is",
+          "Is",
+          "IsNot",
+          "IsNot",
+          "IsNot",
+          "IsNot"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 2,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 7,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/comparator.py",
+      "fingerprint_hash": "1ac40a8cef97398b86a077a5a315113e9e60a9387b95bdffbaa767a5b603201f",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "new_funcs.get",
+          "old_funcs.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "compare_file_functions",
+        "params": [
+          "old_funcs",
+          "new_funcs",
+          "file_path"
+        ],
+        "return_annotation": "Subscript(value=Name(id='List', ctx=Load()), slice=Name(id='ChangeEvent', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/comparator.py::compare_file_functions"
+    },
+    "src/comparator.py::diff_features": {
+      "calls": {
+        "call_names": [
+          "SemanticDelta"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And",
+          "And",
+          "Or",
+          "Or",
+          "Or",
+          "Or",
+          "Or",
+          "Or",
+          "Or",
+          "Or",
+          "Or"
+        ],
+        "comparison_ops": [
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq",
+          "NotEq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 12,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/comparator.py",
+      "fingerprint_hash": "5309ae73e933dfb3518dbed439a1da07ff2e1b3799c14a693685b54737e3137a",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "diff_features",
+        "params": [
+          "old_fp",
+          "new_fp"
+        ],
+        "return_annotation": "Name(id='SemanticDelta', ctx=Load())"
+      },
+      "stable_id": "src/comparator.py::diff_features"
+    },
+    "src/comparator.py::score_semantic_delta": {
+      "calls": {
+        "call_names": [
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append",
+          "reasons.append"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 12,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/comparator.py",
+      "fingerprint_hash": "decdef253737890a4247cc93eed55bdfaeb1294277187b91993fe16fef580cd4",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "score_semantic_delta",
+        "params": [
+          "delta"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Tuple', ctx=Load()), slice=Tuple(elts=[Name(id='int', ctx=Load()), Subscript(value=Name(id='List', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load()), Name(id='bool', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/comparator.py::score_semantic_delta"
+    }
+  },
+  "src/config.py": {
+    "src/config.py::docs_for_code_path": {
+      "calls": {
+        "call_names": [
+          "code_path.replace",
+          "fnmatch.fnmatch",
+          "mapping.get",
+          "mapping.get",
+          "matched_docs.extend",
+          "seen.add",
+          "set",
+          "unique_docs.append"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "NotIn"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 2,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/config.py",
+      "fingerprint_hash": "70215f92b3ccb88b7aa8f912eda8132739fa0f2dc412543f61fd6fe3cc148e7c",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "mapping.get",
+          "mapping.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "docs_for_code_path",
+        "params": [
+          "code_path",
+          "doc_mappings"
+        ],
+        "return_annotation": "Subscript(value=Name(id='List', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/config.py::docs_for_code_path"
+    },
+    "src/config.py::get_doc_mappings": {
+      "calls": {
+        "call_names": [
+          "config.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/config.py",
+      "fingerprint_hash": "38fc74c52e69adf3902fdcfaa10a1e9c6a605dffc230b63bf1b06cb1d77fdff1",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "config.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_doc_mappings",
+        "params": [
+          "config"
+        ],
+        "return_annotation": "Subscript(value=Name(id='List', ctx=Load()), slice=Name(id='Dict', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/config.py::get_doc_mappings"
+    },
+    "src/config.py::get_thresholds": {
+      "calls": {
+        "call_names": [
+          "config.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/config.py",
+      "fingerprint_hash": "7bd8e61309e501d2b04f539badd3c3187307cf021b7ca13350a653718ec29710",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "config.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_thresholds",
+        "params": [
+          "config"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='int', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/config.py::get_thresholds"
+    },
+    "src/config.py::load_config": {
+      "calls": {
+        "call_names": [
+          "dict",
+          "dict",
+          "dict",
+          "json.load",
+          "open",
+          "os.path.exists",
+          "os.path.join",
+          "print",
+          "user_config.get",
+          "user_config.get",
+          "user_config.get",
+          "user_thresholds.get",
+          "user_thresholds.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 3,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "OSError"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/config.py",
+      "fingerprint_hash": "9d6ef543d89631ef1b9910e2c886311efcf2be10628b62ce1924973dd7a552fb",
+      "is_public": true,
+      "returns": {
+        "return_count": 3,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [
+          "open"
+        ],
+        "network_calls": [
+          "user_config.get",
+          "user_config.get",
+          "user_config.get",
+          "user_thresholds.get",
+          "user_thresholds.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "load_config",
+        "params": [
+          "repo_path"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/config.py::load_config"
+    }
+  },
+  "src/fingerprint.py": {
+    "src/fingerprint.py::_classify_call": {
+      "calls": {
+        "call_names": [
+          "name.lower",
+          "name_lower.split"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "In"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "62a70632dab3f6251855af2af6f34ebedfd41cd2575aea001320642576a04ff5",
+      "is_public": false,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_classify_call",
+        "params": [
+          "name",
+          "keyword_set"
+        ],
+        "return_annotation": "Name(id='bool', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::_classify_call"
+    },
+    "src/fingerprint.py::_resolve_call_name": {
+      "calls": {
+        "call_names": [
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "join",
+          "parts.append",
+          "parts.append",
+          "parts.reverse"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 3,
+        "elif_count": 1,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 3,
+        "while_count": 1
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "8a7e348a32afcabc4dfdfc883e1b7e2dc2b9d26c3b7917dcc89a2464cdec489b",
+      "is_public": false,
+      "returns": {
+        "return_count": 3,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_resolve_call_name",
+        "params": [
+          "node"
+        ],
+        "return_annotation": "Name(id='str', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::_resolve_call_name"
+    },
+    "src/fingerprint.py::build_fingerprint": {
+      "calls": {
+        "call_names": [
+          "FunctionFingerprint",
+          "extract_call_features",
+          "extract_condition_features",
+          "extract_control_flow_features",
+          "extract_exception_features",
+          "extract_return_features",
+          "extract_side_effect_features",
+          "extract_signature_features",
+          "normalize_function_ast",
+          "stable_hash"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "b6e02a13c54ef08bdce0d2af39a9d9bb96f88015fd2fa80f4d77d2e2c328d6ae",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "build_fingerprint",
+        "params": [
+          "fn_node",
+          "file_path",
+          "stable_id",
+          "is_public"
+        ],
+        "return_annotation": "Name(id='FunctionFingerprint', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::build_fingerprint"
+    },
+    "src/fingerprint.py::extract_call_features": {
+      "calls": {
+        "call_names": [
+          "CallFeatures",
+          "_resolve_call_name",
+          "ast.walk",
+          "call_names.append",
+          "call_names.sort",
+          "isinstance"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "73e99ee66f8a7dafd77d302d8327112b5946d7cb27b5106d8a708401b5586e25",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "extract_call_features",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": "Name(id='CallFeatures', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::extract_call_features"
+    },
+    "src/fingerprint.py::extract_condition_features": {
+      "calls": {
+        "call_names": [
+          "ConditionFeatures",
+          "ast.walk",
+          "boolean_ops.append",
+          "boolean_ops.sort",
+          "comparison_ops.append",
+          "comparison_ops.sort",
+          "isinstance",
+          "isinstance",
+          "type",
+          "type"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 1,
+        "else_count": 0,
+        "for_count": 2,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "7ffe086831dfbc7aa0a886b5afa4fba1a5cf3c64d58893394afe91bd3e833213",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "extract_condition_features",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": "Name(id='ConditionFeatures', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::extract_condition_features"
+    },
+    "src/fingerprint.py::extract_control_flow_features": {
+      "calls": {
+        "call_names": [
+          "ControlFlowFeatures",
+          "ast.walk",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 3,
+        "else_count": 0,
+        "for_count": 2,
+        "if_count": 8,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "70047ce0d4b32bc51ce8c29ac2fbf2e20173369f7f27195a2d5d5dcc83ff3fd9",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "extract_control_flow_features",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": "Name(id='ControlFlowFeatures', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::extract_control_flow_features"
+    },
+    "src/fingerprint.py::extract_exception_features": {
+      "calls": {
+        "call_names": [
+          "ExceptionFeatures",
+          "ast.dump",
+          "ast.dump",
+          "ast.walk",
+          "except_handlers.append",
+          "except_handlers.append",
+          "except_handlers.append",
+          "except_handlers.sort",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "raises.append",
+          "raises.append",
+          "raises.append",
+          "raises.append",
+          "raises.sort"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": [
+          "IsNot",
+          "IsNot"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 3,
+        "else_count": 4,
+        "for_count": 2,
+        "if_count": 9,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "93d166d0e17bd9858273048a7327ac016bdb4b30dd7ddc90eacba853f0cd29ce",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "extract_exception_features",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": "Name(id='ExceptionFeatures', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::extract_exception_features"
+    },
+    "src/fingerprint.py::extract_return_features": {
+      "calls": {
+        "call_names": [
+          "ReturnFeatures",
+          "ast.walk",
+          "isinstance",
+          "isinstance"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": [
+          "Is",
+          "Is"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 1,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "784de0fb1e7f3bbd1a04a53ba46f7ba32fe088336698680e3df021ae4a3cc38c",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "extract_return_features",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": "Name(id='ReturnFeatures', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::extract_return_features"
+    },
+    "src/fingerprint.py::extract_side_effect_features": {
+      "calls": {
+        "call_names": [
+          "SideEffectFeatures",
+          "_classify_call",
+          "_classify_call",
+          "_classify_call",
+          "_classify_call",
+          "_resolve_call_name",
+          "ast.walk",
+          "auth_calls.append",
+          "auth_calls.sort",
+          "db_calls.append",
+          "db_calls.sort",
+          "file_calls.append",
+          "file_calls.sort",
+          "isinstance",
+          "network_calls.append",
+          "network_calls.sort"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 5,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "d1e1d5e50f9af08a2a2ab3a144d3440b27fc54d66c2312d4c36d5f65933dbcff",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "extract_side_effect_features",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": "Name(id='SideEffectFeatures', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::extract_side_effect_features"
+    },
+    "src/fingerprint.py::extract_signature_features": {
+      "calls": {
+        "call_names": [
+          "SignatureFeatures",
+          "ast.dump",
+          "ast.dump",
+          "ast.dump",
+          "defaults.append",
+          "defaults.append",
+          "defaults.append",
+          "params.append",
+          "params.append",
+          "params.append",
+          "params.append",
+          "params.append"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "IsNot",
+          "IsNot"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 1,
+        "for_count": 5,
+        "if_count": 4,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "9ffc39d1ca723e596d9201068d00414b6ccb58040bfeae662a6c2dd44e35cfaf",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "extract_signature_features",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": "Name(id='SignatureFeatures', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::extract_signature_features"
+    },
+    "src/fingerprint.py::normalize_function_ast": {
+      "calls": {
+        "call_names": [
+          "copy.deepcopy",
+          "isinstance",
+          "isinstance",
+          "isinstance"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "420edc14828feb90f67dea162c156405627a093fa5045d2a708f6b867aadba46",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "normalize_function_ast",
+        "params": [
+          "fn_node"
+        ],
+        "return_annotation": "Attribute(value=Name(id='ast', ctx=Load()), attr='FunctionDef', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::normalize_function_ast"
+    },
+    "src/fingerprint.py::stable_hash": {
+      "calls": {
+        "call_names": [
+          "canonical.encode",
+          "hashlib.sha256",
+          "hexdigest",
+          "json.dumps"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/fingerprint.py",
+      "fingerprint_hash": "ad90a176f092b82b5cc17f158aee75d379de8ab47559efa43619da3a76597813",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "stable_hash",
+        "params": [
+          "features"
+        ],
+        "return_annotation": "Name(id='str', ctx=Load())"
+      },
+      "stable_id": "src/fingerprint.py::stable_hash"
+    }
+  },
+  "src/models.py": {
+    "src/models.py::FunctionFingerprint.from_dict": {
+      "calls": {
+        "call_names": [
+          "CallFeatures",
+          "ConditionFeatures",
+          "ControlFlowFeatures",
+          "ExceptionFeatures",
+          "ReturnFeatures",
+          "SideEffectFeatures",
+          "SignatureFeatures",
+          "cls",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/models.py",
+      "fingerprint_hash": "4430bc6744824c97f592e044477e4cc239a39d95762e66f6a4b124389faac2b9",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get",
+          "data.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "from_dict",
+        "params": [
+          "cls",
+          "data"
+        ],
+        "return_annotation": "Constant(value='FunctionFingerprint')"
+      },
+      "stable_id": "src/models.py::FunctionFingerprint.from_dict"
+    },
+    "src/models.py::FunctionFingerprint.to_dict": {
+      "calls": {
+        "call_names": [
+          "asdict"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/models.py",
+      "fingerprint_hash": "7247cad1260ca2b9305f86d6d728c31406924caced10876912294c3246ad3dc9",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "to_dict",
+        "params": [
+          "self"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/models.py::FunctionFingerprint.to_dict"
+    }
+  },
+  "src/persistence.py": {
+    "src/persistence.py::_fingerprint_path": {
+      "calls": {
+        "call_names": [
+          "os.path.join"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/persistence.py",
+      "fingerprint_hash": "c09dca8bbd32d17c491e266343e9f73e405a9351cf1fccca6ca6aab7fcdef46d",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_fingerprint_path",
+        "params": [
+          "repo_path"
+        ],
+        "return_annotation": "Name(id='str', ctx=Load())"
+      },
+      "stable_id": "src/persistence.py::_fingerprint_path"
+    },
+    "src/persistence.py::deserialize_file_fingerprints": {
+      "calls": {
+        "call_names": [
+          "FunctionFingerprint.from_dict",
+          "data.items"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/persistence.py",
+      "fingerprint_hash": "ca067b8ddfe56dfe02363735a25ade1771a27c9513fddc30205baf56210663c1",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "deserialize_file_fingerprints",
+        "params": [
+          "data"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='FunctionFingerprint', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/persistence.py::deserialize_file_fingerprints"
+    },
+    "src/persistence.py::is_first_run": {
+      "calls": {
+        "call_names": [
+          "_fingerprint_path",
+          "bool",
+          "json.load",
+          "open",
+          "os.path.exists"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 3,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "OSError"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/persistence.py",
+      "fingerprint_hash": "6eeb25799aec1394ad517c2f5a16e1777775ba86d70b4c490409201281622af4",
+      "is_public": true,
+      "returns": {
+        "return_count": 3,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [
+          "open"
+        ],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "is_first_run",
+        "params": [
+          "repo_path"
+        ],
+        "return_annotation": "Name(id='bool', ctx=Load())"
+      },
+      "stable_id": "src/persistence.py::is_first_run"
+    },
+    "src/persistence.py::load_fingerprints": {
+      "calls": {
+        "call_names": [
+          "_fingerprint_path",
+          "isinstance",
+          "json.load",
+          "open",
+          "os.path.exists",
+          "print"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 4,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "OSError"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/persistence.py",
+      "fingerprint_hash": "886025671597eda7dd7c09483755b499afb762f9863232c6d6ff41d1d94fa097",
+      "is_public": true,
+      "returns": {
+        "return_count": 4,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [
+          "open"
+        ],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "load_fingerprints",
+        "params": [
+          "repo_path"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/persistence.py::load_fingerprints"
+    },
+    "src/persistence.py::persist_fingerprints": {
+      "calls": {
+        "call_names": [
+          "_fingerprint_path",
+          "json.dump",
+          "open",
+          "print"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "OSError"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/persistence.py",
+      "fingerprint_hash": "548e22880e412e37b9062516316439889bf5d58fdda796b6721e0dae71cbc81b",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [
+          "open"
+        ],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "persist_fingerprints",
+        "params": [
+          "repo_path",
+          "fingerprints"
+        ],
+        "return_annotation": "Constant(value=None)"
+      },
+      "stable_id": "src/persistence.py::persist_fingerprints"
+    },
+    "src/persistence.py::serialize_file_fingerprints": {
+      "calls": {
+        "call_names": [
+          "fingerprints.items",
+          "fp.to_dict"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/persistence.py",
+      "fingerprint_hash": "6b8d9a70d933b13ac66e532390392302a46fdd023bef08e732ef745cbd4f48e0",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "serialize_file_fingerprints",
+        "params": [
+          "fingerprints"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/persistence.py::serialize_file_fingerprints"
+    }
+  },
+  "src/run.py": {
+    "src/run.py::_collect_python_files": {
+      "calls": {
+        "call_names": [
+          "d.startswith",
+          "filename.endswith",
+          "os.path.join",
+          "os.path.relpath",
+          "os.walk",
+          "py_files.append",
+          "replace",
+          "sorted"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": [
+          "NotIn"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 2,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/run.py",
+      "fingerprint_hash": "f45304cb0f02ff0818fb5b5d8ff86a911d8e4a5ccea2d116e3a3e55bdfaa8b04",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_collect_python_files",
+        "params": [
+          "repo_path"
+        ],
+        "return_annotation": "Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/run.py::_collect_python_files"
+    },
+    "src/run.py::_print_summary_report": {
+      "calls": {
+        "call_names": [
+          "join",
+          "join",
+          "join",
+          "join",
+          "len",
+          "len",
+          "len",
+          "len",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 1,
+        "for_count": 3,
+        "if_count": 5,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/run.py",
+      "fingerprint_hash": "ec8c621c1eac272761f1a353ceaaf8bf9004091b85b48a5318460988c0a72ae5",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_print_summary_report",
+        "params": [
+          "change_events",
+          "alerts",
+          "elapsed",
+          "file_count",
+          "func_count"
+        ],
+        "return_annotation": "Constant(value=None)"
+      },
+      "stable_id": "src/run.py::_print_summary_report"
+    },
+    "src/run.py::_read_source": {
+      "calls": {
+        "call_names": [
+          "f.read",
+          "open",
+          "os.path.join",
+          "print"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "OSError"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/run.py",
+      "fingerprint_hash": "d24ef957cc160f12c69b996de144a6e9ef238765fba01522ea3c6b8a88ebb61f",
+      "is_public": false,
+      "returns": {
+        "return_count": 2,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [
+          "f.read",
+          "open"
+        ],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_read_source",
+        "params": [
+          "repo_path",
+          "rel_path"
+        ],
+        "return_annotation": "BinOp(left=Name(id='str', ctx=Load()), op=BitOr(), right=Constant(value=None))"
+      },
+      "stable_id": "src/run.py::_read_source"
+    },
+    "src/run.py::_scan_repo": {
+      "calls": {
+        "call_names": [
+          "_read_source",
+          "extract_function_fingerprints"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Is"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/run.py",
+      "fingerprint_hash": "394bc1a1bcb1775e360b780d6d0195dbc7e64f5fc1c3a78e7c9a783e930e1f46",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_scan_repo",
+        "params": [
+          "repo_path",
+          "py_files"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='FunctionFingerprint', ctx=Load())], ctx=Load()), ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/run.py::_scan_repo"
+    },
+    "src/run.py::run": {
+      "calls": {
+        "call_names": [
+          "_collect_python_files",
+          "_print_summary_report",
+          "_scan_repo",
+          "all_events.extend",
+          "compare_file_functions",
+          "current_fps.get",
+          "current_fps.items",
+          "current_fps.items",
+          "current_fps.keys",
+          "current_fps.values",
+          "deserialize_file_fingerprints",
+          "evaluate_doc_flags",
+          "get_doc_mappings",
+          "get_thresholds",
+          "is_first_run",
+          "len",
+          "len",
+          "len",
+          "load_config",
+          "load_fingerprints",
+          "old_fps.get",
+          "old_fps.keys",
+          "os.path.abspath",
+          "os.path.isdir",
+          "persist_fingerprints",
+          "persist_fingerprints",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "publish_alerts_to_report",
+          "publish_baseline_notice",
+          "serialize_file_fingerprints",
+          "serialize_file_fingerprints",
+          "set",
+          "set",
+          "sorted",
+          "stored_raw.items",
+          "sum",
+          "time.time",
+          "time.time",
+          "time.time"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "Or"
+        ],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 4,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 5,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/run.py",
+      "fingerprint_hash": "31574bef39e12aca97c1f63e0020c26f5f760480f54669fd01b11e4a91f6efe9",
+      "is_public": true,
+      "returns": {
+        "return_count": 4,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "current_fps.get",
+          "old_fps.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "run",
+        "params": [
+          "repo_path"
+        ],
+        "return_annotation": "Name(id='int', ctx=Load())"
+      },
+      "stable_id": "src/run.py::run"
     }
   }
 }

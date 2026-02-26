@@ -51,7 +51,7 @@ On the first run (no prior baseline), Docrot generates and stores fingerprints w
 ├── brainstorming.txt       # Project brainstorming and decisions
 ├── Proposal.md             # Project proposal document
 ├── pseudocode.py           # Pseudocode reference for the pipeline
-├── run.py                  # CLI entry point for testing
+├── run.py                  # Quick-test CLI (compare two files or fingerprint one)
 ├── Readme.md               # This file
 ├── database/
 │   └── schema.sql          # Database schema (post-MVP: SQLite)
@@ -74,7 +74,8 @@ On the first run (no prior baseline), Docrot generates and stores fingerprints w
     ├── config.py           # Config loading + code→doc mapping
     ├── fingerprint.py      # Semantic feature extraction + hashing
     ├── models.py           # Dataclasses (fingerprints, deltas, events, alerts)
-    └── persistence.py      # JSON fingerprint storage (load/save/serialize)
+    ├── persistence.py      # JSON fingerprint storage (load/save/serialize)
+    └── run.py              # Full pipeline entry point (scan entire repo)
 ```
 
 ## Module Summary
@@ -88,6 +89,7 @@ On the first run (no prior baseline), Docrot generates and stores fingerprints w
 | `comparator.py` | `diff_features()` compares fingerprints feature-by-feature; `score_semantic_delta()` applies weighted scoring; `compare_file_functions()` handles added/removed/modified functions |
 | `persistence.py` | JSON-based fingerprint storage with `load_fingerprints()`, `persist_fingerprints()`, `is_first_run()`, and round-trip serialization |
 | `alerts.py` | `evaluate_doc_flags()` accumulates per-doc scores and applies thresholds; `publish_alerts_to_log()` prints CI warnings; `publish_alerts_to_report()` writes `.docrot-report.json` |
+| `src/run.py` | Full pipeline entry point — scans an entire repo directory, extracts fingerprints for all `.py` files, compares against stored baseline, scores changes, maps to docs, prints a summary report, and writes JSON artifacts |
 
 ## Configuration
 
@@ -140,34 +142,54 @@ If the config file is missing, defaults are used (no doc mappings, standard thre
 
 All commands are run from the repo root directory.
 
-**Compare two files (detect changes):**
+### Full Repository Scan (Recommended)
+
+The primary way to use Docrot Detector is `src/run.py`, which scans an entire repository:
+
 ```sh
+# Scan the current directory
+python -m src.run .
+
+# Scan a specific repo path
+python -m src.run /path/to/your/repo
+```
+
+This runs the full pipeline:
+1. Finds all `.py` files in the repo (skipping `.git`, `__pycache__`, `venv`, etc.)
+2. Extracts semantic fingerprints for every function/method
+3. On **first run**: saves a baseline to `.docrot-fingerprints.json` and exits with no alerts
+4. On **subsequent runs**: compares against the stored baseline, scores changes, flags documentation files for review, and prints a formatted summary report
+
+**Exit codes** (useful for CI):
+| Code | Meaning |
+|------|---------|
+| 0 | No alerts (clean) or first-run baseline generated |
+| 1 | Documentation alerts were raised |
+| 2 | Error (e.g., invalid repo path) |
+
+### Quick-Test CLI (Manual Comparison)
+
+The root `run.py` is a simpler tool for ad-hoc testing of individual files:
+
+```sh
+# Compare two files (detect changes between versions)
 python run.py examples/sample_code_v1.py examples/sample_code_v2.py
-```
 
-**Inspect a single file's fingerprints:**
-```sh
+# Inspect a single file's fingerprints
 python run.py examples/sample_code_v1.py
-```
 
-**Analyze any Python file:**
-```sh
-python run.py src/alerts.py
-```
-
-**Help:**
-```sh
+# Help
 python run.py --help
 ```
 
 ### Output Files
 
-Both modes automatically save results to the repo root:
+Both entry points save results to the repo root:
 
 | File | When created | Contents |
 |------|-------------|----------|
 | `.docrot-fingerprints.json` | Every run | Stored baseline fingerprints — updated after each run so the next comparison uses the latest state |
-| `.docrot-report.json` | Compare mode only, when doc alerts are triggered | JSON report of flagged documentation files (requires a `.docrot-config.json` with doc mappings) |
+| `.docrot-report.json` | When doc alerts are triggered | JSON report of flagged documentation files (requires a `.docrot-config.json` with doc mappings) |
 
 ### Programmatic Usage
 
