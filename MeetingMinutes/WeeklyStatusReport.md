@@ -124,7 +124,7 @@
   - Implemented comparator.py, the core semantic diff engine that compares old vs. new function fingerprints to determine whether code changes are significant enough to make documentation stale
   - Built diff_features() to compare fingerprints across all tracked dimensions: public signature, default arguments, condition logic, loop semantics, return behavior, control flow paths, side effects, auth/permission calls, and exception handling
   - Built score_semantic_delta() to apply a weighted scoring model (0–8 pts per category) and classify changes as critical vs. non-critical, with short-circuit logic for comment/formatting-only changes
-  - Implemented compare_file_functions() for file-level comparison, handling added, removed, and modified functions with hash-based fast-path skipping for unchanged functions
+  - Implemented compare_file_functions() to evaluate file-level function changes (added/removed/modified) with hash-based fast-path skipping for unchanged functions and public-API-aware add/remove alerts.
 - **Upcoming Tasks:**
   - Reconcile conceptual overlap between comparator.py/alerts.py and flagging_threshold.py detection pipelines
   - Test comparator output against sample repositories once test datasets are ready
