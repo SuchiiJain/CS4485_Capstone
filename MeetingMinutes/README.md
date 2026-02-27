@@ -8,3 +8,5 @@ This folder contains all Minutes of Meeting (MOM) documents and the Individual W
 - MOM #2 - February 20, 2026
 - MOM #3 - February 27, 2026 
 - MOM #4 - March 6, 2026 (To Be Added Soon)
+- README
+- Weekly Status Report - Updated Daily
