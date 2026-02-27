@@ -2351,6 +2351,115 @@
     }
   },
   "src/config.py": {
+    "src/config.py::_normalize_thresholds": {
+      "calls": {
+        "call_names": [
+          "_parse_positive_threshold",
+          "_parse_positive_threshold",
+          "thresholds.get",
+          "thresholds.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/config.py",
+      "fingerprint_hash": "faf2043a77eb532b0d89179a34d60e39f4f40284fd55ec872e2ac8abadef4866",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "thresholds.get",
+          "thresholds.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_normalize_thresholds",
+        "params": [
+          "thresholds"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='int', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/config.py::_normalize_thresholds"
+    },
+    "src/config.py::_parse_positive_threshold": {
+      "calls": {
+        "call_names": [
+          "int",
+          "isinstance",
+          "print",
+          "print",
+          "print"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "LtE"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 4,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "TypeError",
+          "ValueError"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/config.py",
+      "fingerprint_hash": "b2106685818c24d58db5fdf7c1205e44b8f899de151123d42729d965513440af",
+      "is_public": false,
+      "returns": {
+        "return_count": 4,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_parse_positive_threshold",
+        "params": [
+          "value",
+          "key",
+          "default"
+        ],
+        "return_annotation": "Name(id='int', ctx=Load())"
+      },
+      "stable_id": "src/config.py::_parse_positive_threshold"
+    },
     "src/config.py::docs_for_code_path": {
       "calls": {
         "call_names": [
@@ -2458,10 +2567,10 @@
       },
       "stable_id": "src/config.py::get_doc_mappings"
     },
-    "src/config.py::get_thresholds": {
+    "src/config.py::get_threshold_info": {
       "calls": {
         "call_names": [
-          "config.get"
+          "get_thresholds"
         ]
       },
       "conditions": {
@@ -2482,10 +2591,59 @@
         "raises": []
       },
       "file_path": "src/config.py",
-      "fingerprint_hash": "7bd8e61309e501d2b04f539badd3c3187307cf021b7ca13350a653718ec29710",
+      "fingerprint_hash": "8bfd396154f6f1327e15e13128e3e3c0c3ff95acc958fccd6c1e95038995a55c",
       "is_public": true,
       "returns": {
         "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_threshold_info",
+        "params": [
+          "config"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/config.py::get_threshold_info"
+    },
+    "src/config.py::get_thresholds": {
+      "calls": {
+        "call_names": [
+          "_normalize_thresholds",
+          "config.get",
+          "dict",
+          "isinstance"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/config.py",
+      "fingerprint_hash": "66cc77cdcfc4f131da721912a0219478c78f60b3fcc42cb01ea746d431c57bee",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
         "returns_none": false
       },
       "side_effects": {
@@ -2509,19 +2667,20 @@
     "src/config.py::load_config": {
       "calls": {
         "call_names": [
+          "_normalize_thresholds",
           "dict",
           "dict",
           "dict",
+          "isinstance",
           "json.load",
           "open",
           "os.path.exists",
           "os.path.join",
           "print",
+          "print",
           "user_config.get",
           "user_config.get",
-          "user_config.get",
-          "user_thresholds.get",
-          "user_thresholds.get"
+          "user_config.get"
         ]
       },
       "conditions": {
@@ -2533,7 +2692,7 @@
         "elif_count": 0,
         "else_count": 0,
         "for_count": 0,
-        "if_count": 1,
+        "if_count": 2,
         "while_count": 0
       },
       "exceptions": {
@@ -2544,7 +2703,7 @@
         "raises": []
       },
       "file_path": "src/config.py",
-      "fingerprint_hash": "9d6ef543d89631ef1b9910e2c886311efcf2be10628b62ce1924973dd7a552fb",
+      "fingerprint_hash": "40d2144d970620c54206eb7299d0cdd403c9779be323e6011b5f2ade843d6a87",
       "is_public": true,
       "returns": {
         "return_count": 3,
@@ -2559,9 +2718,7 @@
         "network_calls": [
           "user_config.get",
           "user_config.get",
-          "user_config.get",
-          "user_thresholds.get",
-          "user_thresholds.get"
+          "user_config.get"
         ]
       },
       "signature": {
@@ -3245,6 +3402,492 @@
       "stable_id": "src/fingerprint.py::stable_hash"
     }
   },
+  "src/flagging_threshold.py": {
+    "src/flagging_threshold.py::_make_message": {
+      "calls": {
+        "call_names": [
+          "strip"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/flagging_threshold.py",
+      "fingerprint_hash": "ef654b288d3f7396d13f8d416d77d5d9e9a3f5bb6b8bb710e41e19afef366e80",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [
+          "Constant(value='')"
+        ],
+        "name": "_make_message",
+        "params": [
+          "reason",
+          "element",
+          "doc",
+          "extra"
+        ],
+        "return_annotation": "Name(id='str', ctx=Load())"
+      },
+      "stable_id": "src/flagging_threshold.py::_make_message"
+    },
+    "src/flagging_threshold.py::check_broken_markdown_ref": {
+      "calls": {
+        "call_names": [
+          "CodeElement",
+          "Flag",
+          "_make_message"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "NotIn"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/flagging_threshold.py",
+      "fingerprint_hash": "29504a23ee55bd6bb71735327e08d017035f4dbb61960417c927db403e0323ab",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "check_broken_markdown_ref",
+        "params": [
+          "symbol_name",
+          "all_current_symbols",
+          "doc"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/flagging_threshold.py::check_broken_markdown_ref"
+    },
+    "src/flagging_threshold.py::check_docstring_missing": {
+      "calls": {
+        "call_names": [
+          "Flag",
+          "_make_message",
+          "element.name.startswith"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/flagging_threshold.py",
+      "fingerprint_hash": "ace69a7861156477ca0d656fc54ee0b1887d074a578ec602241204f974f9b733",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "check_docstring_missing",
+        "params": [
+          "element"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/flagging_threshold.py::check_docstring_missing"
+    },
+    "src/flagging_threshold.py::check_parameter_changes": {
+      "calls": {
+        "call_names": [
+          "Flag",
+          "Flag",
+          "_make_message",
+          "_make_message",
+          "flags.append",
+          "flags.append",
+          "len",
+          "len",
+          "set",
+          "set"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "GtE"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 2,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/flagging_threshold.py",
+      "fingerprint_hash": "5eb771e5cf163e2f435d5fcc6b0cf90802b1817e38614548f152723ef417b163",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "check_parameter_changes",
+        "params": [
+          "old",
+          "new",
+          "doc"
+        ],
+        "return_annotation": "Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/flagging_threshold.py::check_parameter_changes"
+    },
+    "src/flagging_threshold.py::check_return_type_change": {
+      "calls": {
+        "call_names": [
+          "Flag",
+          "_make_message"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "NotEq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/flagging_threshold.py",
+      "fingerprint_hash": "8c142dcc2def8dd47cf0b257091734e5cb483921367de2e7db0e52769ad0a82a",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "check_return_type_change",
+        "params": [
+          "old",
+          "new",
+          "doc"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/flagging_threshold.py::check_return_type_change"
+    },
+    "src/flagging_threshold.py::check_signature_change": {
+      "calls": {
+        "call_names": [
+          "Flag",
+          "_make_message"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "NotEq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/flagging_threshold.py",
+      "fingerprint_hash": "0282bf628745d148e31c18b42e1d64cee22d3b67da72230dc46f7d4101e58155",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "check_signature_change",
+        "params": [
+          "old",
+          "new",
+          "doc"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/flagging_threshold.py::check_signature_change"
+    },
+    "src/flagging_threshold.py::check_stale_doc": {
+      "calls": {
+        "call_names": [
+          "Flag",
+          "_make_message"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "NotEq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/flagging_threshold.py",
+      "fingerprint_hash": "959fc66d2fe88e68482167bec2f2b1cb954beb0770ddf2626ffcbbe3410da844",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": true
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "check_stale_doc",
+        "params": [
+          "element",
+          "doc"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/flagging_threshold.py::check_stale_doc"
+    },
+    "src/flagging_threshold.py::check_symbol_removed": {
+      "calls": {
+        "call_names": [
+          "Flag",
+          "_make_message"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/flagging_threshold.py",
+      "fingerprint_hash": "d21a1c421f0515c2985f675b5e8ed97bfc2fe194c3dfccc3a62efc4ed8d5350c",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "check_symbol_removed",
+        "params": [
+          "element",
+          "doc"
+        ],
+        "return_annotation": "Name(id='Flag', ctx=Load())"
+      },
+      "stable_id": "src/flagging_threshold.py::check_symbol_removed"
+    },
+    "src/flagging_threshold.py::run_flagging": {
+      "calls": {
+        "call_names": [
+          "check_broken_markdown_ref",
+          "check_docstring_missing",
+          "check_parameter_changes",
+          "check_return_type_change",
+          "check_signature_change",
+          "check_stale_doc",
+          "check_symbol_removed",
+          "doc_lookup.get",
+          "flags.append",
+          "flags.append",
+          "flags.append",
+          "flags.append",
+          "flags.append",
+          "flags.append",
+          "flags.extend",
+          "flags.sort",
+          "new_elements.items",
+          "new_elements.keys",
+          "old_elements.items",
+          "set"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "NotIn",
+          "NotIn"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 3,
+        "if_count": 8,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/flagging_threshold.py",
+      "fingerprint_hash": "9311765da9dbac58a88ace220ceb256cb9f61fec04d7c6da8b3da80dd40cf4c0",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "doc_lookup.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "run_flagging",
+        "params": [
+          "old_elements",
+          "new_elements",
+          "doc_references"
+        ],
+        "return_annotation": "Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/flagging_threshold.py::run_flagging"
+    }
+  },
   "src/models.py": {
     "src/models.py::FunctionFingerprint.from_dict": {
       "calls": {
@@ -3579,6 +4222,9 @@
           "_fingerprint_path",
           "json.dump",
           "open",
+          "os.path.exists",
+          "os.remove",
+          "os.replace",
           "print"
         ]
       },
@@ -3591,18 +4237,19 @@
         "elif_count": 0,
         "else_count": 0,
         "for_count": 0,
-        "if_count": 0,
+        "if_count": 1,
         "while_count": 0
       },
       "exceptions": {
         "except_handlers": [
+          "OSError",
           "OSError"
         ],
         "has_bare_except": false,
         "raises": []
       },
       "file_path": "src/persistence.py",
-      "fingerprint_hash": "548e22880e412e37b9062516316439889bf5d58fdda796b6721e0dae71cbc81b",
+      "fingerprint_hash": "f95490c00667e6f7dda8a6de0c7b210e669b9ad879809cd0f39186518420cf4d",
       "is_public": true,
       "returns": {
         "return_count": 0,
@@ -3612,7 +4259,8 @@
         "auth_calls": [],
         "db_calls": [],
         "file_calls": [
-          "open"
+          "open",
+          "os.remove"
         ],
         "network_calls": []
       },
@@ -3673,9 +4321,680 @@
         "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load())"
       },
       "stable_id": "src/persistence.py::serialize_file_fingerprints"
+    },
+    "src/persistence.py::update_fingerprint_baseline": {
+      "calls": {
+        "call_names": [
+          "current_fingerprints.get",
+          "current_fingerprints.keys",
+          "current_fingerprints.values",
+          "get",
+          "get",
+          "len",
+          "len",
+          "len",
+          "len",
+          "len",
+          "len",
+          "load_fingerprints",
+          "new_funcs.get",
+          "new_funcs.keys",
+          "old_fingerprints.get",
+          "old_fingerprints.keys",
+          "old_funcs.get",
+          "old_funcs.keys",
+          "persist_fingerprints",
+          "set",
+          "set",
+          "set",
+          "set",
+          "sorted",
+          "sum"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "Or"
+        ],
+        "comparison_ops": [
+          "Eq",
+          "In"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 2,
+        "for_count": 2,
+        "if_count": 4,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/persistence.py",
+      "fingerprint_hash": "99b48b0cb6f3295e6d2c30971bd3cfa0dcc9605d9dcc073a1316afce1ac9485b",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "current_fingerprints.get",
+          "get",
+          "get",
+          "new_funcs.get",
+          "old_fingerprints.get",
+          "old_funcs.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "update_fingerprint_baseline",
+        "params": [
+          "repo_path",
+          "current_fingerprints"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='int', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/persistence.py::update_fingerprint_baseline"
+    }
+  },
+  "src/report_generation.py": {
+    "src/report_generation.py::ScanReport.__init__": {
+      "calls": {
+        "call_names": [
+          "datetime.now",
+          "isoformat"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "Or"
+        ],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/report_generation.py",
+      "fingerprint_hash": "8868334060e3a5e3bb440cf6a6ec0a217a8baee8e7ad976bc9ad1e037439bdec",
+      "is_public": false,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "__init__",
+        "params": [
+          "self",
+          "repo_path",
+          "commit_hash",
+          "flags"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "src/report_generation.py::ScanReport.__init__"
+    },
+    "src/report_generation.py::ScanReport.count_by_severity": {
+      "calls": {
+        "call_names": []
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/report_generation.py",
+      "fingerprint_hash": "dbc5caf267baea370b25fa4d16686dd33620aa08d5318dec8e463dfd3e467329",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "count_by_severity",
+        "params": [
+          "self"
+        ],
+        "return_annotation": "Subscript(value=Name(id='dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='int', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/report_generation.py::ScanReport.count_by_severity"
+    },
+    "src/report_generation.py::ScanReport.has_issues": {
+      "calls": {
+        "call_names": [
+          "len"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Gt"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/report_generation.py",
+      "fingerprint_hash": "cc7fd7042b6863fffe32e73607b01b76b2c93384c818638cc35779151afc1c20",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "has_issues",
+        "params": [
+          "self"
+        ],
+        "return_annotation": "Name(id='bool', ctx=Load())"
+      },
+      "stable_id": "src/report_generation.py::ScanReport.has_issues"
+    },
+    "src/report_generation.py::_flag_to_dict": {
+      "calls": {
+        "call_names": []
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/report_generation.py",
+      "fingerprint_hash": "866d27c64da0c22a0c450880def36e8009b158c56428686e6bdd17e9cbb09817",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_flag_to_dict",
+        "params": [
+          "flag"
+        ],
+        "return_annotation": "Name(id='dict', ctx=Load())"
+      },
+      "stable_id": "src/report_generation.py::_flag_to_dict"
+    },
+    "src/report_generation.py::_txt_flag_block": {
+      "calls": {
+        "call_names": [
+          "_SEVERITY_ICONS.get",
+          "lines.append",
+          "lines.append",
+          "lines.append",
+          "lines.append",
+          "lines.append",
+          "lines.append"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 4,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/report_generation.py",
+      "fingerprint_hash": "0a4fa2b03e66c7ebbdda884759636a21fd220dacaeb10396f0ff91d0a8c599b7",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "_SEVERITY_ICONS.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_txt_flag_block",
+        "params": [
+          "index",
+          "flag"
+        ],
+        "return_annotation": "Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/report_generation.py::_txt_flag_block"
+    },
+    "src/report_generation.py::_txt_footer": {
+      "calls": {
+        "call_names": [
+          "len"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/report_generation.py",
+      "fingerprint_hash": "80fec46353a61e0b93c3692d8ec07de987151c18046ad43749dd2c50cdef3d4c",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_txt_footer",
+        "params": [
+          "report"
+        ],
+        "return_annotation": "Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/report_generation.py::_txt_footer"
+    },
+    "src/report_generation.py::_txt_header": {
+      "calls": {
+        "call_names": [
+          "len",
+          "report.count_by_severity"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/report_generation.py",
+      "fingerprint_hash": "35b976b928e835e575c42d7292521deed917cd2e4ae86eed4b513301436bcf75",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_txt_header",
+        "params": [
+          "report"
+        ],
+        "return_annotation": "Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/report_generation.py::_txt_header"
+    },
+    "src/report_generation.py::generate_json_report": {
+      "calls": {
+        "call_names": [
+          "_flag_to_dict",
+          "json.dump",
+          "len",
+          "open",
+          "os.makedirs",
+          "os.path.dirname",
+          "report.count_by_severity"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/report_generation.py",
+      "fingerprint_hash": "9ea2cb8eab045870b6c0d6f0ca3f2a1adf6d099113a592de78148a4d99a75172",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [
+          "open",
+          "os.makedirs"
+        ],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [
+          "Constant(value='.docrot-report.json')"
+        ],
+        "name": "generate_json_report",
+        "params": [
+          "report",
+          "output_path"
+        ],
+        "return_annotation": "Name(id='str', ctx=Load())"
+      },
+      "stable_id": "src/report_generation.py::generate_json_report"
+    },
+    "src/report_generation.py::generate_reports": {
+      "calls": {
+        "call_names": [
+          "ScanReport",
+          "generate_json_report",
+          "generate_txt_report"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/report_generation.py",
+      "fingerprint_hash": "2c6ab0e45d1f4e078e3038dfbaf56a59831cd912e6fbc2b7ea8555bc091e24d4",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [
+          "Constant(value=None)",
+          "Constant(value='.docrot-report.json')",
+          "Constant(value='.docrot-report.txt')"
+        ],
+        "name": "generate_reports",
+        "params": [
+          "flags",
+          "repo_path",
+          "commit_hash",
+          "json_path",
+          "txt_path"
+        ],
+        "return_annotation": "Subscript(value=Name(id='dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='str', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/report_generation.py::generate_reports"
+    },
+    "src/report_generation.py::generate_txt_report": {
+      "calls": {
+        "call_names": [
+          "_txt_flag_block",
+          "_txt_footer",
+          "_txt_header",
+          "enumerate",
+          "fh.write",
+          "join",
+          "lines.append",
+          "lines.append",
+          "lines.extend",
+          "lines.extend",
+          "lines.extend",
+          "open",
+          "os.makedirs",
+          "os.path.dirname",
+          "report.has_issues"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 1,
+        "for_count": 1,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/report_generation.py",
+      "fingerprint_hash": "0b9c0ae7db37b810df054c773cd817324957c962f73c7d7567a095190b1fb1f7",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [
+          "fh.write",
+          "open",
+          "os.makedirs"
+        ],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [
+          "Constant(value='.docrot-report.txt')"
+        ],
+        "name": "generate_txt_report",
+        "params": [
+          "report",
+          "output_path"
+        ],
+        "return_annotation": "Name(id='str', ctx=Load())"
+      },
+      "stable_id": "src/report_generation.py::generate_txt_report"
     }
   },
   "src/run.py": {
+    "src/run.py::_change_events_to_flags": {
+      "calls": {
+        "call_names": [
+          "CodeElement",
+          "Flag",
+          "_SEVERITY_FROM_REASON.get",
+          "_fp_to_code_element",
+          "_make_suggestion",
+          "flags.append",
+          "flags.sort",
+          "get",
+          "get",
+          "join",
+          "new_fps.get",
+          "old_fps.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "Or"
+        ],
+        "comparison_ops": [
+          "In"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 1,
+        "for_count": 2,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/run.py",
+      "fingerprint_hash": "e050dc4f3f2546b3b4b01b18a4d5485951f2f4b5b190291a4cc22c18234dc05d",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "_SEVERITY_FROM_REASON.get",
+          "get",
+          "get",
+          "new_fps.get",
+          "old_fps.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_change_events_to_flags",
+        "params": [
+          "events",
+          "old_fps",
+          "new_fps"
+        ],
+        "return_annotation": "Subscript(value=Name(id='List', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/run.py::_change_events_to_flags"
+    },
     "src/run.py::_collect_python_files": {
       "calls": {
         "call_names": [
@@ -3711,7 +5030,7 @@
         "raises": []
       },
       "file_path": "src/run.py",
-      "fingerprint_hash": "f45304cb0f02ff0818fb5b5d8ff86a911d8e4a5ccea2d116e3a3e55bdfaa8b04",
+      "fingerprint_hash": "9cffbed4f47572a248494af920d5cd0c8cc2efa8403363cf5b66583f33045eb7",
       "is_public": false,
       "returns": {
         "return_count": 1,
@@ -3729,13 +5048,112 @@
         "params": [
           "repo_path"
         ],
-        "return_annotation": "Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())"
+        "return_annotation": "Subscript(value=Name(id='List', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())"
       },
       "stable_id": "src/run.py::_collect_python_files"
     },
-    "src/run.py::_print_summary_report": {
+    "src/run.py::_fp_to_code_element": {
       "calls": {
         "call_names": [
+          "CodeElement",
+          "join"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "Or"
+        ],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/run.py",
+      "fingerprint_hash": "fd4ad78dc5db0a71393b9b45b52cffb68dd8ac34fa18b60eb6824bdc8df6fa42",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_fp_to_code_element",
+        "params": [
+          "fp"
+        ],
+        "return_annotation": "Name(id='CodeElement', ctx=Load())"
+      },
+      "stable_id": "src/run.py::_fp_to_code_element"
+    },
+    "src/run.py::_make_suggestion": {
+      "calls": {
+        "call_names": [
+          "suggestions.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/run.py",
+      "fingerprint_hash": "8d840ba15bc690b59097125e033b7d142c8689d46c3a94a78208542bbe1f783d",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "suggestions.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_make_suggestion",
+        "params": [
+          "reason",
+          "fn_id"
+        ],
+        "return_annotation": "Name(id='str', ctx=Load())"
+      },
+      "stable_id": "src/run.py::_make_suggestion"
+    },
+    "src/run.py::_print_report": {
+      "calls": {
+        "call_names": [
+          "fmt.upper",
           "join",
           "join",
           "join",
@@ -3775,7 +5193,12 @@
           "print",
           "print",
           "print",
-          "print"
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "report_paths.items"
         ]
       },
       "conditions": {
@@ -3786,8 +5209,8 @@
         "early_return_count": 1,
         "elif_count": 0,
         "else_count": 1,
-        "for_count": 3,
-        "if_count": 5,
+        "for_count": 5,
+        "if_count": 6,
         "while_count": 0
       },
       "exceptions": {
@@ -3796,7 +5219,7 @@
         "raises": []
       },
       "file_path": "src/run.py",
-      "fingerprint_hash": "ec8c621c1eac272761f1a353ceaaf8bf9004091b85b48a5318460988c0a72ae5",
+      "fingerprint_hash": "0f74680ee200fa8ee2c4fa62b1c8c59d3648249abc7a5466035e5deabf3c618f",
       "is_public": false,
       "returns": {
         "return_count": 1,
@@ -3810,17 +5233,19 @@
       },
       "signature": {
         "defaults": [],
-        "name": "_print_summary_report",
+        "name": "_print_report",
         "params": [
-          "change_events",
-          "alerts",
+          "events",
+          "doc_alerts",
+          "flags",
           "elapsed",
           "file_count",
-          "func_count"
+          "func_count",
+          "report_paths"
         ],
         "return_annotation": "Constant(value=None)"
       },
-      "stable_id": "src/run.py::_print_summary_report"
+      "stable_id": "src/run.py::_print_report"
     },
     "src/run.py::_read_source": {
       "calls": {
@@ -3851,7 +5276,7 @@
         "raises": []
       },
       "file_path": "src/run.py",
-      "fingerprint_hash": "d24ef957cc160f12c69b996de144a6e9ef238765fba01522ea3c6b8a88ebb61f",
+      "fingerprint_hash": "cd61a8614633d93165ce5c52d35bd5fdef68d17d52b720c8c3fdc383f4276889",
       "is_public": false,
       "returns": {
         "return_count": 2,
@@ -3873,7 +5298,7 @@
           "repo_path",
           "rel_path"
         ],
-        "return_annotation": "BinOp(left=Name(id='str', ctx=Load()), op=BitOr(), right=Constant(value=None))"
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())"
       },
       "stable_id": "src/run.py::_read_source"
     },
@@ -3930,18 +5355,19 @@
     "src/run.py::run": {
       "calls": {
         "call_names": [
+          "_change_events_to_flags",
           "_collect_python_files",
-          "_print_summary_report",
+          "_print_report",
           "_scan_repo",
           "all_events.extend",
           "compare_file_functions",
           "current_fps.get",
           "current_fps.items",
           "current_fps.items",
-          "current_fps.keys",
           "current_fps.values",
           "deserialize_file_fingerprints",
           "evaluate_doc_flags",
+          "generate_reports",
           "get_doc_mappings",
           "get_thresholds",
           "is_first_run",
@@ -3951,11 +5377,10 @@
           "load_config",
           "load_fingerprints",
           "old_fps.get",
-          "old_fps.keys",
           "os.path.abspath",
           "os.path.isdir",
-          "persist_fingerprints",
-          "persist_fingerprints",
+          "os.path.join",
+          "os.path.join",
           "print",
           "print",
           "print",
@@ -3964,7 +5389,7 @@
           "print",
           "print",
           "print",
-          "publish_alerts_to_report",
+          "print",
           "publish_baseline_notice",
           "serialize_file_fingerprints",
           "serialize_file_fingerprints",
@@ -3975,7 +5400,9 @@
           "sum",
           "time.time",
           "time.time",
-          "time.time"
+          "time.time",
+          "update_fingerprint_baseline",
+          "update_fingerprint_baseline"
         ]
       },
       "conditions": {
@@ -3998,7 +5425,7 @@
         "raises": []
       },
       "file_path": "src/run.py",
-      "fingerprint_hash": "31574bef39e12aca97c1f63e0020c26f5f760480f54669fd01b11e4a91f6efe9",
+      "fingerprint_hash": "b2c1aa837e67b1bc0225bacb15abf877e159bdef87a18c8121ad9159021972d7",
       "is_public": true,
       "returns": {
         "return_count": 4,
@@ -4014,10 +5441,13 @@
         ]
       },
       "signature": {
-        "defaults": [],
+        "defaults": [
+          "Constant(value=None)"
+        ],
         "name": "run",
         "params": [
-          "repo_path"
+          "repo_path",
+          "commit_hash"
         ],
         "return_annotation": "Name(id='int', ctx=Load())"
       },

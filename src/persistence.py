@@ -63,11 +63,18 @@ def persist_fingerprints(repo_path: str, fingerprints: Dict[str, Dict[str, Any]]
         fingerprints: Dict of {file_path: {stable_id: fingerprint_dict}}.
     """
     fp_path = _fingerprint_path(repo_path)
+    tmp_path = f"{fp_path}.tmp"
     try:
-        with open(fp_path, "w", encoding="utf-8") as f:
+        with open(tmp_path, "w", encoding="utf-8") as f:
             json.dump(fingerprints, f, indent=2, sort_keys=True)
+        os.replace(tmp_path, fp_path)
     except OSError as e:
         print(f"[docrot] Error: could not write fingerprints: {e}")
+        try:
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+        except OSError:
+            pass
 
 
 def is_first_run(repo_path: str) -> bool:
@@ -122,3 +129,89 @@ def deserialize_file_fingerprints(
         Dict mapping stable IDs to FunctionFingerprint objects.
     """
     return {sid: FunctionFingerprint.from_dict(fp_dict) for sid, fp_dict in data.items()}
+
+
+def update_fingerprint_baseline(
+    repo_path: str,
+    current_fingerprints: Dict[str, Dict[str, Any]],
+) -> Dict[str, int]:
+    """
+    Update the fingerprint baseline and return a detailed change summary.
+
+    This function compares the existing baseline with the current scan and
+    reports what changed before persisting the new baseline.
+
+    Args:
+        repo_path: Root path of the repository.
+        current_fingerprints: Current scan as
+            {file_path: {stable_id: fingerprint_dict}}.
+
+    Returns:
+        Dict containing summary counters:
+          - files_added
+          - files_removed
+          - files_changed
+          - files_unchanged
+          - functions_added
+          - functions_removed
+          - functions_changed
+          - functions_unchanged
+          - total_files
+          - total_functions
+    """
+    old_fingerprints = load_fingerprints(repo_path)
+
+    stats: Dict[str, int] = {
+        "files_added": 0,
+        "files_removed": 0,
+        "files_changed": 0,
+        "files_unchanged": 0,
+        "functions_added": 0,
+        "functions_removed": 0,
+        "functions_changed": 0,
+        "functions_unchanged": 0,
+        "total_files": len(current_fingerprints),
+        "total_functions": sum(len(v) for v in current_fingerprints.values()),
+    }
+
+    old_files = set(old_fingerprints.keys())
+    new_files = set(current_fingerprints.keys())
+
+    stats["files_added"] = len(new_files - old_files)
+    stats["files_removed"] = len(old_files - new_files)
+
+    for file_path in sorted(new_files):
+        old_funcs = old_fingerprints.get(file_path, {})
+        new_funcs = current_fingerprints.get(file_path, {})
+
+        old_ids = set(old_funcs.keys())
+        new_ids = set(new_funcs.keys())
+
+        added_ids = new_ids - old_ids
+        removed_ids = old_ids - new_ids
+        common_ids = old_ids & new_ids
+
+        stats["functions_added"] += len(added_ids)
+        stats["functions_removed"] += len(removed_ids)
+
+        changed_in_file = False
+        if added_ids or removed_ids:
+            changed_in_file = True
+
+        for fn_id in common_ids:
+            old_hash = old_funcs.get(fn_id, {}).get("fingerprint_hash", "")
+            new_hash = new_funcs.get(fn_id, {}).get("fingerprint_hash", "")
+            if old_hash == new_hash:
+                stats["functions_unchanged"] += 1
+            else:
+                stats["functions_changed"] += 1
+                changed_in_file = True
+
+        if file_path in old_files:
+            if changed_in_file:
+                stats["files_changed"] += 1
+            else:
+                stats["files_unchanged"] += 1
+
+    persist_fingerprints(repo_path, current_fingerprints)
+    return stats

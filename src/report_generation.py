@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 from typing import Optional
 
-from flagging_threshold import Flag, Severity, FlagReason
+from src.flagging_threshold import Flag, Severity, FlagReason
 
 
 # --- ScanReport Class ---
