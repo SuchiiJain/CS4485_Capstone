@@ -59,6 +59,8 @@
 - **Upcoming Tasks:**
 - **Issues:**
 
+---
+
 # Week 3 — February 23-27, 2026
 
 **Team Leader for Week 3: Samuel Say**
