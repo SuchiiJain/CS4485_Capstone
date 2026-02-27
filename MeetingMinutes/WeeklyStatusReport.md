@@ -52,13 +52,13 @@
 ### Suchi Jain
 - **Hours: 7**
 - **Tasks Complete:**
-- Attended Meeting #2 (February 20) and reviewed all action items from MOM #1
-- Attended in-person team meetup on Monday to align on priorities and delegate tasks on Jira
-- Created Postgres DB on Local Machine and pushed SQL file to main branch
+  - Attended Meeting #2 (February 20) and reviewed all action items from MOM #1
+  - Attended in-person team meetup on Monday to align on priorities and delegate tasks on Jira
+  - Created Postgres DB on Local Machine and pushed SQL file to main branch
 - **Upcoming Tasks:**
-- Finish creating test datasets and repos to train the model
+  - Finish creating test datasets and repos to train the model
 - **Issues:**
-- Switching AI tools in between
+  - Switching AI tools in between
 ---
 
 ### Aaron Santhosh
