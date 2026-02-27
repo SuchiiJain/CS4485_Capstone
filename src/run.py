@@ -497,6 +497,10 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
         fp: serialize_file_fingerprints(fps)
         for fp, fps in current_fps.items()
     }
+    for failed_path in failed_files:
+        if failed_path in stored_raw:
+            serialized[failed_path] = stored_raw[failed_path]
+
     baseline_stats = update_fingerprint_baseline(repo_path, serialized)
     print(
         "[docrot] Fingerprints updated: "
