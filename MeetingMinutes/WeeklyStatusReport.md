@@ -129,6 +129,7 @@
   - Reconcile conceptual overlap between comparator.py/alerts.py and flagging_threshold.py detection pipelines
   - Test comparator output against sample repositories once test datasets are ready
 - **Issues:**
+  - N/A
 
 ---
 
