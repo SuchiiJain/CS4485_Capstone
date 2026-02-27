@@ -65,7 +65,7 @@
 
 **Team Leader for Week 3: Samuel Say**
 
-**Total Hours Spent: 36**
+**Total Hours Spent: 43**
 
 ---
 
