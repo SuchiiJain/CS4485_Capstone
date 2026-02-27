@@ -24,17 +24,17 @@ import argparse
 from typing import Dict, List, Optional
 
 # FIX: All files are in the same flat directory — no 'src.' prefix needed.
-from ast_parser import extract_function_fingerprints
-from comparator import compare_file_functions
-from alerts import (
+from src.ast_parser import extract_function_fingerprints
+from src.comparator import compare_file_functions
+from src.alerts import (
     evaluate_doc_flags,
     publish_alerts_to_log,
     publish_alerts_to_report,
     publish_baseline_notice,
 )
-from config import load_config, get_doc_mappings, get_thresholds
-from models import ChangeEvent, DocAlert, FunctionFingerprint
-from persistence import (
+from src.config import load_config, get_doc_mappings, get_thresholds
+from src.models import ChangeEvent, DocAlert, FunctionFingerprint
+from src.persistence import (
     is_first_run,
     load_fingerprints,
     persist_fingerprints,
