@@ -41,7 +41,7 @@ from src.persistence import (
     deserialize_file_fingerprints,
 )
 
-from flagging_threshold import (
+from src.flagging_threshold import (
     CodeElement,
     DocReference,
     Flag,
@@ -49,7 +49,7 @@ from flagging_threshold import (
     Severity,
     run_flagging,
 )
-from report_generation import generate_reports
+from src.report_generation import generate_reports
 
 
 # ---------------------------------------------------------------------------
