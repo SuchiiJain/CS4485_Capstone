@@ -114,6 +114,7 @@
   - Reviewed Pseudocode.py and provided feedback
 - **Upcoming Tasks:**
   - Finish creating test datasets and repos to train the model
+  - Start working on UI
 - **Issues:**
   - Switching AI tools in between
 ---
