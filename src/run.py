@@ -23,22 +23,24 @@ import time
 import argparse
 from typing import Dict, List, Optional
 
-from src.ast_parser import extract_function_fingerprints
-from src.comparator import compare_file_functions
-from src.alerts import (
+# FIX: All files are in the same flat directory — no 'src.' prefix needed.
+from ast_parser import extract_function_fingerprints
+from comparator import compare_file_functions
+from alerts import (
     evaluate_doc_flags,
     publish_alerts_to_log,
     publish_alerts_to_report,
     publish_baseline_notice,
 )
-from src.config import load_config, get_doc_mappings, get_thresholds
-from src.models import ChangeEvent, DocAlert, FunctionFingerprint
-from src.persistence import (
+from config import load_config, get_doc_mappings, get_thresholds
+from models import ChangeEvent, DocAlert, FunctionFingerprint
+from persistence import (
     is_first_run,
     load_fingerprints,
     persist_fingerprints,
     serialize_file_fingerprints,
     deserialize_file_fingerprints,
+    update_fingerprint_baseline,
 )
 
 from src.flagging_threshold import (
@@ -88,17 +90,23 @@ def _read_source(repo_path: str, rel_path: str) -> Optional[str]:
 
 def _scan_repo(
     repo_path: str, py_files: List[str]
-) -> Dict[str, Dict[str, FunctionFingerprint]]:
-    """Return {rel_file_path: {stable_id: FunctionFingerprint}} for every .py file."""
+) -> tuple[Dict[str, Dict[str, FunctionFingerprint]], List[str]]:
+    """
+    Return ({rel_file_path: {stable_id: FunctionFingerprint}}, failed_files)
+    for every .py file. Files that fail to read are tracked separately so
+    we can avoid clobbering their stored fingerprints.
+    """
     all_fps: Dict[str, Dict[str, FunctionFingerprint]] = {}
+    failed_files: List[str] = []
     for rel_path in py_files:
         source = _read_source(repo_path, rel_path)
         if source is None:
+            failed_files.append(rel_path)
             continue
         file_fps = extract_function_fingerprints(source, rel_path)
         if file_fps:
             all_fps[rel_path] = file_fps
-    return all_fps
+    return all_fps, failed_files
 
 
 # ---------------------------------------------------------------------------
@@ -131,7 +139,10 @@ def _fp_to_code_element(fp: FunctionFingerprint) -> CodeElement:
 # Bridge: ChangeEvent → Flag
 # ---------------------------------------------------------------------------
 
-# Map ChangeEvent reason strings to FlagReason enum values
+# Map ChangeEvent reason strings to FlagReason enum values.
+# NOTE: "function added" (bare) is never emitted by comparator.py — only
+# "function added (public API)" is used. The bare key is kept for safety
+# but will not be matched in practice.
 _REASON_MAP: Dict[str, FlagReason] = {
     "public signature changed":        FlagReason.SIGNATURE_CHANGED,
     "default argument changed":        FlagReason.SIGNATURE_CHANGED,
@@ -240,6 +251,41 @@ def _change_events_to_flags(
     # Sort HIGH → MEDIUM → LOW
     order = {Severity.HIGH: 0, Severity.MEDIUM: 1, Severity.LOW: 2}
     flags.sort(key=lambda f: order[f.severity])
+    return flags
+
+
+# ---------------------------------------------------------------------------
+# Bridge: DocAlert → Flag (so doc-file alerts appear in reports)
+# ---------------------------------------------------------------------------
+
+def _doc_alerts_to_flags(doc_alerts: List[DocAlert]) -> List[Flag]:
+    """
+    Convert DocAlert objects into Flag objects so they appear in the
+    generated .txt/.json reports, not just in the stdout summary.
+    """
+    flags: List[Flag] = []
+    for alert in doc_alerts:
+        severity = Severity.HIGH if alert.critical_found else Severity.MEDIUM
+        code_elem = CodeElement(
+            name=alert.doc_path,
+            file_path=alert.doc_path,
+            signature="",
+            hash="",
+            params=[],
+            return_type=None,
+            docstring=None,
+        )
+        flags.append(Flag(
+            reason=FlagReason.DOCSTRING_STALE,
+            severity=severity,
+            code_element=code_elem,
+            doc_reference=None,
+            message=(
+                f"[doc_file_flagged] '{alert.doc_path}' — "
+                f"{', '.join(alert.reasons)} (cumulative score: {alert.cumulative_score})"
+            ),
+            suggestion=f"Review '{alert.doc_path}' — linked code logic has changed.",
+        ))
     return flags
 
 
@@ -369,9 +415,13 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
         return 0
 
     print(f"[docrot] Found {len(py_files)} Python file(s). Extracting fingerprints...")
-    current_fps = _scan_repo(repo_path, py_files)
+    # FIX: _scan_repo now also returns a list of files that failed to read,
+    # so we can avoid clobbering their stored fingerprints later.
+    current_fps, failed_files = _scan_repo(repo_path, py_files)
     total_funcs = sum(len(fps) for fps in current_fps.values())
     print(f"[docrot] Extracted {total_funcs} function fingerprint(s).")
+    if failed_files:
+        print(f"[docrot] Warning: {len(failed_files)} file(s) could not be read and will be skipped.")
 
     # 3. First run — save baseline, no alerts
     if is_first_run(repo_path):
@@ -379,8 +429,13 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
             fp: serialize_file_fingerprints(fps)
             for fp, fps in current_fps.items()
         }
-        persist_fingerprints(repo_path, serialized)
+        baseline_stats = update_fingerprint_baseline(repo_path, serialized)
         publish_baseline_notice()
+        print(
+            "[docrot] Baseline created: "
+            f"files={baseline_stats['total_files']} "
+            f"functions={baseline_stats['total_functions']}"
+        )
         print(f"[docrot] Done in {time.time() - start:.2f}s.")
         return 0
 
@@ -392,8 +447,12 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
     }
 
     # 5. Compare → ChangeEvents
+    # Only compare files we successfully scanned; skip failed files entirely
+    # so their functions don't appear as spuriously removed.
     all_events: List[ChangeEvent] = []
     for file_path in sorted(set(old_fps) | set(current_fps)):
+        if file_path in failed_files:
+            continue
         events = compare_file_functions(
             old_fps.get(file_path, {}),
             current_fps.get(file_path, {}),
@@ -405,7 +464,11 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
     doc_alerts = evaluate_doc_flags(all_events, doc_mappings, thresholds)
 
     # 7. Flags (flagging_threshold pipeline — richer per-function severity model)
+    #    FIX: Also include doc_alerts as flags so they appear in reports.
     flags = _change_events_to_flags(all_events, old_fps, current_fps)
+    flags += _doc_alerts_to_flags(doc_alerts)
+    order = {Severity.HIGH: 0, Severity.MEDIUM: 1, Severity.LOW: 2}
+    flags.sort(key=lambda f: order[f.severity])
 
     # 8. Generate .txt and .json reports
     elapsed = time.time() - start
@@ -427,13 +490,29 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
         len(py_files), total_funcs, report_paths,
     )
 
-    # 10. Persist updated baseline
-    serialized = {
+    # 10. Persist updated baseline.
+    # FIX: Preserve old fingerprints for any files that failed to scan this
+    # run, so they aren't treated as newly-added on the next run.
+    serialized: Dict[str, Dict] = {
         fp: serialize_file_fingerprints(fps)
         for fp, fps in current_fps.items()
     }
-    persist_fingerprints(repo_path, serialized)
-    print("[docrot] Fingerprints updated.")
+    for failed_path in failed_files:
+        if failed_path in stored_raw:
+            serialized[failed_path] = stored_raw[failed_path]
+
+    baseline_stats = update_fingerprint_baseline(repo_path, serialized)
+    print(
+        "[docrot] Fingerprints updated: "
+        f"files +{baseline_stats['files_added']} "
+        f"-{baseline_stats['files_removed']} "
+        f"~{baseline_stats['files_changed']} "
+        f"={baseline_stats['files_unchanged']} | "
+        f"functions +{baseline_stats['functions_added']} "
+        f"-{baseline_stats['functions_removed']} "
+        f"~{baseline_stats['functions_changed']} "
+        f"={baseline_stats['functions_unchanged']}"
+    )
 
     return 1 if (doc_alerts or flags) else 0
 

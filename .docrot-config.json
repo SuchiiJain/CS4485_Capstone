@@ -7,7 +7,7 @@
     },
     {
       "code_glob": "examples/*.py",
-      "docs": ["fakedoc.md"]
+      "docs": ["examples/fakedoc.md"]
     }
   ],
   "thresholds": {

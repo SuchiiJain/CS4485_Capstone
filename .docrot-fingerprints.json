@@ -233,22 +233,17 @@
     "examples/sample_code_v1.py::authenticate_user": {
       "calls": {
         "call_names": [
-          "PermissionError",
           "ValueError",
           "ValueError",
-          "audit_log.record",
-          "audit_log.record",
           "db.find_user",
           "generate_token",
-          "verify_mfa",
           "verify_password"
         ]
       },
       "conditions": {
         "boolean_ops": [],
         "comparison_ops": [
-          "Is",
-          "IsNot"
+          "Is"
         ]
       },
       "control_flow": {
@@ -256,20 +251,19 @@
         "elif_count": 0,
         "else_count": 0,
         "for_count": 0,
-        "if_count": 4,
+        "if_count": 2,
         "while_count": 0
       },
       "exceptions": {
         "except_handlers": [],
         "has_bare_except": false,
         "raises": [
-          "PermissionError",
           "ValueError",
           "ValueError"
         ]
       },
       "file_path": "examples/sample_code_v1.py",
-      "fingerprint_hash": "c92044c89d0398594aac3b8660d418f54f20b25e9d45d9c26184623f60c1ba4b",
+      "fingerprint_hash": "4239d0a5ee16579f71b2fd361ce5d39ad06240c9394328fd2012636c350889b0",
       "is_public": true,
       "returns": {
         "return_count": 1,
@@ -282,14 +276,11 @@
         "network_calls": []
       },
       "signature": {
-        "defaults": [
-          "Constant(value=None)"
-        ],
+        "defaults": [],
         "name": "authenticate_user",
         "params": [
           "username",
-          "password",
-          "mfa_code"
+          "password"
         ],
         "return_annotation": null
       },
@@ -305,17 +296,16 @@
         "boolean_ops": [],
         "comparison_ops": [
           "Eq",
-          "Eq",
           "Gt",
-          "GtE"
+          "Gt"
         ]
       },
       "control_flow": {
         "early_return_count": 1,
-        "elif_count": 2,
+        "elif_count": 1,
         "else_count": 1,
         "for_count": 0,
-        "if_count": 4,
+        "if_count": 3,
         "while_count": 0
       },
       "exceptions": {
@@ -324,7 +314,7 @@
         "raises": []
       },
       "file_path": "examples/sample_code_v1.py",
-      "fingerprint_hash": "bdd06cfde6f2e1df837f2d46fd776feed42ba7c762eb9cc7698d4d4b409f6067",
+      "fingerprint_hash": "bf67c7a86677def44dd36981213f8fa09678854d1bb65c72d5e39b6fd140340c",
       "is_public": true,
       "returns": {
         "return_count": 1,
@@ -346,63 +336,6 @@
         "return_annotation": null
       },
       "stable_id": "examples/sample_code_v1.py::calculate_shipping"
-    },
-    "examples/sample_code_v1.py::delete_user": {
-      "calls": {
-        "call_names": [
-          "ValueError",
-          "audit_log.record",
-          "db.find_user_by_id",
-          "db.hard_delete",
-          "db.soft_delete"
-        ]
-      },
-      "conditions": {
-        "boolean_ops": [],
-        "comparison_ops": [
-          "Is"
-        ]
-      },
-      "control_flow": {
-        "early_return_count": 1,
-        "elif_count": 0,
-        "else_count": 1,
-        "for_count": 0,
-        "if_count": 2,
-        "while_count": 0
-      },
-      "exceptions": {
-        "except_handlers": [],
-        "has_bare_except": false,
-        "raises": [
-          "ValueError"
-        ]
-      },
-      "file_path": "examples/sample_code_v1.py",
-      "fingerprint_hash": "98e0ead7ce93535ad4c259baf3b10a13876e808bb2d60a518f55c3387fbbd7f8",
-      "is_public": true,
-      "returns": {
-        "return_count": 1,
-        "returns_none": false
-      },
-      "side_effects": {
-        "auth_calls": [],
-        "db_calls": [],
-        "file_calls": [],
-        "network_calls": []
-      },
-      "signature": {
-        "defaults": [
-          "Constant(value=False)"
-        ],
-        "name": "delete_user",
-        "params": [
-          "user_id",
-          "hard_delete"
-        ],
-        "return_annotation": null
-      },
-      "stable_id": "examples/sample_code_v1.py::delete_user"
     },
     "examples/sample_code_v1.py::get_user_profile": {
       "calls": {
@@ -2418,6 +2351,115 @@
     }
   },
   "src/config.py": {
+    "src/config.py::_normalize_thresholds": {
+      "calls": {
+        "call_names": [
+          "_parse_positive_threshold",
+          "_parse_positive_threshold",
+          "thresholds.get",
+          "thresholds.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/config.py",
+      "fingerprint_hash": "faf2043a77eb532b0d89179a34d60e39f4f40284fd55ec872e2ac8abadef4866",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "thresholds.get",
+          "thresholds.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_normalize_thresholds",
+        "params": [
+          "thresholds"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='int', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/config.py::_normalize_thresholds"
+    },
+    "src/config.py::_parse_positive_threshold": {
+      "calls": {
+        "call_names": [
+          "int",
+          "isinstance",
+          "print",
+          "print",
+          "print"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "LtE"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 4,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "TypeError",
+          "ValueError"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/config.py",
+      "fingerprint_hash": "b2106685818c24d58db5fdf7c1205e44b8f899de151123d42729d965513440af",
+      "is_public": false,
+      "returns": {
+        "return_count": 4,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_parse_positive_threshold",
+        "params": [
+          "value",
+          "key",
+          "default"
+        ],
+        "return_annotation": "Name(id='int', ctx=Load())"
+      },
+      "stable_id": "src/config.py::_parse_positive_threshold"
+    },
     "src/config.py::docs_for_code_path": {
       "calls": {
         "call_names": [
@@ -2525,10 +2567,10 @@
       },
       "stable_id": "src/config.py::get_doc_mappings"
     },
-    "src/config.py::get_thresholds": {
+    "src/config.py::get_threshold_info": {
       "calls": {
         "call_names": [
-          "config.get"
+          "get_thresholds"
         ]
       },
       "conditions": {
@@ -2549,10 +2591,59 @@
         "raises": []
       },
       "file_path": "src/config.py",
-      "fingerprint_hash": "7bd8e61309e501d2b04f539badd3c3187307cf021b7ca13350a653718ec29710",
+      "fingerprint_hash": "8bfd396154f6f1327e15e13128e3e3c0c3ff95acc958fccd6c1e95038995a55c",
       "is_public": true,
       "returns": {
         "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_threshold_info",
+        "params": [
+          "config"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/config.py::get_threshold_info"
+    },
+    "src/config.py::get_thresholds": {
+      "calls": {
+        "call_names": [
+          "_normalize_thresholds",
+          "config.get",
+          "dict",
+          "isinstance"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/config.py",
+      "fingerprint_hash": "66cc77cdcfc4f131da721912a0219478c78f60b3fcc42cb01ea746d431c57bee",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
         "returns_none": false
       },
       "side_effects": {
@@ -2576,19 +2667,20 @@
     "src/config.py::load_config": {
       "calls": {
         "call_names": [
+          "_normalize_thresholds",
           "dict",
           "dict",
           "dict",
+          "isinstance",
           "json.load",
           "open",
           "os.path.exists",
           "os.path.join",
           "print",
+          "print",
           "user_config.get",
           "user_config.get",
-          "user_config.get",
-          "user_thresholds.get",
-          "user_thresholds.get"
+          "user_config.get"
         ]
       },
       "conditions": {
@@ -2600,7 +2692,7 @@
         "elif_count": 0,
         "else_count": 0,
         "for_count": 0,
-        "if_count": 1,
+        "if_count": 2,
         "while_count": 0
       },
       "exceptions": {
@@ -2611,7 +2703,7 @@
         "raises": []
       },
       "file_path": "src/config.py",
-      "fingerprint_hash": "9d6ef543d89631ef1b9910e2c886311efcf2be10628b62ce1924973dd7a552fb",
+      "fingerprint_hash": "40d2144d970620c54206eb7299d0cdd403c9779be323e6011b5f2ade843d6a87",
       "is_public": true,
       "returns": {
         "return_count": 3,
@@ -2626,9 +2718,7 @@
         "network_calls": [
           "user_config.get",
           "user_config.get",
-          "user_config.get",
-          "user_thresholds.get",
-          "user_thresholds.get"
+          "user_config.get"
         ]
       },
       "signature": {
@@ -4132,6 +4222,9 @@
           "_fingerprint_path",
           "json.dump",
           "open",
+          "os.path.exists",
+          "os.remove",
+          "os.replace",
           "print"
         ]
       },
@@ -4144,18 +4237,19 @@
         "elif_count": 0,
         "else_count": 0,
         "for_count": 0,
-        "if_count": 0,
+        "if_count": 1,
         "while_count": 0
       },
       "exceptions": {
         "except_handlers": [
+          "OSError",
           "OSError"
         ],
         "has_bare_except": false,
         "raises": []
       },
       "file_path": "src/persistence.py",
-      "fingerprint_hash": "548e22880e412e37b9062516316439889bf5d58fdda796b6721e0dae71cbc81b",
+      "fingerprint_hash": "f95490c00667e6f7dda8a6de0c7b210e669b9ad879809cd0f39186518420cf4d",
       "is_public": true,
       "returns": {
         "return_count": 0,
@@ -4165,7 +4259,8 @@
         "auth_calls": [],
         "db_calls": [],
         "file_calls": [
-          "open"
+          "open",
+          "os.remove"
         ],
         "network_calls": []
       },
@@ -4226,6 +4321,89 @@
         "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load())"
       },
       "stable_id": "src/persistence.py::serialize_file_fingerprints"
+    },
+    "src/persistence.py::update_fingerprint_baseline": {
+      "calls": {
+        "call_names": [
+          "current_fingerprints.get",
+          "current_fingerprints.keys",
+          "current_fingerprints.values",
+          "get",
+          "get",
+          "len",
+          "len",
+          "len",
+          "len",
+          "len",
+          "len",
+          "load_fingerprints",
+          "new_funcs.get",
+          "new_funcs.keys",
+          "old_fingerprints.get",
+          "old_fingerprints.keys",
+          "old_funcs.get",
+          "old_funcs.keys",
+          "persist_fingerprints",
+          "set",
+          "set",
+          "set",
+          "set",
+          "sorted",
+          "sum"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "Or"
+        ],
+        "comparison_ops": [
+          "Eq",
+          "In"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 2,
+        "for_count": 2,
+        "if_count": 4,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/persistence.py",
+      "fingerprint_hash": "99b48b0cb6f3295e6d2c30971bd3cfa0dcc9605d9dcc073a1316afce1ac9485b",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "current_fingerprints.get",
+          "get",
+          "get",
+          "new_funcs.get",
+          "old_fingerprints.get",
+          "old_funcs.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "update_fingerprint_baseline",
+        "params": [
+          "repo_path",
+          "current_fingerprints"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='int', ctx=Load())], ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "src/persistence.py::update_fingerprint_baseline"
     }
   },
   "src/report_generation.py": {
@@ -5203,8 +5381,7 @@
           "os.path.isdir",
           "os.path.join",
           "os.path.join",
-          "persist_fingerprints",
-          "persist_fingerprints",
+          "print",
           "print",
           "print",
           "print",
@@ -5223,7 +5400,9 @@
           "sum",
           "time.time",
           "time.time",
-          "time.time"
+          "time.time",
+          "update_fingerprint_baseline",
+          "update_fingerprint_baseline"
         ]
       },
       "conditions": {
@@ -5246,7 +5425,7 @@
         "raises": []
       },
       "file_path": "src/run.py",
-      "fingerprint_hash": "1ca6e3838cf84b2b92929147a1f26e49c1f1d7aa33992e94a8b2f0db74514e14",
+      "fingerprint_hash": "b2c1aa837e67b1bc0225bacb15abf877e159bdef87a18c8121ad9159021972d7",
       "is_public": true,
       "returns": {
         "return_count": 4,

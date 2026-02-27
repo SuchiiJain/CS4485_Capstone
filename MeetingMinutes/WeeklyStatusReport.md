@@ -14,10 +14,18 @@
 ---
 
 ### Marie Liske
-- **Hours:**
+- **Hours:** 6
 - **Tasks Complete:**
+  - Implemented config-driven documentation mapping so code file patterns (code_glob) map to related docs and trigger doc-review alerts when mapped code changes.
+  - Strengthened threshold handling by validating config values, applying safe defaults, and normalizing thresholds before scoring.
+  - Expanded fingerprint baseline updates with a dedicated updater that reports file/function deltas (added, removed, changed, unchanged) each run.
+  - Improved persistence reliability by using atomic baseline writes (temp file + replace) and updated README documentation to reflect all new behavior.
 - **Upcoming Tasks:**
+  - Ensure changes in branch are compatable with main before merging
+  - Resolve any potential merge conflicts
+  - Test on created sample repositories
 - **Issues:**
+  - N/A
 
 ---
 
@@ -58,22 +66,35 @@
 ---
 
 ### Samuel Say
-- **Hours:**
+- **Hours: 8**
 - **Tasks Complete:**
+  - Implemented run.py, the main entry point for the Documentation Rot Detector that ties together all existing modules into a complete working pipeline
+  - Integrated the flagging_threshold.py severity model (HIGH/MEDIUM/LOW) with the comparator/alerts pipeline via a bridging layer
+  - Connected report_generation.py to produce both .docrot-report.txt and .docrot-report.json output files on each scan
+  - Added CLI argument support including optional commit hash embedding in reports
 - **Upcoming Tasks:**
+  - Testing the full pipeline end-to-end on a real or sample repository
+  - Verifying report output accuracy against known code changes
+  - Any remaining integration work (GitHub hook, dashboard, AI suggestions)
 - **Issues:**
+  - The two detection pipelines (alerts.py and flagging_threshold.py) have some conceptual overlap that may need to be reconciled as the project matures
+  - Doc-file alerting requires manual configuration of doc_mappings in .docrot-config.json — no auto-discovery yet
 
 ---
 
 ### Portia Hamid
 - **Hours: 8**
 - **Tasks Complete:**
-  - Pseudocode finalization
-  - Architecture mapping
-  - AST parser and fingerprint generation implementation
-  - Small-scale AST parser testing and example generation
+  - Finalized the weight-based mismatch detection pseudocode (`pseudocode.py`), incorporating team feedback and validating logic with Claude Opus 4.6
+  - Authored the system architecture document (`Architecture.md`), mapping out the full 4-layer pipeline from change detection through AST parsing, comparison/scoring, and alerting
+  - Implemented `ast_parser.py` — the core AST parsing module that handles source-to-tree parsing, function/method node extraction, parent-class annotation, stable cross-version function ID generation, docstring stripping (so cosmetic edits don't trigger false positives), and public/private API visibility detection
+  - Implemented `fingerprint.py` — the semantic fingerprint builder (~520 lines) that extracts multi-dimensional features from each function (signature, control flow, conditions, calls, side effects, exceptions, returns) used by the scoring model
+  - Created hands-on example scripts (`example_basic_ast.py`, `example_fingerprinting.py`) demonstrating AST parsing and fingerprint extraction to validate module correctness and serve as developer documentation
 - **Upcoming Tasks:**
+  - Expand testing to larger repositories to validate fingerprint stability and scoring accuracy at scale
+  - Begin GitHub webhook integration so the parser triggers automatically on push events instead of requiring manual invocation
 - **Issues:**
+  - Parser does not yet run automatically, currently requires manual activation. GitHub hook integration will resolve this in the next sprint
 
 ---
 

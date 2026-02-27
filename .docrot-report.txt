@@ -3,260 +3,40 @@
 ============================================================
  Repo   : C:\Users\Richard\CS4485_Capstone
  Commit : unknown
- Time   : 2026-02-26T19:29:33.876563
- Issues : 25 total (High: 15, Medium: 0, Low: 10)
+ Time   : 2026-02-26T13:07:01.646159
+ Issues : 3 total (High: 2, Medium: 1, Low: 0)
 ============================================================
 
  Issue #1 [HIGH]
 ------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/flagging_threshold.py::check_broken_markdown_ref
- Code file : src/flagging_threshold.py
- Signature : check_broken_markdown_ref(symbol_name, all_current_symbols, doc) -> Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())
+ Reason    : docstring_stale
+ Symbol    : src/persistence.py::persist_fingerprints
+ Code file : src/persistence.py
+ Signature : persist_fingerprints(repo_path, fingerprints) -> Constant(value=None)
 
- ! [signature_changed] 'src/flagging_threshold.py::check_broken_markdown_ref' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/flagging_threshold.py::check_broken_markdown_ref' to reflect the new signature.
+ ! [docstring_stale] 'src/persistence.py::persist_fingerprints' — side-effect behavior changed, exception behavior changed, core control path added/removed (score: 22)
+ > Suggestion: Review documentation for 'src/persistence.py::persist_fingerprints' — logic may have changed.
 
  Issue #2 [HIGH]
 ------------------------------------------------------------
  Reason    : signature_changed
- Symbol    : src/flagging_threshold.py::check_docstring_missing
- Code file : src/flagging_threshold.py
- Signature : check_docstring_missing(element) -> Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())
+ Symbol    : src/persistence.py::update_fingerprint_baseline
+ Code file : src/persistence.py
+ Signature : update_fingerprint_baseline(repo_path, current_fingerprints) -> Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='int', ctx=Load())], ctx=Load()), ctx=Load())
 
- ! [signature_changed] 'src/flagging_threshold.py::check_docstring_missing' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/flagging_threshold.py::check_docstring_missing' to reflect the new signature.
+ ! [signature_changed] 'src/persistence.py::update_fingerprint_baseline' — function added (public API) (score: 5)
+ > Suggestion: Update documentation for 'src/persistence.py::update_fingerprint_baseline' to reflect the new signature.
 
- Issue #3 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/flagging_threshold.py::check_parameter_changes
- Code file : src/flagging_threshold.py
- Signature : check_parameter_changes(old, new, doc) -> Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())
-
- ! [signature_changed] 'src/flagging_threshold.py::check_parameter_changes' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/flagging_threshold.py::check_parameter_changes' to reflect the new signature.
-
- Issue #4 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/flagging_threshold.py::check_return_type_change
- Code file : src/flagging_threshold.py
- Signature : check_return_type_change(old, new, doc) -> Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())
-
- ! [signature_changed] 'src/flagging_threshold.py::check_return_type_change' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/flagging_threshold.py::check_return_type_change' to reflect the new signature.
-
- Issue #5 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/flagging_threshold.py::check_signature_change
- Code file : src/flagging_threshold.py
- Signature : check_signature_change(old, new, doc) -> Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())
-
- ! [signature_changed] 'src/flagging_threshold.py::check_signature_change' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/flagging_threshold.py::check_signature_change' to reflect the new signature.
-
- Issue #6 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/flagging_threshold.py::check_stale_doc
- Code file : src/flagging_threshold.py
- Signature : check_stale_doc(element, doc) -> Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())
-
- ! [signature_changed] 'src/flagging_threshold.py::check_stale_doc' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/flagging_threshold.py::check_stale_doc' to reflect the new signature.
-
- Issue #7 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/flagging_threshold.py::check_symbol_removed
- Code file : src/flagging_threshold.py
- Signature : check_symbol_removed(element, doc) -> Name(id='Flag', ctx=Load())
-
- ! [signature_changed] 'src/flagging_threshold.py::check_symbol_removed' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/flagging_threshold.py::check_symbol_removed' to reflect the new signature.
-
- Issue #8 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/flagging_threshold.py::run_flagging
- Code file : src/flagging_threshold.py
- Signature : run_flagging(old_elements, new_elements, doc_references) -> Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())
-
- ! [signature_changed] 'src/flagging_threshold.py::run_flagging' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/flagging_threshold.py::run_flagging' to reflect the new signature.
-
- Issue #9 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/report_generation.py::ScanReport.count_by_severity
- Code file : src/report_generation.py
- Signature : count_by_severity(self) -> Subscript(value=Name(id='dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='int', ctx=Load())], ctx=Load()), ctx=Load())
-
- ! [signature_changed] 'src/report_generation.py::ScanReport.count_by_severity' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/report_generation.py::ScanReport.count_by_severity' to reflect the new signature.
-
- Issue #10 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/report_generation.py::ScanReport.has_issues
- Code file : src/report_generation.py
- Signature : has_issues(self) -> Name(id='bool', ctx=Load())
-
- ! [signature_changed] 'src/report_generation.py::ScanReport.has_issues' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/report_generation.py::ScanReport.has_issues' to reflect the new signature.
-
- Issue #11 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/report_generation.py::generate_json_report
- Code file : src/report_generation.py
- Signature : generate_json_report(report, output_path) -> Name(id='str', ctx=Load())
-
- ! [signature_changed] 'src/report_generation.py::generate_json_report' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/report_generation.py::generate_json_report' to reflect the new signature.
-
- Issue #12 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/report_generation.py::generate_reports
- Code file : src/report_generation.py
- Signature : generate_reports(flags, repo_path, commit_hash, json_path, txt_path) -> Subscript(value=Name(id='dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='str', ctx=Load())], ctx=Load()), ctx=Load())
-
- ! [signature_changed] 'src/report_generation.py::generate_reports' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/report_generation.py::generate_reports' to reflect the new signature.
-
- Issue #13 [HIGH]
-------------------------------------------------------------
- Reason    : signature_changed
- Symbol    : src/report_generation.py::generate_txt_report
- Code file : src/report_generation.py
- Signature : generate_txt_report(report, output_path) -> Name(id='str', ctx=Load())
-
- ! [signature_changed] 'src/report_generation.py::generate_txt_report' — function added (public API) (score: 5)
- > Suggestion: Update documentation for 'src/report_generation.py::generate_txt_report' to reflect the new signature.
-
- Issue #14 [HIGH]
-------------------------------------------------------------
- Reason    : symbol_removed
- Symbol    : src/run.py::_print_summary_report
- Code file : src/run.py
- Signature : _print_summary_report(change_events, alerts, elapsed, file_count, func_count) -> Constant(value=None)
-
- ! [symbol_removed] 'src/run.py::_print_summary_report' — function removed (score: 5)
- > Suggestion: Remove or replace documentation references to 'src/run.py::_print_summary_report'.
-
- Issue #15 [HIGH]
+ Issue #3 [MEDIUM]
 ------------------------------------------------------------
  Reason    : docstring_stale
  Symbol    : src/run.py::run
  Code file : src/run.py
  Signature : run(repo_path, commit_hash) -> Name(id='int', ctx=Load())
 
- ! [docstring_stale] 'src/run.py::run' — literal/constant changed, default argument changed, public signature changed (score: 7)
+ ! [docstring_stale] 'src/run.py::run' — literal/constant changed (score: 1)
  > Suggestion: Review documentation for 'src/run.py::run' — logic may have changed.
 
- Issue #16 [LOW]
-------------------------------------------------------------
- Reason    : docstring_missing
- Symbol    : src/flagging_threshold.py::_make_message
- Code file : src/flagging_threshold.py
- Signature : _make_message(reason, element, doc, extra) -> Name(id='str', ctx=Load())
-
- ! [docstring_missing] 'src/flagging_threshold.py::_make_message' — function added (score: 5)
- > Suggestion: Add a docstring to the new public function 'src/flagging_threshold.py::_make_message'.
-
- Issue #17 [LOW]
-------------------------------------------------------------
- Reason    : docstring_missing
- Symbol    : src/report_generation.py::ScanReport.__init__
- Code file : src/report_generation.py
- Signature : __init__(self, repo_path, commit_hash, flags)
-
- ! [docstring_missing] 'src/report_generation.py::ScanReport.__init__' — function added (score: 5)
- > Suggestion: Add a docstring to the new public function 'src/report_generation.py::ScanReport.__init__'.
-
- Issue #18 [LOW]
-------------------------------------------------------------
- Reason    : docstring_missing
- Symbol    : src/report_generation.py::_flag_to_dict
- Code file : src/report_generation.py
- Signature : _flag_to_dict(flag) -> Name(id='dict', ctx=Load())
-
- ! [docstring_missing] 'src/report_generation.py::_flag_to_dict' — function added (score: 5)
- > Suggestion: Add a docstring to the new public function 'src/report_generation.py::_flag_to_dict'.
-
- Issue #19 [LOW]
-------------------------------------------------------------
- Reason    : docstring_missing
- Symbol    : src/report_generation.py::_txt_flag_block
- Code file : src/report_generation.py
- Signature : _txt_flag_block(index, flag) -> Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())
-
- ! [docstring_missing] 'src/report_generation.py::_txt_flag_block' — function added (score: 5)
- > Suggestion: Add a docstring to the new public function 'src/report_generation.py::_txt_flag_block'.
-
- Issue #20 [LOW]
-------------------------------------------------------------
- Reason    : docstring_missing
- Symbol    : src/report_generation.py::_txt_footer
- Code file : src/report_generation.py
- Signature : _txt_footer(report) -> Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())
-
- ! [docstring_missing] 'src/report_generation.py::_txt_footer' — function added (score: 5)
- > Suggestion: Add a docstring to the new public function 'src/report_generation.py::_txt_footer'.
-
- Issue #21 [LOW]
-------------------------------------------------------------
- Reason    : docstring_missing
- Symbol    : src/report_generation.py::_txt_header
- Code file : src/report_generation.py
- Signature : _txt_header(report) -> Subscript(value=Name(id='list', ctx=Load()), slice=Name(id='str', ctx=Load()), ctx=Load())
-
- ! [docstring_missing] 'src/report_generation.py::_txt_header' — function added (score: 5)
- > Suggestion: Add a docstring to the new public function 'src/report_generation.py::_txt_header'.
-
- Issue #22 [LOW]
-------------------------------------------------------------
- Reason    : docstring_missing
- Symbol    : src/run.py::_change_events_to_flags
- Code file : src/run.py
- Signature : _change_events_to_flags(events, old_fps, new_fps) -> Subscript(value=Name(id='List', ctx=Load()), slice=Name(id='Flag', ctx=Load()), ctx=Load())
-
- ! [docstring_missing] 'src/run.py::_change_events_to_flags' — function added (score: 5)
- > Suggestion: Add a docstring to the new public function 'src/run.py::_change_events_to_flags'.
-
- Issue #23 [LOW]
-------------------------------------------------------------
- Reason    : docstring_missing
- Symbol    : src/run.py::_fp_to_code_element
- Code file : src/run.py
- Signature : _fp_to_code_element(fp) -> Name(id='CodeElement', ctx=Load())
-
- ! [docstring_missing] 'src/run.py::_fp_to_code_element' — function added (score: 5)
- > Suggestion: Add a docstring to the new public function 'src/run.py::_fp_to_code_element'.
-
- Issue #24 [LOW]
-------------------------------------------------------------
- Reason    : docstring_missing
- Symbol    : src/run.py::_make_suggestion
- Code file : src/run.py
- Signature : _make_suggestion(reason, fn_id) -> Name(id='str', ctx=Load())
-
- ! [docstring_missing] 'src/run.py::_make_suggestion' — function added (score: 5)
- > Suggestion: Add a docstring to the new public function 'src/run.py::_make_suggestion'.
-
- Issue #25 [LOW]
-------------------------------------------------------------
- Reason    : docstring_missing
- Symbol    : src/run.py::_print_report
- Code file : src/run.py
- Signature : _print_report(events, doc_alerts, flags, elapsed, file_count, func_count, report_paths) -> Constant(value=None)
-
- ! [docstring_missing] 'src/run.py::_print_report' — function added (score: 5)
- > Suggestion: Add a docstring to the new public function 'src/run.py::_print_report'.
-
 ============================================================
- Scan complete. 25 issue(s) require attention.
+ Scan complete. 3 issue(s) require attention.
 ============================================================
