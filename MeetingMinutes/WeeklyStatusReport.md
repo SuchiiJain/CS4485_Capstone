@@ -85,12 +85,16 @@
 ### Portia Hamid
 - **Hours: 8**
 - **Tasks Complete:**
-  - Pseudocode finalization
-  - Architecture mapping
-  - AST parser and fingerprint generation implementation
-  - Small-scale AST parser testing and example generation
+  - Finalized the weight-based mismatch detection pseudocode (`pseudocode.py`), incorporating team feedback and validating logic with Claude Opus 4.6
+  - Authored the system architecture document (`Architecture.md`), mapping out the full 4-layer pipeline from change detection through AST parsing, comparison/scoring, and alerting
+  - Implemented `ast_parser.py` — the core AST parsing module that handles source-to-tree parsing, function/method node extraction, parent-class annotation, stable cross-version function ID generation, docstring stripping (so cosmetic edits don't trigger false positives), and public/private API visibility detection
+  - Implemented `fingerprint.py` — the semantic fingerprint builder (~520 lines) that extracts multi-dimensional features from each function (signature, control flow, conditions, calls, side effects, exceptions, returns) used by the scoring model
+  - Created hands-on example scripts (`example_basic_ast.py`, `example_fingerprinting.py`) demonstrating AST parsing and fingerprint extraction to validate module correctness and serve as developer documentation
 - **Upcoming Tasks:**
+  - Expand testing to larger repositories to validate fingerprint stability and scoring accuracy at scale
+  - Begin GitHub webhook integration so the parser triggers automatically on push events instead of requiring manual invocation
 - **Issues:**
+  - Parser does not yet run automatically, currently requires manual activation. GitHub hook integration will resolve this in the next sprint
 
 ---
 
