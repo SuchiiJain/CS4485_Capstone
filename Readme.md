@@ -11,10 +11,10 @@ Built as part of the CS 4485 Capstone course.
 
 Docrot Detector runs as a pipeline with four stages:
 
-1. **Repository Scan** — Discover all `.py` files in the target repo (excluding `.git`, `__pycache__`, `.venv`, etc.).
+1. **Change Detection** — Identify which `.py` files changed since the last run.
 2. **AST Parsing & Fingerprinting** — Parse each file's AST, extract per-function semantic fingerprints (signature, control flow, conditions, calls, side effects, exceptions, returns).
 3. **Comparison & Scoring** — Diff old vs. new fingerprints and apply a weighted scoring model to quantify how much each function's *behavior* changed.
-4. **Alert Layer + Baseline Update** — Map scored changes to documentation files via config, flag docs that exceed thresholds, then persist the updated baseline.
+4. **Alert Layer** — Map scored changes to documentation files via config and flag docs that exceed thresholds.
 
 ### Scoring Model
 
@@ -31,9 +31,7 @@ A function is flagged as **substantial** if its score ≥ 4 or any critical even
 
 ### First-Run Behavior
 
-On the first run (no prior baseline), Docrot generates and stores fingerprints without emitting any alerts.
-
-On subsequent runs, Docrot compares current fingerprints against the stored baseline, reports semantic changes, and then updates the baseline with summary stats (files/functions added, removed, changed, unchanged).
+On the first run (no prior baseline), Docrot generates and stores fingerprints without emitting any alerts. Subsequent runs compare against the stored baseline.
 
 ## Features
 
@@ -42,8 +40,7 @@ On subsequent runs, Docrot compares current fingerprints against the stored base
 - **Critical Event Triggers** — Public API changes, side-effect changes, auth logic changes, and exception behavior changes always flag regardless of score.
 - **Doc Mapping** — JSON config maps code globs to documentation files.
 - **CI-Friendly Output** — Prints warnings to stdout and writes a `.docrot-report.json` artifact.
-- **Persistence** — Stores fingerprints in `.docrot-fingerprints.json` as the baseline for future comparisons, with detailed baseline update stats each run.
-- **Safer Baseline Writes** — Fingerprint persistence uses a temp-file + replace flow to reduce risk of partial/corrupted baseline writes.
+- **Persistence** — Stores fingerprints in `.docrot-fingerprints.json` as the baseline for future comparisons.
 
 ## Folder Structure
 
@@ -92,7 +89,7 @@ On subsequent runs, Docrot compares current fingerprints against the stored base
 | `ast_parser.py` | Parses Python source → AST, finds all function/method nodes, builds stable IDs, orchestrates fingerprint extraction |
 | `fingerprint.py` | 7 feature extractors (signature, control flow, conditions, calls, side effects, exceptions, returns), normalization, deterministic hashing, `build_fingerprint()` orchestrator |
 | `comparator.py` | `diff_features()` compares fingerprints feature-by-feature; `score_semantic_delta()` applies weighted scoring; `compare_file_functions()` handles added/removed/modified functions |
-| `persistence.py` | JSON-based fingerprint storage with `load_fingerprints()`, `persist_fingerprints()`, `update_fingerprint_baseline()`, `is_first_run()`, and round-trip serialization |
+| `persistence.py` | JSON-based fingerprint storage with `load_fingerprints()`, `persist_fingerprints()`, `is_first_run()`, and round-trip serialization |
 | `alerts.py` | `evaluate_doc_flags()` accumulates per-doc scores and applies thresholds; `publish_alerts_to_log()` prints CI warnings; `publish_alerts_to_report()` writes `.docrot-report.json` |
 | `flagging_threshold.py` | Flag dataclasses (`Flag`, `CodeElement`, `DocReference`), severity enums, `SEVERITY_MAP`, and all `check_*` detection functions |
 | `report_generation.py` | `ScanReport` class, `generate_txt_report()`, `generate_json_report()`, and `generate_reports()` entry point — outputs `.docrot-report.txt` and `.docrot-report.json` |
@@ -107,12 +104,12 @@ Create a `.docrot-config.json` in the repository root:
   "language": "python",
   "doc_mappings": [
     {
-      "code_glob": "src/*.py",
-      "docs": ["Readme.md", "Architecture.md"]
+      "code_glob": "src/auth/*.py",
+      "docs": ["docs/auth.md", "README.md"]
     },
     {
-      "code_glob": "examples/*.py",
-      "docs": ["examples/fakedoc.md"]
+      "code_glob": "src/api/*.py",
+      "docs": ["docs/api.md"]
     }
   ],
   "thresholds": {
@@ -124,37 +121,8 @@ Create a `.docrot-config.json` in the repository root:
 
 - **`code_glob`** — fnmatch pattern matching source file paths.
 - **`docs`** — List of documentation files that should be reviewed when matched code changes.
-- **`per_function_substantial`** — Minimum score for a function change to be considered substantial (default: 4).
-- **`per_doc_cumulative`** — Minimum cumulative score across mapped functions for a doc file to be flagged (default: 8).
-
-### Threshold Validation & Defaults
-
-Docrot now validates thresholds when loading config:
-
-- Missing threshold values fall back to defaults.
-- Invalid values (non-numeric, boolean, or `<= 0`) are rejected and replaced with defaults.
-- Loaded thresholds are normalized to positive integers before use.
-- If `thresholds` is not a JSON object, Docrot logs a warning and uses defaults.
-
-Default thresholds:
-
-```json
-{
-  "per_function_substantial": 4,
-  "per_doc_cumulative": 8
-}
-```
-
-Meaning in the pipeline:
-
-- A function is treated as substantial when its score is `>= per_function_substantial` or it is critical.
-- A documentation file is flagged when any mapped change is critical, or when cumulative mapped score is `>= per_doc_cumulative`.
-
-### Mapping Notes
-
-- `code_glob` is matched against repo-relative file paths (normalized to forward slashes).
-- Multiple mappings may match the same source file; doc paths are de-duplicated.
-- If no `doc_mappings` are provided, code changes are still analyzed, but doc-file alerts are not generated.
+- **`per_function_substantial`** — Minimum score (or critical event) for a single function to count as a substantial change (default: 4).
+- **`per_doc_cumulative`** — Minimum cumulative score across all functions for a doc file to be flagged (default: 8).
 
 If the config file is missing, defaults are used (no doc mappings, standard thresholds).
 
@@ -194,8 +162,7 @@ This runs the full pipeline:
 1. Finds all `.py` files in the repo (skipping `.git`, `__pycache__`, `venv`, etc.)
 2. Extracts semantic fingerprints for every function/method
 3. On **first run**: saves a baseline to `.docrot-fingerprints.json` and exits with no alerts
-4. On **subsequent runs**: compares against the stored baseline, scores changes, flags documentation files for review, prints a formatted summary report, and updates the baseline
-5. Prints a baseline-update summary showing file/function deltas (`+` added, `-` removed, `~` changed, `=` unchanged)
+4. On **subsequent runs**: compares against the stored baseline, scores changes, flags documentation files for review, and prints a formatted summary report
 
 **Exit codes** (useful for CI):
 | Code | Meaning |
@@ -226,7 +193,6 @@ Both entry points save results to the repo root:
 | File | When created | Contents |
 |------|-------------|----------|
 | `.docrot-fingerprints.json` | Every run | Stored baseline fingerprints — updated after each run so the next comparison uses the latest state |
-| `.docrot-report.txt` | When code changes are detected | Human-readable report with severity summary and flagged items |
 | `.docrot-report.json` | When doc alerts are triggered | JSON report of flagged documentation files (requires a `.docrot-config.json` with doc mappings) |
 
 ### Programmatic Usage
