@@ -2,3 +2,13 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+# Environment variables (contains secrets — never commit this)
+.env
+
+# Cloned repos from webhook server
+repos/
+
+# Generated scan reports (contain machine-local paths)
+.docrot-report.json
+.docrot-report.txt

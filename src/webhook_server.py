@@ -32,8 +32,25 @@ from typing import Any, Dict, Optional
 
 from flask import Flask, Request, Response, jsonify, request
 
-from src.github_integration import clone_or_pull_repo, post_commit_status
+from src.github_integration import (
+    clone_or_pull_repo,
+    commit_and_push_reports,
+    find_open_pr_for_branch,
+    format_pr_comment,
+    post_commit_status,
+    post_pr_comment,
+)
 from src.run import run as run_pipeline
+
+
+# ---------------------------------------------------------------------------
+# Load .env file (if it exists) so you don't have to set env vars manually
+# ---------------------------------------------------------------------------
+try:
+    from dotenv import load_dotenv
+    load_dotenv()  # reads .env from the current working directory
+except ImportError:
+    pass  # python-dotenv not installed — fall back to manual env vars
 
 
 # ---------------------------------------------------------------------------
@@ -45,6 +62,10 @@ app = Flask(__name__)
 WEBHOOK_SECRET: Optional[str] = os.environ.get("DOCROT_WEBHOOK_SECRET")
 CLONE_DIR: str = os.environ.get("DOCROT_CLONE_DIR", os.path.join(os.getcwd(), "repos"))
 GITHUB_TOKEN: Optional[str] = os.environ.get("GITHUB_TOKEN")
+
+# Per-repo locks to prevent overlapping pipeline runs on the same clone
+_repo_locks: Dict[str, threading.Lock] = {}
+_repo_locks_guard = threading.Lock()
 
 
 # ---------------------------------------------------------------------------
@@ -101,12 +122,16 @@ def _parse_push_event(payload: Dict[str, Any]) -> Dict[str, Any]:
 
     head_commit = payload.get("head_commit") or {}
 
+    # Get committer name from the head commit (used to detect Docrot's own pushes)
+    committer_name = head_commit.get("committer", {}).get("name", "")
+
     return {
         "repo_full_name": repo.get("full_name", "unknown/unknown"),
         "clone_url": repo.get("clone_url", ""),
         "branch": branch,
         "head_commit_sha": head_commit.get("id", payload.get("after", "")),
         "head_commit_msg": head_commit.get("message", ""),
+        "head_commit_committer": committer_name,
         "pusher": payload.get("pusher", {}).get("name", "unknown"),
     }
 
@@ -125,7 +150,33 @@ def _run_pipeline_async(push_info: Dict[str, Any]) -> None:
     sha = push_info["head_commit_sha"]
     branch = push_info["branch"]
 
+    # Acquire a per-repo lock so two pushes to the same repo don't
+    # stomp on each other's git operations.
+    with _repo_locks_guard:
+        if repo_name not in _repo_locks:
+            _repo_locks[repo_name] = threading.Lock()
+        lock = _repo_locks[repo_name]
+
+    if not lock.acquire(blocking=False):
+        print(f"[webhook] Skipping {repo_name}@{sha[:8]} — another scan is already running.")
+        sys.stdout.flush()
+        return
+
+    try:
+        _run_pipeline_locked(push_info, repo_name, sha, branch)
+    finally:
+        lock.release()
+
+
+def _run_pipeline_locked(
+    push_info: Dict[str, Any],
+    repo_name: str,
+    sha: str,
+    branch: str,
+) -> None:
+    """Inner pipeline logic, called while holding the per-repo lock."""
     print(f"[webhook] Starting pipeline for {repo_name}@{branch} ({sha[:8]})")
+    sys.stdout.flush()
 
     # 1. Post "pending" commit status
     if GITHUB_TOKEN:
@@ -150,7 +201,30 @@ def _run_pipeline_async(push_info: Dict[str, Any]) -> None:
         # 3. Run the existing pipeline
         exit_code = run_pipeline(repo_path, commit_hash=sha)
 
-        # 4. Post result back as commit status
+        # 4. Push report files back to the repo
+        pushed = commit_and_push_reports(
+            repo_path=repo_path,
+            branch=branch,
+            commit_sha=sha,
+            token=GITHUB_TOKEN,
+            clone_url=push_info["clone_url"],
+        )
+        if pushed:
+            print(f"[webhook] Reports pushed to {repo_name}@{branch}")
+        sys.stdout.flush()
+
+        # 5. Comment on PR (if one exists for this branch)
+        if GITHUB_TOKEN and exit_code == 1:
+            import os as _os
+            report_json_path = _os.path.join(repo_path, ".docrot-report.json")
+            pr_number = find_open_pr_for_branch(repo_name, branch, GITHUB_TOKEN)
+            if pr_number:
+                comment_body = format_pr_comment(report_json_path, sha)
+                if comment_body:
+                    post_pr_comment(repo_name, pr_number, comment_body, GITHUB_TOKEN)
+        sys.stdout.flush()
+
+        # 6. Post result back as commit status
         if GITHUB_TOKEN:
             if exit_code == 0:
                 state, desc = "success", "No documentation rot detected."
@@ -168,10 +242,12 @@ def _run_pipeline_async(push_info: Dict[str, Any]) -> None:
             )
 
         print(f"[webhook] Pipeline finished for {repo_name}@{sha[:8]} — exit code {exit_code}")
+        sys.stdout.flush()
 
     except Exception as exc:
         print(f"[webhook] Pipeline error for {repo_name}@{sha[:8]}: {exc}")
         traceback.print_exc()
+        sys.stdout.flush()
 
         if GITHUB_TOKEN:
             post_commit_status(
@@ -219,6 +295,17 @@ def webhook():
     # Ignore branch deletions (after == "0000...")
     if push_info["head_commit_sha"].startswith("0000000"):
         return jsonify({"status": "branch deletion ignored"}), 200
+
+    # Ignore commits pushed by Docrot itself (prevent infinite loop)
+    is_docrot_commit = (
+        push_info["head_commit_msg"].startswith("[docrot]")
+        or push_info["head_commit_committer"] == "Docrot Detector"
+        or push_info["pusher"] == "Docrot Detector"
+    )
+    if is_docrot_commit:
+        print(f"[webhook] Ignoring Docrot's own push ({push_info['head_commit_sha'][:8]})")
+        sys.stdout.flush()
+        return jsonify({"status": "ignoring docrot's own commit"}), 200
 
     print(
         f"[webhook] Received push: {push_info['repo_full_name']} "
