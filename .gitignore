@@ -12,3 +12,6 @@ repos/
 # Generated scan reports (contain machine-local paths)
 .docrot-report.json
 .docrot-report.txt
+
+# Personal notes
+notes.md
