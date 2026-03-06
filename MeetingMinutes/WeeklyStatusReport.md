@@ -46,13 +46,10 @@
 ---
 
 ### Samuel Say
-- **Hours: 7**
+- **Hours:**
 - **Tasks Complete:**
-  - Created test repositories to test the code on
-  - Worked on sections 9-11 of the spec
 - **Upcoming Tasks:**
 - **Issues:**
-  - Exams this week and next
 
 ---
 
@@ -126,9 +123,13 @@
 ---
 
 ### Samuel Say
-- **Hours:**
+- **Hours: 10**
 - **Tasks Complete:**
+  - Created test repositories to test the code on
+  - Created sections 9-11 of the spec file
+  - Met with team a collective 2-3 hours to work together on project
 - **Upcoming Tasks:**
+  - Integrate db
 - **Issues:**
 
 ---
