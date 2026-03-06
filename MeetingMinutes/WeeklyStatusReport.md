@@ -1,4 +1,5 @@
 # Weekly Individual Status Report
+
 ## Team #2 - Documentation Rot Detector
 
 > This document is updated each week. Each team member logs their hours and contributions for the week. The most recent week appears at the top.
@@ -14,6 +15,7 @@
 ---
 
 ### Marie Liske
+
 - **Hours:**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
@@ -22,6 +24,7 @@
 ---
 
 ### Anusua Halder
+
 - **Hours:**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
@@ -30,6 +33,7 @@
 ---
 
 ### Suchi Jain
+
 - **Hours:**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
@@ -38,6 +42,7 @@
 ---
 
 ### Aaron Santhosh
+
 - **Hours:**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
@@ -46,6 +51,7 @@
 ---
 
 ### Samuel Say
+
 - **Hours:**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
@@ -54,6 +60,7 @@
 ---
 
 ### Portia Hamid
+
 - **Hours:**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
@@ -70,7 +77,8 @@
 ---
 
 ### Marie Liske
-- **Hours: 10** 
+
+- **Hours: 10**
 - **Tasks Complete:**
   - Created sections 1-4 of Project Spec File
   - Created Frontend GitHub repo
@@ -87,14 +95,15 @@
 ---
 
 ### Anusua Halder
-- **Hours: 10** 
+
+- **Hours: 10**
 - **Tasks Complete:**
   - Attended team meeting to discuss MOM#3 and then followed up with team to discuss weekly tasks
   - Reviewed existing spec sections 1-4 and 9-11 written by teammates
-  - Wrote Sections 5-7 of Project Spec File 
+  - Wrote Sections 5-7 of Project Spec File
   - Reviewed Figma wireframe designed by team and sample dashboard
   - Met with team a collective 2-3 hours to work together on project
-  - Set up `.github/workflows/docrot.yml` for GitHub Actions CI integration and `.docrot-config.json` 
+  - Set up `.github/workflows/docrot.yml` for GitHub Actions CI integration and `.docrot-config.json`
   - Reviewed and cleaned up unnecessary documentation in the repo
   - Set up Week 5 Status Report Outline
 - **Upcoming Tasks:**
@@ -103,10 +112,11 @@
   - Begin Figma wireframes for dashboard UI
 - **Issues:**
   - N/A
-   
+
 ---
 
 ### Suchi Jain
+
 - **Hours:**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
@@ -115,14 +125,23 @@
 ---
 
 ### Aaron Santhosh
-- **Hours:**
+
+- **Hours: 10**
 - **Tasks Complete:**
+  - Attended team meeting and followed up with team to discuss weekly tasks
+  - Created Initial Figma Wireframes to visualize the layout of the Docrot Detector including Dashboard, Alerts, and Config Setup
+  - Met with team a collective 2-3 hours to work together on project
+  - Reviewed Project Spec File
 - **Upcoming Tasks:**
+  - Finalize UI Design and assist frontend development
+  - Begin testing
 - **Issues:**
+  - Google Stitch collaboration
 
 ---
 
 ### Samuel Say
+
 - **Hours: 10**
 - **Tasks Complete:**
   - Created test repositories to test the code on
@@ -135,6 +154,7 @@
 ---
 
 ### Portia Hamid
+
 - **Hours:**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
@@ -151,7 +171,8 @@
 ---
 
 ### Marie Liske
-- **Hours: 6** 
+
+- **Hours: 6**
 - **Tasks Complete:**
   - Implemented config-driven documentation mapping so code file patterns (code_glob) map to related docs and trigger doc-review alerts when mapped code changes.
   - Strengthened threshold handling by validating config values, applying safe defaults, and normalizing thresholds before scoring.
@@ -167,6 +188,7 @@
 ---
 
 ### Anusua Halder
+
 - **Hours: 7**
 - **Tasks Complete:**
   - Attended Meeting #2 (February 20) and reviewed all action items from MOM #1
@@ -182,11 +204,12 @@
   - Review pseudocode.py and provide feedback
   - Begin Figma wireframes
 - **Issues:**
-  - N/A 
+  - N/A
 
 ---
 
 ### Suchi Jain
+
 - **Hours: 7**
 - **Tasks Complete:**
   - Attended Meeting #2 (February 20) and reviewed all action items from MOM #1
@@ -198,9 +221,11 @@
   - Start working on UI
 - **Issues:**
   - Switching AI tools in between
+
 ---
 
 ### Aaron Santhosh
+
 - **Hours: 7**
 - **Tasks Complete:**
   - Helped to implement comparator.py, the core semantic diff engine that compares old vs. new function fingerprints to determine whether code changes are significant enough to make documentation stale
@@ -214,6 +239,7 @@
 ---
 
 ### Samuel Say
+
 - **Hours: 8**
 - **Tasks Complete:**
   - Implemented run.py, the main entry point for the Documentation Rot Detector that ties together all existing modules into a complete working pipeline
@@ -231,6 +257,7 @@
 ---
 
 ### Portia Hamid
+
 - **Hours: 8**
 - **Tasks Complete:**
   - Finalized the weight-based mismatch detection pseudocode (`pseudocode.py`), incorporating team feedback and validating logic with Claude Opus 4.6
@@ -255,6 +282,7 @@
 ---
 
 ### Marie Liske
+
 - **Hours:** 2
 - **Tasks Complete:**
   - Set up Jira board and organized Sprint 2 tasks
@@ -273,6 +301,7 @@
 ---
 
 ### Anusua Halder
+
 - **Hours:** 1
 - **Tasks Complete:**
   - Prepared and documented Minutes of Meeting (MOM #1 and MOM #2)
@@ -287,6 +316,7 @@
 ---
 
 ### Suchi Jain
+
 - **Hours:** 1
 - **Tasks Complete:**
   - Set up the GitHub repository (CS4485_Capstone)
@@ -302,6 +332,7 @@
 ---
 
 ### Aaron Santhosh
+
 - **Hours:** 1
 - **Tasks Complete:**
   - Attended and participated in weekly team meeting (February 20, 2026)
@@ -317,6 +348,7 @@
 ---
 
 ### Samuel Say
+
 - **Hours:** 1
 - **Tasks Complete:**
   - Researched and finalized AI development tools for the team (GitHub Copilot, VS Code, Cursor)
@@ -330,6 +362,7 @@
 ---
 
 ### Portia Hamid
+
 - **Hours:** 2
 - **Tasks Complete:**
   - Led pseudocode development for the weight-based mismatch detection algorithm
@@ -350,11 +383,12 @@
 
 **Total Hours Spent: N/A**
 
-> *Note: Individual hour tracking began Week 2. Week 1 consisted of the initial team meeting, role assignments, and project proposal finalization.*
+> _Note: Individual hour tracking began Week 2. Week 1 consisted of the initial team meeting, role assignments, and project proposal finalization._
 
 ---
 
 ### Marie Liske
+
 - **Hours:** N/A
 - **Tasks Complete:** N/A
 - **Upcoming Tasks:** N/A
@@ -363,6 +397,7 @@
 ---
 
 ### Anusua Halder
+
 - **Hours:** N/A
 - **Tasks Complete:** N/A
 - **Upcoming Tasks:** N/A
@@ -371,6 +406,7 @@
 ---
 
 ### Suchi Jain
+
 - **Hours:** N/A
 - **Tasks Complete:** N/A
 - **Upcoming Tasks:** N/A
@@ -379,6 +415,7 @@
 ---
 
 ### Aaron Santhosh
+
 - **Hours:** N/A
 - **Tasks Complete:** N/A
 - **Upcoming Tasks:** N/A
@@ -387,6 +424,7 @@
 ---
 
 ### Samuel Say
+
 - **Hours:** N/A
 - **Tasks Complete:** N/A
 - **Upcoming Tasks:** N/A
@@ -395,6 +433,7 @@
 ---
 
 ### Portia Hamid
+
 - **Hours:** N/A
 - **Tasks Complete:** N/A
 - **Upcoming Tasks:** N/A
