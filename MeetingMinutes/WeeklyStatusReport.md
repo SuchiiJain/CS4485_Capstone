@@ -14,28 +14,40 @@
 ---
 
 ### Marie Liske
-- **Hours:** 10
+- **Hours: 10** 
 - **Tasks Complete:**
   - Created sections 1-4 of Project Spec File
   - Created Frontend GitHub repo
   - Created sample dashboard using Figma wireframes designed by team
-  - Created a sample repo to test webhook implementation]
+  - Created a sample repo to test webhook implementation
   - Worked to test and debug with team
   - Met with team a collective 2-3 hours to work together on project
 - **Upcoming Tasks:**
   - Connect frontend to display backend data
   - Create additional test repos
 - **Issues:**
-  N/A
+  - N/A
 
 ---
 
 ### Anusua Halder
-- **Hours:**
+- **Hours: 10** 
 - **Tasks Complete:**
+  - Attended team meeting to discuss MOM#3 and then followed up with team to discuss weekly tasks
+  - Reviewed existing spec sections 1-4 and 9-11 written by teammates
+  - Wrote Sections 5-7 of Project Spec File 
+  - Reviewed Figma wireframe designed by team and sample dashboard
+  - Met with team a collective 2-3 hours to work together on project
+  - Set up `.github/workflows/docrot.yml` for GitHub Actions CI integration and `.docrot-config.json` 
+  - Reviewed and cleaned up unnecessary documentation in the repo
 - **Upcoming Tasks:**
+  - Upload completed spec file to GitHub repo after team completes it
+  - Begin writing MOM for Week 4 meeting notes and upload it to GitHub
+  - Set up Week 5 Status Report Outline
+  - Begin Figma wireframes for dashboard UI
 - **Issues:**
-
+  - N/A
+   
 ---
 
 ### Suchi Jain
@@ -79,7 +91,7 @@
 ---
 
 ### Marie Liske
-- **Hours:** 6
+- **Hours: 6** 
 - **Tasks Complete:**
   - Implemented config-driven documentation mapping so code file patterns (code_glob) map to related docs and trigger doc-review alerts when mapped code changes.
   - Strengthened threshold handling by validating config values, applying safe defaults, and normalizing thresholds before scoring.
