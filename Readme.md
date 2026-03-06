@@ -275,6 +275,7 @@ jobs:
   docrot:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       issues: write
     steps:
       - uses: actions/checkout@v4
@@ -295,6 +296,28 @@ That's it. On every push, Docrot will:
 |-------|----------|---------|-------------|
 | `repo_path` | No | `.` | Path to the repository root to scan |
 | `create_issue` | No | `true` | Create/update a GitHub issue when alerts are found |
+
+### Configuration
+
+The Action reads `.docrot-config.json` from the root of the repo it's scanning. This is how users configure doc mappings and thresholds — just add the file to their own repo:
+
+```json
+{
+  "language": "python",
+  "doc_mappings": [
+    {
+      "code_glob": "src/*.py",
+      "docs": ["Readme.md", "Architecture.md"]
+    }
+  ],
+  "thresholds": {
+    "per_function_substantial": 4,
+    "per_doc_cumulative": 8
+  }
+}
+```
+
+If the file is absent, Docrot runs with no doc mappings and default thresholds — it will still scan and report function-level changes, but won't flag specific documentation files.
 
 ### How It Works
 
