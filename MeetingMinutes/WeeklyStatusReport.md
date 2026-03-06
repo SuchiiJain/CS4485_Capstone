@@ -80,7 +80,7 @@
 
 - **Hours: 10**
 - **Tasks Complete:**
-  - Created sections 1-4 of Project Spec File
+  - Created sections 1-4 & 12-14 of Project Spec File
   - Created Frontend GitHub repo
   - Created sample dashboard using Figma wireframes designed by team
   - Created a sample repo to test webhook implementation
