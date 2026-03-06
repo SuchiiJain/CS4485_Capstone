@@ -72,7 +72,7 @@
 
 **Team Leader for Week 4: Samuel Say**
 
-**Total Hours Spent:**
+**Total Hours Spent: 54**
 
 ---
 
