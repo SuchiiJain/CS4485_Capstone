@@ -410,6 +410,5 @@ N/A
 
 ●       **Design Document:**  https://www.figma.com/buzz/mL6QjBH9IeETv4zAOJ3g94/CS4485-Project?t=oaZD6SpJSEi8n9Ey-1
 
-●       **Spec File:** [ [https://www.figma.com/buzz/mL6QjBH9IeETv4zAOJ3g94/CS4485-Project?t=oaZD6SpJSEi8n9Ey-1](https://docs.google.com/document/d/1SyV_tq7JigWuA7d5Yr3JC47hMbE_rXriLL92Z8l2z6Q/edit?usp=sharing)](https://docs.google.com/document/d/1SyV_tq7JigWuA7d5Yr3JC47hMbE_rXriLL92Z8l2z6Q/edit?tab=t.0)
-
+●       **Spec File:** https://docs.google.com/document/d/1SyV_tq7JigWuA7d5Yr3JC47hMbE_rXriLL92Z8l2z6Q/edit?tab=t.0
 
