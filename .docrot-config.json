@@ -3,7 +3,7 @@
   "doc_mappings": [
     {
       "code_glob": "src/*.py",
-      "docs": ["Readme.md", "Architecture.md"]
+      "docs": ["Readme.md", "docs/Architecture.md"]
     },
     {
       "code_glob": "examples/*.py",

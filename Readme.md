@@ -50,7 +50,7 @@ On subsequent runs, Docrot compares current fingerprints against the stored base
 ```
 .
 ├── API_Contract.md         # API design and contract documentation
-├── Architecture.md         # System architecture and design notes
+├── docs/Architecture.md   # System architecture and design notes
 ├── brainstorming.txt       # Project brainstorming and decisions
 ├── Proposal.md             # Project proposal document
 ├── pseudocode.py           # Pseudocode reference for the pipeline
@@ -110,7 +110,7 @@ Create a `.docrot-config.json` in the repository root:
   "doc_mappings": [
     {
       "code_glob": "src/*.py",
-      "docs": ["Readme.md", "Architecture.md"]
+      "docs": ["Readme.md", "docs/Architecture.md"]
     },
     {
       "code_glob": "examples/*.py",
