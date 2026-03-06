@@ -117,10 +117,15 @@
 
 ### Suchi Jain
 
-- **Hours:**
+- **Hours: N/A**
 - **Tasks Complete:**
+  - N/A
 - **Upcoming Tasks:**
+  - Create database
+  - Begin working on Figma wireframes
 - **Issues:**
+  - Car accident
+  - Laptop issues
 
 ---
 
