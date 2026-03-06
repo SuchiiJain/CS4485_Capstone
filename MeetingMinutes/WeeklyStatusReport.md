@@ -5,11 +5,67 @@
 
 ---
 
+# Week 4 — March 2-6, 2026
+
+**Team Leader for Week 4: Samuel Say**
+
+**Total Hours Spent:**
+
+---
+
+### Marie Liske
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Anusua Halder
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Suchi Jain
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Aaron Santhosh
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Samuel Say
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Portia Hamid
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
 # Week 3 — February 23-27, 2026
 
 **Team Leader for Week 3: Samuel Say**
 
-**Total Hours Spent:**
+**Total Hours Spent: 43**
 
 ---
 
@@ -50,18 +106,29 @@
 ---
 
 ### Suchi Jain
-- **Hours:**
+- **Hours: 7**
 - **Tasks Complete:**
+  - Attended Meeting #2 (February 20) and reviewed all action items from MOM #1
+  - Attended in-person team meetup on Monday to align on priorities and delegate tasks on Jira
+  - Created Postgres DB on Local Machine and pushed SQL file to main branch
+  - Reviewed Pseudocode.py and provided feedback
 - **Upcoming Tasks:**
+  - Finish creating test datasets and repos to train the model
+  - Start working on UI
 - **Issues:**
-
+  - Switching AI tools in between
 ---
 
 ### Aaron Santhosh
-- **Hours:**
+- **Hours: 7**
 - **Tasks Complete:**
+  - Helped to implement comparator.py, the core semantic diff engine that compares old vs. new function fingerprints to determine whether code changes are significant enough to make documentation stale
+  - Implemented compare_file_functions() to evaluate file-level function changes (added/removed/modified) with hash-based fast-path skipping for unchanged functions and public-API-aware add/remove alerts.
 - **Upcoming Tasks:**
+  - Reconcile conceptual overlap between comparator.py/alerts.py and flagging_threshold.py detection pipelines
+  - Test comparator output against sample repositories once test datasets are ready
 - **Issues:**
+  - N/A
 
 ---
 

@@ -23,6 +23,7 @@ import time
 import argparse
 from typing import Dict, List, Optional
 
+# FIX: All files are in the same flat directory — no 'src.' prefix needed.
 from src.ast_parser import extract_function_fingerprints
 from src.comparator import compare_file_functions
 from src.alerts import (
