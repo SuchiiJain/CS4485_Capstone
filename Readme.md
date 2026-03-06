@@ -63,8 +63,8 @@ On subsequent runs, Docrot compares current fingerprints against the stored base
 │   ├── example_basic_ast.py
 │   ├── example_compare.py
 │   ├── example_fingerprinting.py
-│   ├── sample_code_v1.py
-│   └── sample_code_v2.py
+│   ├── sample_code_v1.py   # Sample "before" code for testing
+│   └── sample_code_v2.py   # Sample "after" code for testing
 ├── MeetingMinutes/
 │   ├── CS4485_T2_MOM1.md
 │   ├── CS4485_T2_MOM2.md
@@ -72,18 +72,18 @@ On subsequent runs, Docrot compares current fingerprints against the stored base
 │   ├── CS4485_T2_MOM4.md
 │   ├── README.md
 │   └── WeeklyStatusReport.md
-└── src/
+└── src/                    # Core source code
     ├── __init__.py
-    ├── alerts.py
-    ├── ast_parser.py
-    ├── comparator.py
-    ├── config.py
-    ├── fingerprint.py
-    ├── flagging_threshold.py
-    ├── models.py
-    ├── persistence.py
-    ├── report_generation.py
-    └── run.py
+    ├── alerts.py           # Alert evaluation + CI/report publishing
+    ├── ast_parser.py       # Python AST parsing + function extraction
+    ├── comparator.py       # Feature diffing + weighted scoring engine
+    ├── config.py           # Config loading + code→doc mapping
+    ├── fingerprint.py      # Semantic feature extraction + hashing
+    ├── flagging_threshold.py  # Flag dataclasses, severity enums, and all check functions
+    ├── models.py           # Dataclasses (fingerprints, deltas, events, alerts)
+    ├── persistence.py      # JSON fingerprint storage (load/save/serialize)
+    ├── report_generation.py   # Generates .txt and .json scan reports from flags
+    └── run.py              # Full pipeline entry point (scan entire repo)
 ```
 
 ## Module Summary
