@@ -1,0 +1,17 @@
+{
+  "language": "python",
+  "doc_mappings": [
+    {
+      "code_glob": "src/payments.py",
+      "docs": ["docs/payments.md", "docs/api-reference.md"]
+    },
+    {
+      "code_glob": "src/database.py",
+      "docs": ["docs/database.md", "docs/api-reference.md"]
+    }
+  ],
+  "thresholds": {
+    "per_function_substantial": 4,
+    "per_doc_cumulative": 8
+  }
+}
