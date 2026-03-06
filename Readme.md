@@ -49,21 +49,22 @@ On subsequent runs, Docrot compares current fingerprints against the stored base
 
 ```
 .
-├── API_Contract.md         # API design and contract documentation
-├── docs/Architecture.md   # System architecture and design notes
-├── brainstorming.txt       # Project brainstorming and decisions
-├── Proposal.md             # Project proposal document
-├── pseudocode.py           # Pseudocode reference for the pipeline
-├── run.py                  # Quick-test CLI (compare two files or fingerprint one)
 ├── Readme.md               # This file
+├── run.py                  # Quick-test CLI (compare two files or fingerprint one)
+├── docs/
+│   ├── API_Contract.md     # API design and contract documentation
+│   ├── Architecture.md     # System architecture and design notes
+│   ├── Proposal.md         # Project proposal document
+│   ├── brainstorming.txt   # Project brainstorming and decisions
+│   └── pseudocode.py       # Pseudocode reference for the pipeline
 ├── database/
 │   └── schema.sql          # Database schema (post-MVP: SQLite)
 ├── examples/
 │   ├── example_basic_ast.py
 │   ├── example_compare.py
 │   ├── example_fingerprinting.py
-│   ├── sample_code_v1.py   # Sample "before" code for testing
-│   └── sample_code_v2.py   # Sample "after" code for testing
+│   ├── sample_code_v1.py
+│   └── sample_code_v2.py
 ├── MeetingMinutes/
 │   ├── CS4485_T2_MOM1.md
 │   ├── CS4485_T2_MOM2.md
@@ -71,18 +72,18 @@ On subsequent runs, Docrot compares current fingerprints against the stored base
 │   ├── CS4485_T2_MOM4.md
 │   ├── README.md
 │   └── WeeklyStatusReport.md
-└── src/                    # Core source code
+└── src/
     ├── __init__.py
-    ├── alerts.py           # Alert evaluation + CI/report publishing
-    ├── ast_parser.py       # Python AST parsing + function extraction
-    ├── comparator.py       # Feature diffing + weighted scoring engine
-    ├── config.py           # Config loading + code→doc mapping
-    ├── fingerprint.py      # Semantic feature extraction + hashing
-    ├── models.py           # Dataclasses (fingerprints, deltas, events, alerts)
-    ├── persistence.py      # JSON fingerprint storage (load/save/serialize)
-    ├── flagging_threshold.py  # Flag dataclasses, severity enums, and all check functions
-    ├── report_generation.py   # Generates .txt and .json scan reports from flags
-    └── run.py              # Full pipeline entry point (scan entire repo)
+    ├── alerts.py
+    ├── ast_parser.py
+    ├── comparator.py
+    ├── config.py
+    ├── fingerprint.py
+    ├── flagging_threshold.py
+    ├── models.py
+    ├── persistence.py
+    ├── report_generation.py
+    └── run.py
 ```
 
 ## Module Summary
@@ -165,7 +166,7 @@ If the config file is missing, defaults are used (no doc mappings, standard thre
 1. **Clone the repository:**
    ```sh
    git clone <repo-url>
-   cd Docrot-Detector
+   cd CS4485_Capstone
    ```
 
 2. **Python version:** Requires Python 3.8+. No external dependencies for MVP (uses only the standard library).
