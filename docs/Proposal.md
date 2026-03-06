@@ -402,8 +402,14 @@ N/A
 **Links**
 ---------
 
-●       **GitHub Repository:** [https://github.com/SuchiiJain/CS4485\_Capstone](https://github.com/SuchiiJain/CS4485_Capstone)
+●       **GitHub Backend Repository:** [https://github.com/SuchiiJain/CS4485\_Capstone](https://github.com/SuchiiJain/CS4485_Capstone)
+
+●       **GitHub Frontend Repository:** [[https://github.com/SuchiiJain/CS4485\_Capstone](https://github.com/SuchiiJain/CS4485_Capstone)](https://github.com/marieliske/CS4485_Capstone_Frontend)
 
 ●       **Jira**: [https://cs4485-team2.atlassian.net/jira/software/projects/SCRUM/summary](https://cs4485-team2.atlassian.net/jira/software/projects/SCRUM/summary)
 
 ●       **Design Document:**  https://www.figma.com/buzz/mL6QjBH9IeETv4zAOJ3g94/CS4485-Project?t=oaZD6SpJSEi8n9Ey-1
+
+●       **Spec File:**  [https://www.figma.com/buzz/mL6QjBH9IeETv4zAOJ3g94/CS4485-Project?t=oaZD6SpJSEi8n9Ey-1](https://docs.google.com/document/d/1SyV_tq7JigWuA7d5Yr3JC47hMbE_rXriLL92Z8l2z6Q/edit?usp=sharing)
+
+
