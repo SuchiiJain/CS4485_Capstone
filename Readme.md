@@ -258,9 +258,53 @@ alerts = evaluate_doc_flags(events, doc_mappings, thresholds)
 publish_alerts_to_log(alerts)
 ```
 
+## GitHub Action (Recommended)
+
+The easiest way to use Docrot Detector is as a GitHub Action. No server, no tokens to configure — just add a workflow file to your repo.
+
+### Quick Start
+
+Create `.github/workflows/docrot.yml` in your repository:
+
+```yaml
+name: Docrot Detector
+on: [push]
+
+jobs:
+  docrot:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: SuchiiJain/CS4485_Capstone@main
+```
+
+That's it. On every push, Docrot will:
+1. Scan all Python files for semantic code changes
+2. Compare against the stored baseline (`.docrot-fingerprints.json`)
+3. If documentation rot is detected, **create a GitHub issue** with a detailed report
+4. If a previous issue exists and the scan is now clean, **close it automatically**
+
+### Action Inputs
+
+| Input | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `repo_path` | No | `.` | Path to the repository root to scan |
+| `create_issue` | No | `true` | Create/update a GitHub issue when alerts are found |
+
+### How It Works
+
+- The Action uses the `GITHUB_TOKEN` provided automatically by GitHub Actions — no PATs or shared accounts needed.
+- A `docrot` label is created automatically on the first alert.
+- If alerts are found, a single issue is created (or the existing one is updated).
+- When a subsequent scan is clean, the issue is closed automatically.
+
 ## GitHub Webhook Server
 
-Docrot can run as a webhook server that automatically scans repos when code is pushed to GitHub.
+Docrot can also run as a webhook server that automatically scans repos when code is pushed to GitHub.
 
 ### Quick Start
 
