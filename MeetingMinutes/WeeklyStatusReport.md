@@ -5,6 +5,62 @@
 
 ---
 
+# Week 5 — March 9-13, 2026
+
+**Team Leader for Week 5: Anusua Halder**
+
+**Total Hours Spent:**
+
+---
+
+### Marie Liske
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Anusua Halder
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Suchi Jain
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Aaron Santhosh
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Samuel Say
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Portia Hamid
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
 # Week 4 — March 2-6, 2026
 
 **Team Leader for Week 4: Samuel Say**
