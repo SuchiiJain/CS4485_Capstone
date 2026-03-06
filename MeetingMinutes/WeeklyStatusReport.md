@@ -96,10 +96,10 @@
   - Met with team a collective 2-3 hours to work together on project
   - Set up `.github/workflows/docrot.yml` for GitHub Actions CI integration and `.docrot-config.json` 
   - Reviewed and cleaned up unnecessary documentation in the repo
+  - Set up Week 5 Status Report Outline
 - **Upcoming Tasks:**
   - Upload completed spec file to GitHub repo after team completes it
   - Begin writing MOM for Week 4 meeting notes and upload it to GitHub
-  - Set up Week 5 Status Report Outline
   - Begin Figma wireframes for dashboard UI
 - **Issues:**
   - N/A
