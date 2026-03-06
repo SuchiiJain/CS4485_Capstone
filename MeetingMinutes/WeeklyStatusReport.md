@@ -14,10 +14,19 @@
 ---
 
 ### Marie Liske
-- **Hours:**
+- **Hours:** 10
 - **Tasks Complete:**
+  - Created sections 1-4 of Project Spec File
+  - Created Frontend GitHub repo
+  - Created sample dashboard using Figma wireframes designed by team
+  - Created a sample repo to test webhook implementation]
+  - Worked to test and debug with team
+  - Met with team a collective 2-3 hours to work together on project
 - **Upcoming Tasks:**
+  - Connect frontend to display backend data
+  - Create additional test repos
 - **Issues:**
+  N/A
 
 ---
 
