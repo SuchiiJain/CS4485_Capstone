@@ -82,6 +82,11 @@ On subsequent runs, Docrot compares current fingerprints against the stored base
     ├── flagging_threshold.py  # Flag dataclasses, severity enums, and all check functions
     ├── models.py           # Dataclasses (fingerprints, deltas, events, alerts)
     ├── persistence.py      # JSON fingerprint storage (load/save/serialize)
+    ├── flagging_threshold.py  # Flag dataclasses, severity enums, and all check functions
+    ├── report_generation.py     # Generates .txt and .json scan reports from flags
+    ├── run.py                # Full pipeline entry point (scan entire repo)
+    ├── webhook_server.py     # Flask webhook server for GitHub push events
+    └── github_integration.py # Git clone/pull + GitHub API (commit statuses)
     ├── report_generation.py   # Generates .txt and .json scan reports from flags
     └── run.py              # Full pipeline entry point (scan entire repo)
 ```
@@ -100,6 +105,8 @@ On subsequent runs, Docrot compares current fingerprints against the stored base
 | `flagging_threshold.py` | Flag dataclasses (`Flag`, `CodeElement`, `DocReference`), severity enums, `SEVERITY_MAP`, and all `check_*` detection functions |
 | `report_generation.py` | `ScanReport` class, `generate_txt_report()`, `generate_json_report()`, and `generate_reports()` entry point — outputs `.docrot-report.txt` and `.docrot-report.json` |
 | `src/run.py` | Full pipeline entry point — scans an entire repo directory, extracts fingerprints for all `.py` files, compares against stored baseline, scores changes, maps to docs, prints a summary report, and writes JSON artifacts |
+| `src/webhook_server.py` | Flask app that receives GitHub webhook `push` events, verifies HMAC signatures, and spawns background pipeline runs |
+| `src/github_integration.py` | Clones/pulls repos via git CLI, posts commit statuses and PR comments via the GitHub REST API |
 
 ## Configuration
 
@@ -257,12 +264,128 @@ alerts = evaluate_doc_flags(events, doc_mappings, thresholds)
 publish_alerts_to_log(alerts)
 ```
 
+## GitHub Action (Recommended)
+
+The easiest way to use Docrot Detector is as a GitHub Action. No server, no tokens to configure — just add a workflow file to your repo.
+
+### Quick Start
+
+Create `.github/workflows/docrot.yml` in your repository:
+
+```yaml
+name: Docrot Detector
+on: [push]
+
+jobs:
+  docrot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: SuchiiJain/CS4485_Capstone@main
+```
+
+That's it. On every push, Docrot will:
+1. Scan all Python files for semantic code changes
+2. Compare against the stored baseline (`.docrot-fingerprints.json`)
+3. If documentation rot is detected, **create a GitHub issue** with a detailed report
+4. If a previous issue exists and the scan is now clean, **close it automatically**
+
+### Action Inputs
+
+| Input | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `repo_path` | No | `.` | Path to the repository root to scan |
+| `create_issue` | No | `true` | Create/update a GitHub issue when alerts are found |
+
+### Configuration
+
+The Action reads `.docrot-config.json` from the root of the repo it's scanning. This is how users configure doc mappings and thresholds — just add the file to their own repo:
+
+```json
+{
+  "language": "python",
+  "doc_mappings": [
+    {
+      "code_glob": "src/*.py",
+      "docs": ["Readme.md", "Architecture.md"]
+    }
+  ],
+  "thresholds": {
+    "per_function_substantial": 4,
+    "per_doc_cumulative": 8
+  }
+}
+```
+
+If the file is absent, Docrot runs with no doc mappings and default thresholds — it will still scan and report function-level changes, but won't flag specific documentation files.
+
+### How It Works
+
+- The Action uses the `GITHUB_TOKEN` provided automatically by GitHub Actions — no PATs or shared accounts needed.
+- A `docrot` label is created automatically on the first alert.
+- If alerts are found, a single issue is created (or the existing one is updated).
+- When a subsequent scan is clean, the issue is closed automatically.
+
+## GitHub Webhook Server
+
+Docrot can also run as a webhook server that automatically scans repos when code is pushed to GitHub.
+
+### Quick Start
+
+```sh
+# Install webhook dependencies
+pip install -r requirements.txt
+
+# Set your webhook secret
+export DOCROT_WEBHOOK_SECRET=$(python -c "import secrets; print(secrets.token_hex(32))")
+
+# (Optional) Set a GitHub token for private repos + commit status posting
+export GITHUB_TOKEN=ghp_your_token_here
+
+# Start the server
+python -m src.webhook_server
+```
+
+### Setting Up the GitHub Webhook
+
+1. Go to your GitHub repo → **Settings** → **Webhooks** → **Add webhook**
+2. **Payload URL**: `http://<your-server>:5000/webhook`
+3. **Content type**: `application/json`
+4. **Secret**: paste the same value as `DOCROT_WEBHOOK_SECRET`
+5. **Events**: select "Just the push event"
+6. Click **Add webhook**
+
+Now every push to the repo will trigger a Docrot scan. If `GITHUB_TOKEN` is set, results appear as commit status checks (✓/✗) on commits and PRs.
+
+### Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/webhook` | POST | GitHub webhook receiver |
+| `/health` | GET | Health check |
+
+### Environment Variables
+
+See `.env.example` for the full list. Key variables:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DOCROT_WEBHOOK_SECRET` | Yes | Shared HMAC secret for signature verification |
+| `GITHUB_TOKEN` | No | PAT for private repos + commit status posting |
+| `DOCROT_CLONE_DIR` | No | Directory for cloned repos (default: `./repos`) |
+| `DOCROT_PORT` | No | Server port (default: `5000`) |
+
 ## MVP Scope
 
 - **Language:** Python only (uses the built-in `ast` module).
-- **Trigger:** CI run or manual invocation.
+- **Trigger:** GitHub webhook (push events), CI run, or manual invocation.
 - **Storage:** JSON file (`.docrot-fingerprints.json`). SQLite planned for post-MVP.
-- **Output:** CI log warnings + `.docrot-report.json` artifact. PR comments planned for post-MVP.
+- **Output:** CI log warnings + `.docrot-report.json` artifact + GitHub commit statuses. PR comments planned for post-MVP.
 - **Thresholds:** Global only. Per-module overrides planned for post-MVP.
 
 ## License

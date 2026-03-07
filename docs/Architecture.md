@@ -108,7 +108,69 @@ The current `src/` modules map to the architecture as follows:
 | `src/models.py` | Shared data structures (events, fingerprints) |
 | `src/persistence.py` | Persistence (load/store fingerprints) |
 | `src/alerts.py` | Alert Layer (evaluate + publish) |
+| `src/webhook_server.py` | GitHub Webhook Trigger Layer |
+| `src/github_integration.py` | Git operations + GitHub API |
 | `database/schema.sql` | Post-MVP persistence (SQLite) |
+
+## GitHub Webhook Integration
+
+The trigger layer is implemented as a Flask webhook server that receives GitHub `push` events and automatically runs the Docrot pipeline.
+
+### Data Flow
+
+```
+GitHub Push Event
+       │
+       ▼
+┌──────────────────────────────────────────────────────────┐
+│  webhook_server.py                                       │
+│  POST /webhook                                           │
+│  ► Verify HMAC-SHA256 signature                          │
+│  ► Parse push payload (repo, branch, commit SHA)         │
+│  ► Spawn background thread                               │
+└──────────────────┬───────────────────────────────────────┘
+                   │
+                   ▼
+┌──────────────────────────────────────────────────────────┐
+│  github_integration.py                                   │
+│  clone_or_pull_repo()                                    │
+│  ► Clone repo (shallow) or fetch + reset existing clone  │
+│  ► Checkout target branch                                │
+└──────────────────┬───────────────────────────────────────┘
+                   │  local repo path
+                   ▼
+┌──────────────────────────────────────────────────────────┐
+│  run.py → existing pipeline                              │
+│  ► Scan → Fingerprint → Compare → Score → Alert          │
+└──────────────────┬───────────────────────────────────────┘
+                   │  exit code (0=clean, 1=issues, 2=error)
+                   ▼
+┌──────────────────────────────────────────────────────────┐
+│  github_integration.py                                   │
+│  post_commit_status()                                    │
+│  ► POST to GitHub Statuses API                           │
+│  ► Shows ✓/✗ on commits and PRs                          │
+└──────────────────────────────────────────────────────────┘
+```
+
+### Setup
+
+1. Deploy the webhook server (e.g. on a VM, container, or tunnel like ngrok)
+2. Set environment variables (see `.env.example`)
+3. In GitHub repo → Settings → Webhooks → Add webhook:
+   - **Payload URL**: `http://<your-server>:5000/webhook`
+   - **Content type**: `application/json`
+   - **Secret**: same as `DOCROT_WEBHOOK_SECRET`
+   - **Events**: "Just the push event"
+
+### Environment Variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `DOCROT_WEBHOOK_SECRET` | Yes | Shared HMAC secret for signature verification |
+| `GITHUB_TOKEN` | No | PAT for private repos + commit status posting |
+| `DOCROT_CLONE_DIR` | No | Directory for cloned repos (default: `./repos`) |
+| `DOCROT_PORT` | No | Server port (default: `5000`) |
 
 ## Design Principles
 

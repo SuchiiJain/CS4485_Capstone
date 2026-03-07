@@ -3,6 +3,15 @@ __pycache__/
 *.pyo
 *.pyd
 
+# Environment variables (contains secrets — never commit this)
+.env
+
+# Cloned repos from webhook server
+repos/
+
+# Personal notes
+notes.md
+
 # Virtual environments
 .venv/
 venv/

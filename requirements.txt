@@ -1,0 +1,12 @@
+# Docrot Detector — Python dependencies
+
+# Core (no external deps for the base pipeline — stdlib only)
+
+# Webhook server
+flask>=3.0,<4.0
+
+# GitHub integration (clone uses git CLI; API calls use requests)
+requests>=2.31,<3.0
+
+# Auto-load .env file for server config
+python-dotenv>=1.0,<2.0

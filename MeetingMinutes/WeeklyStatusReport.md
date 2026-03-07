@@ -60,6 +60,7 @@
 ---
 
 ### Portia Hamid
+- **Hours:** 14
 
 - **Hours:**
 - **Tasks Complete:**
@@ -163,8 +164,15 @@
 
 - **Hours:**
 - **Tasks Complete:**
+  - Team meeting to divvy up tasks
+  - Researched GitHub webhooks, flask servers, tunnels, and how everything fits together
+  - Tested and found that webhooks weren't sufficient, pivoted to researching GitHub actions instead
+  - Decided on integrating via a GitHub action that creates an issue on GitHub when it detects potentially stale documentation
+  - Completed GitHub integration
 - **Upcoming Tasks:**
+  - Still waiting on more repos to do more robust testing, a database to replace the current .JSON, and a frontend to hook everything up to.
 - **Issues:**
+  - Started with figuring out how to do it via a webhook, hosting a flask server and an ngrok tunnel on my personal machine. Ultimately discovered that this method was fundamentally flawed because it required too many permissions. Ended up scrapping all of it and going with a github action instead. Left the webhook code in place just in case the user wants to ever host it completely locally, I guess.
 
 ---
 

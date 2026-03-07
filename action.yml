@@ -1,0 +1,40 @@
+name: "Docrot Detector"
+description: "Detect documentation rot by analyzing semantic code changes at the AST level."
+branding:
+  icon: "alert-triangle"
+  color: "yellow"
+
+inputs:
+  repo_path:
+    description: "Path to the repository root to scan (default: workspace root)."
+    required: false
+    default: "."
+  create_issue:
+    description: "Create or update a GitHub issue when alerts are found (true/false)."
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Install Docrot Detector
+      shell: bash
+      run: |
+        pip install --quiet requests
+
+    - name: Run Docrot scan
+      id: scan
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_SHA: ${{ github.sha }}
+        INPUT_REPO_PATH: ${{ inputs.repo_path }}
+        INPUT_CREATE_ISSUE: ${{ inputs.create_issue }}
+      run: |
+        python "${{ github.action_path }}/action_entrypoint.py"
