@@ -18,7 +18,7 @@ Expected config shape:
     "doc_mappings": [
         {
             "code_glob": "src/*.py",
-            "docs": ["Readme.md", "Architecture.md"]
+            "docs": ["Readme.md", "docs/Architecture.md"]
         }
     ],
     "thresholds": {
