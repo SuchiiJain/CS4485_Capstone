@@ -16,10 +16,17 @@
 
 ### Marie Liske
 
-- **Hours:**
+- **Hours:** 7
 - **Tasks Complete:**
+  - Created additional wireframes in Google Stitch/Figma for additional views ans screens, building on the ones created last week
+  - Updated frontend to create corresponding React web pages
+    - Using static data
+  - Refreshed knowledge on how to use use APIs in React (2 hrs)
 - **Upcoming Tasks:**
+  - Assist team in conecting frontend to backend
+  - Start researching how to integrate AI powered suggestions
 - **Issues:**
+  - Was not sure how to best set up frontend dashboards to be easily integratable with backend APIs, had to research.
 
 ---
 
