@@ -60,12 +60,18 @@
 ---
 
 ### Portia Hamid
-- **Hours:** 14
-
-- **Hours:**
+- **Hours:** 6
 - **Tasks Complete:**
+  - Researched FastAPI and how it's used to connect the frontend to the backend
+  - Tested the frontend that Marie has been working on, which seems to currently be using hardcoded test data since we don't have a database set up to connect an API to
+  - While the database is being worked on, I created a branch on the backend for implementing a FastAPI app that will read the json files and create a connection point for the frontend so we can do further frontend testing even without a database. Once it's ready, the database queries can replace the json in the API.
+  - Began brainstorming and research into a possible VSCode extension. Used Claude Sonnet to help brainstorm and plan.
+  - Got a rough idea of how a VSCode extension could be implemented, what its functionality could be, and what role it would play in the whole of the program
 - **Upcoming Tasks:**
+  - Get the frontend actually connected to the backend so we can see it working in action
+  - Begin implementing a VSCode extension
 - **Issues:**
+  - Needed to research how to get an API set up without having a database yet that can store the information
 
 ---
 
@@ -162,7 +168,7 @@
 
 ### Portia Hamid
 
-- **Hours:**
+- **Hours: 14**
 - **Tasks Complete:**
   - Team meeting to divvy up tasks
   - Researched GitHub webhooks, flask servers, tunnels, and how everything fits together
