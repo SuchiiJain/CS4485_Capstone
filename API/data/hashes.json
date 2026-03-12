@@ -1,0 +1,23 @@
+[
+  {
+    "file": "src/simple_todo/service.py",
+    "symbol": "add_task",
+    "hash": "abc123def456abc123def456abc123def456abc123def456abc123def456abcd",
+    "start_line": 10,
+    "end_line": 25
+  },
+  {
+    "file": "src/simple_todo/service.py",
+    "symbol": "list_tasks",
+    "hash": "bbb222ccc333bbb222ccc333bbb222ccc333bbb222ccc333bbb222ccc333bbbb",
+    "start_line": 27,
+    "end_line": 40
+  },
+  {
+    "file": "src/image_filtering.py",
+    "symbol": "apply_filter",
+    "hash": "ddd444eee555ddd444eee555ddd444eee555ddd444eee555ddd444eee555dddd",
+    "start_line": 15,
+    "end_line": 50
+  }
+]

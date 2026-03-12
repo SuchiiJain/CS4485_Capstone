@@ -1,0 +1,74 @@
+{
+  "scan-001": {
+    "scan_id": "scan-001",
+    "repo_path": "/repos/marieliske/Capstone_Test1",
+    "timestamp": "2026-03-10T14:35:00Z",
+    "summary": {
+      "rot_score": 0.42,
+      "mismatch_count": 3,
+      "status": "mismatch"
+    },
+    "code_index": {
+      "files": 6,
+      "symbols": 24
+    },
+    "doc_index": {
+      "docs": 1,
+      "references": 5
+    },
+    "mismatches": [
+      {
+        "type": "CHANGED_TARGET",
+        "severity": "high",
+        "doc": { "path": "README.md", "line": 12, "reference": "add_task()" },
+        "code": { "path": "src/simple_todo/service.py", "symbol": "add_task", "current_hash": "abc123", "baseline_hash": "def456" },
+        "message": "Function signature changed: added 'priority' parameter",
+        "suggested_action": "Update README.md line 12 to reflect the new 'priority' parameter"
+      },
+      {
+        "type": "MISSING_TARGET",
+        "severity": "medium",
+        "doc": { "path": "README.md", "line": 28, "reference": "remove_task()" },
+        "code": { "path": "src/simple_todo/service.py", "symbol": "remove_task", "current_hash": "", "baseline_hash": "aaa111" },
+        "message": "Referenced function 'remove_task' no longer exists",
+        "suggested_action": "Remove or update the reference in README.md"
+      },
+      {
+        "type": "CHANGED_TARGET",
+        "severity": "low",
+        "doc": { "path": "README.md", "line": 35, "reference": "list_tasks()" },
+        "code": { "path": "src/simple_todo/service.py", "symbol": "list_tasks", "current_hash": "bbb222", "baseline_hash": "ccc333" },
+        "message": "Return type changed from list to generator",
+        "suggested_action": "Update documentation to note that list_tasks() now returns a generator"
+      }
+    ]
+  },
+  "scan-002": {
+    "scan_id": "scan-002",
+    "repo_path": "/repos/Motiefling/CS-4391-Image-Filtering",
+    "timestamp": "2026-03-11T09:02:00Z",
+    "summary": {
+      "rot_score": 0.15,
+      "mismatch_count": 1,
+      "status": "mismatch"
+    },
+    "code_index": {
+      "files": 2,
+      "symbols": 8
+    },
+    "doc_index": {
+      "docs": 2,
+      "references": 3
+    },
+    "mismatches": [
+      {
+        "type": "CHANGED_TARGET",
+        "severity": "medium",
+        "doc": { "path": "README.md", "line": 5, "reference": "apply_filter()" },
+        "code": { "path": "src/image_filtering.py", "symbol": "apply_filter", "current_hash": "ddd444", "baseline_hash": "eee555" },
+        "message": "New parameter 'intensity' added to apply_filter",
+        "suggested_action": "Update README to document the 'intensity' parameter"
+      }
+    ]
+  }
+}
