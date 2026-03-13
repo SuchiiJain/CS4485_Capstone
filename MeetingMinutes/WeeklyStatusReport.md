@@ -117,7 +117,7 @@
   - Debug and resolve backend integration issues
   - Assist in frontend and backend integration
 - **Issues:**
-
+  - N/A
 ---
 
 ### Aaron Santhosh
@@ -143,7 +143,7 @@
 - **Upcoming Tasks:**
   - Contribute to frontend wireframes
 - **Issues:**
-
+  - N/A
 ---
 
 ### Portia Hamid
