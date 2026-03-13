@@ -39,6 +39,6 @@ dist/
 Thumbs.db
 
 # Generated project artifacts
-.docrot-fingerprints.json
+#.docrot-fingerprints.json
 .docrot-report.json
 .docrot-report.txt
