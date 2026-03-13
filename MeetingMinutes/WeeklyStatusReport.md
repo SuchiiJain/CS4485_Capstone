@@ -116,10 +116,15 @@
 
 ### Aaron Santhosh
 
-- **Hours:**
+- **Hours:**6
 - **Tasks Complete:**
+  - Reviewed new Figma wireframes and current Frontend UI
+  - Updated Frontend with more screens from the wireframes (Login, User Settings, Empty State, Issue Drawer)
+    - Static 
 - **Upcoming Tasks:**
+  - Assist team in conecting frontend to backend
 - **Issues:**
+  - N/A
 
 ---
 
