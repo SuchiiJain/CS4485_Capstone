@@ -95,10 +95,11 @@
   - Reviewed and validated full spec file (Sections 1–14) for cohesion, completeness, and alignment with repo structure
   - Updated Weekly Status Report
   - Reviewed frontend and backend progress updates from teammates
+  - Updated and upgraded frontend README
 - **Upcoming Tasks:**
   - Upload MOM #5 to GitHub after meeting
   - Update any weekly changes
-  - Pick up Jira tasks
+  - Pick up future Jira tasks
 - **Issues:**
   - I have to research more on how to use React
 
