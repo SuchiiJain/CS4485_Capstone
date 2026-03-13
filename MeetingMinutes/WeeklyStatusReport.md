@@ -71,7 +71,7 @@
 
 ### Marie Liske
 
-- **Hours:** 7
+- **Hours: 7** 
 - **Tasks Complete:**
   - Created additional wireframes in Google Stitch/Figma for additional views ans screens, building on the ones created last week
   - Updated frontend to create corresponding React web pages
@@ -87,10 +87,20 @@
 
 ### Anusua Halder
 
-- **Hours:**
+- **Hours: 5**
 - **Tasks Complete:**
+  - Served as Team Leader for Week 5
+  - Attended team meeting (MOM #5) and discussed task assignments
+  - Updated MOM #4 and MOM #5 to GitHub MeetingMinutes folder
+  - Reviewed and validated full spec file (Sections 1–14) for cohesion, completeness, and alignment with repo structure
+  - Updated Weekly Status Report
+  - Reviewed frontend and backend progress updates from teammates
 - **Upcoming Tasks:**
+  - Upload MOM #5 to GitHub after meeting
+  - Update any weekly changes
+  - Pick up Jira tasks
 - **Issues:**
+  - I have to research more on how to use React
 
 ---
 
@@ -122,7 +132,7 @@
 ---
 
 ### Portia Hamid
-- **Hours:** 6
+- **Hours: 6** 
 - **Tasks Complete:**
   - Researched FastAPI and how it's used to connect the frontend to the backend
   - Tested the frontend that Marie has been working on, which seems to currently be using hardcoded test data since we don't have a database set up to connect an API to
