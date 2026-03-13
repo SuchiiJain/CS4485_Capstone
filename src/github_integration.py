@@ -406,7 +406,7 @@ def format_pr_comment(report_path: str, commit_sha: str) -> Optional[str]:
     except (json.JSONDecodeError, OSError):
         return None
 
-    flags = report.get("flags", [])
+    flags = report.get("issues", [])
     if not flags:
         return None
 
