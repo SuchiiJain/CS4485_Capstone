@@ -5,17 +5,15 @@
 > This document is updated each week. Each team member logs their hours and contributions for the week. The most recent week appears at the top.
 
 ---
+# Week 6 — March 23-27, 2026
 
-# Week 5 — March 9-13, 2026
-
-**Team Leader for Week 5: Anusua Halder**
+**Team Leader for Week 6: Anusua Halder**
 
 **Total Hours Spent:**
 
 ---
 
 ### Marie Liske
-
 - **Hours:**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
@@ -24,11 +22,86 @@
 ---
 
 ### Anusua Halder
-
 - **Hours:**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
 - **Issues:**
+
+---
+
+### Suchi Jain
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Aaron Santhosh
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Samuel Say
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Portia Hamid
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+# Week 5 — March 9-13, 2026
+
+**Team Leader for Week 5: Anusua Halder**
+
+**Total Hours Spent: 18**
+
+---
+
+### Marie Liske
+
+- **Hours: 7** 
+- **Tasks Complete:**
+  - Created additional wireframes in Google Stitch/Figma for additional views ans screens, building on the ones created last week
+  - Updated frontend to create corresponding React web pages
+    - Using static data
+  - Refreshed knowledge on how to use use APIs in React (2 hrs)
+- **Upcoming Tasks:**
+  - Assist team in conecting frontend to backend
+  - Start researching how to integrate AI powered suggestions
+- **Issues:**
+  - Was not sure how to best set up frontend dashboards to be easily integratable with backend APIs, had to research.
+
+---
+
+### Anusua Halder
+
+- **Hours: 5**
+- **Tasks Complete:**
+  - Served as Team Leader for Week 5
+  - Attended team meeting (MOM #5) and discussed task assignments
+  - Updated MOM #4 and MOM #5 to GitHub MeetingMinutes folder
+  - Reviewed and validated full spec file (Sections 1–14) for cohesion, completeness, and alignment with repo structure
+  - Updated Weekly Status Report
+  - Reviewed frontend and backend progress updates from teammates
+  - Updated and upgraded frontend README
+- **Upcoming Tasks:**
+  - Upload MOM #5 to GitHub after meeting
+  - Update any weekly changes
+  - Pick up future Jira tasks
+- **Issues:**
+  - I have to research more on how to use React
 
 ---
 
@@ -60,7 +133,7 @@
 ---
 
 ### Portia Hamid
-- **Hours:** 6
+- **Hours: 6** 
 - **Tasks Complete:**
   - Researched FastAPI and how it's used to connect the frontend to the backend
   - Tested the frontend that Marie has been working on, which seems to currently be using hardcoded test data since we don't have a database set up to connect an API to

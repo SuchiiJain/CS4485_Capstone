@@ -70,6 +70,7 @@ On subsequent runs, Docrot compares current fingerprints against the stored base
 │   ├── CS4485_T2_MOM2.md
 │   ├── CS4485_T2_MOM3.md
 │   ├── CS4485_T2_MOM4.md
+│   ├── CS4485_T2_MOM5.md
 │   ├── README.md
 │   └── WeeklyStatusReport.md
 └── src/                    # Core source code
