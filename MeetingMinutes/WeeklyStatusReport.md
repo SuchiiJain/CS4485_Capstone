@@ -107,9 +107,15 @@
 
 ### Suchi Jain
 
-- **Hours:**
+- **Hours: 7**
 - **Tasks Complete:**
+  - Added db/schema.sql to repository
+  - Designed schema to support future analytics and dashboard features
+  - Created backend/storage.py
+  - Implemented init_db() for table initialization and save_scan() for persisting scan metadata and flags
 - **Upcoming Tasks:**
+  - Debug and resolve backend integration issues
+  - Assist in frontend and backend integration
 - **Issues:**
 
 ---
