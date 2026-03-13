@@ -133,18 +133,22 @@
 ---
 
 ### Portia Hamid
-- **Hours: 6** 
+- **Hours: 8** 
 - **Tasks Complete:**
   - Researched FastAPI and how it's used to connect the frontend to the backend
   - Tested the frontend that Marie has been working on, which seems to currently be using hardcoded test data since we don't have a database set up to connect an API to
   - While the database is being worked on, I created a branch on the backend for implementing a FastAPI app that will read the json files and create a connection point for the frontend so we can do further frontend testing even without a database. Once it's ready, the database queries can replace the json in the API.
   - Began brainstorming and research into a possible VSCode extension. Used Claude Sonnet to help brainstorm and plan.
   - Got a rough idea of how a VSCode extension could be implemented, what its functionality could be, and what role it would play in the whole of the program
+  - Fixed the problem where the docrot report wasn't being included in the body of the issue that was created, necessitating that the user check the actions log to see the full report. The full report is now included in the GitHub issue itself.
+  - Fixed the detector not comparing against the baseline on every push after the database was added. fingerprints.json is now being pushed to the repo, pending the completion of the database implementation.
 - **Upcoming Tasks:**
   - Get the frontend actually connected to the backend so we can see it working in action
   - Begin implementing a VSCode extension
+  - Full database implementation
 - **Issues:**
   - Needed to research how to get an API set up without having a database yet that can store the information
+  - Issue arose from database integration that cause the program to create a baseline on every push instead of comparing against the old one. Created a temporary fix to restore functionality, pending the database being fully wired into the code logic.
 
 ---
 
