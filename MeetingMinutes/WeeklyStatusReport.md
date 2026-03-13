@@ -87,7 +87,7 @@
 
 ### Anusua Halder
 
-- **Hours: 5**
+- **Hours: 9**
 - **Tasks Complete:**
   - Served as Team Leader for Week 5
   - Attended team meeting (MOM #5) and discussed task assignments
