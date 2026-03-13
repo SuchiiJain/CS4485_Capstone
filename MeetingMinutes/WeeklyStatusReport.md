@@ -125,9 +125,12 @@
 
 ### Samuel Say
 
-- **Hours:**
+- **Hours: 4**
 - **Tasks Complete:**
+  - Looked into current frontend to see how to contribute
+  - Set up Claude with spec to prepare for upcoming weeks work
 - **Upcoming Tasks:**
+  - Contribute to frontend wireframes
 - **Issues:**
 
 ---
