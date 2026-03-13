@@ -65,7 +65,7 @@
 
 **Team Leader for Week 5: Anusua Halder**
 
-**Total Hours Spent:**
+**Total Hours Spent: 18**
 
 ---
 
