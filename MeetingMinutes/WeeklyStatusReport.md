@@ -65,13 +65,13 @@
 
 **Team Leader for Week 5: Anusua Halder**
 
-**Total Hours Spent: 18**
+**Total Hours Spent: 47**
 
 ---
 
 ### Marie Liske
 
-- **Hours: 7** 
+- **Hours: 10** 
 - **Tasks Complete:**
   - Created additional wireframes in Google Stitch/Figma for additional views ans screens, building on the ones created last week
   - Updated frontend to create corresponding React web pages
@@ -87,7 +87,7 @@
 
 ### Anusua Halder
 
-- **Hours: 9**
+- **Hours: 8**
 - **Tasks Complete:**
   - Served as Team Leader for Week 5
   - Attended team meeting (MOM #5) and discussed task assignments
@@ -122,7 +122,7 @@
 
 ### Aaron Santhosh
 
-- **Hours:**6
+- **Hours: 7**
 - **Tasks Complete:**
   - Reviewed new Figma wireframes and current Frontend UI
   - Updated Frontend with more screens from the wireframes (Login, User Settings, Empty State, Issue Drawer)
@@ -136,7 +136,7 @@
 
 ### Samuel Say
 
-- **Hours: 4**
+- **Hours: 5**
 - **Tasks Complete:**
   - Looked into current frontend to see how to contribute
   - Set up Claude with spec to prepare for upcoming weeks work
@@ -147,7 +147,7 @@
 ---
 
 ### Portia Hamid
-- **Hours: 8** 
+- **Hours: 10** 
 - **Tasks Complete:**
   - Researched FastAPI and how it's used to connect the frontend to the backend
   - Tested the frontend that Marie has been working on, which seems to currently be using hardcoded test data since we don't have a database set up to connect an API to
