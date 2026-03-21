@@ -1,79 +1,47 @@
+import os
 import sqlite3
-import uuid
-from datetime import datetime
+from typing import Optional
 
-DB_PATH = "backend/docrot.db"
+DB_PATH = os.path.join(os.path.dirname(__file__), "docrot.db")
+SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "schema.sql")
+
+
+def get_connection():
+    return sqlite3.connect(DB_PATH)
 
 
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS scan_runs (
-        id TEXT PRIMARY KEY,
-        repo_name TEXT,
-        commit_hash TEXT,
-        scanned_at TEXT,
-        total_issues INTEGER,
-        high_count INTEGER,
-        medium_count INTEGER,
-        low_count INTEGER
-    )
-    """)
-
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS flags (
-        id TEXT PRIMARY KEY,
-        scan_id TEXT,
-        reason TEXT,
-        severity TEXT,
-        file_path TEXT,
-        symbol TEXT,
-        message TEXT,
-        suggestion TEXT,
-        FOREIGN KEY(scan_id) REFERENCES scan_runs(id)
-    )
-    """)
-
-    conn.commit()
-    conn.close()
+    """Initialize database using schema.sql"""
+    with get_connection() as conn:
+        with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
+            conn.executescript(f.read())
 
 
-def save_scan(repo_name, commit_hash, report_json):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
+def save_scan_report(commit_hash: str, report_json: str) -> None:
+    """
+    Store a completed scan report.
+    Does NOT affect baseline logic.
+    """
+    with get_connection() as conn:
+        conn.execute(
+            """
+            INSERT INTO scan_reports (commit_hash, report_json)
+            VALUES (?, ?)
+            """,
+            (commit_hash, report_json),
+        )
+        conn.commit()
 
-    scan_id = str(uuid.uuid4())
-    meta = report_json.get("meta", {})
-    severity = meta.get("severity_summary", {})
 
-    cur.execute("""
-    INSERT INTO scan_runs VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        scan_id,
-        repo_name,
-        commit_hash,
-        datetime.utcnow().isoformat(),
-        meta.get("total_issues", 0),
-        severity.get("high", 0),
-        severity.get("medium", 0),
-        severity.get("low", 0),
-    ))
+def get_latest_report() -> Optional[str]:
+    with get_connection() as conn:
+        row = conn.execute(
+            """
+            SELECT report_json
+            FROM scan_reports
+            ORDER BY created_at DESC
+            LIMIT 1
+            """
+        ).fetchone()
 
-    for issue in report_json.get("issues", []):
-        cur.execute("""
-        INSERT INTO flags VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            str(uuid.uuid4()),
-            scan_id,
-            issue["reason"],
-            issue["severity"],
-            issue["code_element"]["file_path"],
-            issue["code_element"]["name"],
-            issue["message"],
-            issue.get("suggestion"),
-        ))
-
-    conn.commit()
-    conn.close()
+        return row[0] if row else None
