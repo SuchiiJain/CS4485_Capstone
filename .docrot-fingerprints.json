@@ -627,6 +627,150 @@
       "stable_id": "backend/storage.py::save_scan"
     }
   },
+  "database/storage.py": {
+    "database/storage.py::init_db": {
+      "calls": {
+        "call_names": [
+          "conn.close",
+          "conn.commit",
+          "conn.cursor",
+          "cur.execute",
+          "cur.execute",
+          "sqlite3.connect"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "0b9505169958491b086dd97cefc34ec81e6e62731b1d652d211f39c9148c4a53",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.commit",
+          "conn.cursor",
+          "cur.execute",
+          "cur.execute"
+        ],
+        "file_calls": [
+          "conn.close"
+        ],
+        "network_calls": [
+          "sqlite3.connect"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "init_db",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "database/storage.py::init_db"
+    },
+    "database/storage.py::save_scan": {
+      "calls": {
+        "call_names": [
+          "conn.close",
+          "conn.commit",
+          "conn.cursor",
+          "cur.execute",
+          "cur.execute",
+          "datetime.utcnow",
+          "isoformat",
+          "issue.get",
+          "meta.get",
+          "meta.get",
+          "report_json.get",
+          "report_json.get",
+          "severity.get",
+          "severity.get",
+          "severity.get",
+          "sqlite3.connect",
+          "str",
+          "str",
+          "uuid.uuid4",
+          "uuid.uuid4"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "088b9f0c8647e693c834614e58c4e07a3b867b59db0c75e9383a32c04d761c12",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.commit",
+          "conn.cursor",
+          "cur.execute",
+          "cur.execute"
+        ],
+        "file_calls": [
+          "conn.close"
+        ],
+        "network_calls": [
+          "issue.get",
+          "meta.get",
+          "meta.get",
+          "report_json.get",
+          "report_json.get",
+          "severity.get",
+          "severity.get",
+          "severity.get",
+          "sqlite3.connect"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "save_scan",
+        "params": [
+          "repo_name",
+          "commit_hash",
+          "report_json"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "database/storage.py::save_scan"
+    }
+  },
   "docs/pseudocode.py": {
     "docs/pseudocode.py::build_semantic_fingerprint": {
       "calls": {
