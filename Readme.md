@@ -8,7 +8,7 @@ Use this flow each time you start local development.
 1. Start the backend API first (this repo)
 
 ```powershell
-cd C:/Users/Richard/CS4485_Capstone
+cd your-repo-backend-root-path
 start_api.ps1 -Port 8011 -Token TOKEN_HERE
 ```
 
