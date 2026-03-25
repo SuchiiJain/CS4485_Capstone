@@ -27,23 +27,6 @@ def get_user_profile(user_id):
     return profile
 
 
-def calculate_shipping(weight, destination):
-    """Calculate shipping cost based on weight and destination."""
-    base_rate = 5.0
-
-    if weight > 50:
-        rate = base_rate * 3
-    elif weight > 20:
-        rate = base_rate * 2
-    else:
-        rate = base_rate
-
-    if destination == "international":
-        rate = rate * 2.5
-
-    return round(rate, 2)
-
-
 def _format_currency(amount):
     """Internal helper to format a number as currency."""
     return f"${amount:.2f}"
