@@ -56,6 +56,6 @@ runs:
           fi
           if ! git diff --cached --quiet; then
             git commit -m "chore: update docrot fingerprint baseline"
-            git push
+            git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
         fi
