@@ -4892,22 +4892,25 @@
         "call_names": [
           "auth_header.removeprefix",
           "auth_header.startswith",
+          "request.args.get",
           "request.headers.get",
+          "request.path.startswith",
           "strip"
         ]
       },
       "conditions": {
         "boolean_ops": [],
         "comparison_ops": [
+          "Eq",
           "Eq"
         ]
       },
       "control_flow": {
-        "early_return_count": 3,
+        "early_return_count": 4,
         "elif_count": 0,
         "else_count": 0,
         "for_count": 0,
-        "if_count": 2,
+        "if_count": 3,
         "while_count": 0
       },
       "exceptions": {
@@ -4916,10 +4919,10 @@
         "raises": []
       },
       "file_path": "src/api_server.py",
-      "fingerprint_hash": "1513486e45bb811ec488c6f6b9497b783428f120ba2786f5a34653bb81e044eb",
+      "fingerprint_hash": "d968032e93fec938f11287197bf1472b66056b1f0bea5a7fa25ef3124c27c062",
       "is_public": false,
       "returns": {
-        "return_count": 3,
+        "return_count": 4,
         "returns_none": false
       },
       "side_effects": {
@@ -4927,7 +4930,9 @@
         "db_calls": [],
         "file_calls": [],
         "network_calls": [
-          "request.headers.get"
+          "request.args.get",
+          "request.headers.get",
+          "request.path.startswith"
         ]
       },
       "signature": {
@@ -4997,14 +5002,16 @@
         "boolean_ops": [
           "And"
         ],
-        "comparison_ops": []
+        "comparison_ops": [
+          "Eq"
+        ]
       },
       "control_flow": {
-        "early_return_count": 1,
+        "early_return_count": 2,
         "elif_count": 0,
         "else_count": 0,
         "for_count": 0,
-        "if_count": 1,
+        "if_count": 2,
         "while_count": 0
       },
       "exceptions": {
@@ -5013,11 +5020,11 @@
         "raises": []
       },
       "file_path": "src/api_server.py",
-      "fingerprint_hash": "3ff9cfdeaf2a85d46b889e422f1d3ebc7c3d3c33273cd4486f350adad31eca5b",
+      "fingerprint_hash": "91a21c3f029811dadffb9c4070edb8bcd6244f53c72201719c0c9077e728135b",
       "is_public": false,
       "returns": {
-        "return_count": 1,
-        "returns_none": false
+        "return_count": 2,
+        "returns_none": true
       },
       "side_effects": {
         "auth_calls": [],
@@ -5247,6 +5254,82 @@
       },
       "stable_id": "src/api_server.py::api_scan_docs"
     },
+    "src/api_server.py::api_scan_events": {
+      "calls": {
+        "call_names": [
+          "Response",
+          "_json_error",
+          "app.route",
+          "event_stream",
+          "float",
+          "get_latest_scan_summary",
+          "int",
+          "int",
+          "int",
+          "json.dumps",
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "max",
+          "os.environ.get",
+          "request.args.get",
+          "time.sleep"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": [
+          "Gt"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 1,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 1
+      },
+      "exceptions": {
+        "except_handlers": [
+          "ValueError"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "5b96a82fa21709d9363c9f75c1cc18748981662fe013f11ce7a8c84063794331",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "os.environ.get",
+          "request.args.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "api_scan_events",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::api_scan_events"
+    },
     "src/api_server.py::api_scan_issues": {
       "calls": {
         "call_names": [
@@ -5357,6 +5440,69 @@
         "return_annotation": null
       },
       "stable_id": "src/api_server.py::api_scan_report"
+    },
+    "src/api_server.py::event_stream": {
+      "calls": {
+        "call_names": [
+          "get_latest_scan_summary",
+          "int",
+          "int",
+          "json.dumps",
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "time.sleep"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": [
+          "Gt"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 1,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 1
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "94020a04a9939192517172686109e1beb5b35809a8b5f331ebd803ab382247d6",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "latest.get",
+          "latest.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "event_stream",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::event_stream"
     },
     "src/api_server.py::health": {
       "calls": {
