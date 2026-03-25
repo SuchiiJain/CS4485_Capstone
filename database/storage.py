@@ -234,6 +234,63 @@ def get_issues_for_scan(scan_id: int) -> List[Dict[str, Any]]:
         return [dict(r) for r in rows]
 
 
+def list_scans(limit: int = 50, offset: int = 0) -> List[Dict[str, Any]]:
+    """Return scans newest-first for dashboard listing."""
+    with get_connection() as conn:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(
+            """
+            SELECT id, repo_path, commit_hash, status, total_issues,
+                   high_count, medium_count, low_count, report_timestamp, created_at
+            FROM scans
+            ORDER BY id DESC
+            LIMIT ? OFFSET ?
+            """,
+            (limit, offset),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+
+def get_scan_by_id(scan_id: int) -> Optional[Dict[str, Any]]:
+    """Return one scan by ID, or None if not found."""
+    with get_connection() as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute(
+            """
+            SELECT id, repo_path, commit_hash, status, total_issues,
+                   high_count, medium_count, low_count, report_timestamp, created_at
+            FROM scans
+            WHERE id = ?
+            """,
+            (scan_id,),
+        ).fetchone()
+        return dict(row) if row else None
+
+
+def get_report_for_scan(scan_id: int, fmt: str = "json") -> Optional[Dict[str, Any]]:
+    """Return persisted report row for a scan/format."""
+    with get_connection() as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute(
+            """
+            SELECT id, scan_id, format, content, created_at
+            FROM reports
+            WHERE scan_id = ? AND format = ?
+            ORDER BY id DESC
+            LIMIT 1
+            """,
+            (scan_id, fmt),
+        ).fetchone()
+        return dict(row) if row else None
+
+
+def get_fingerprint_count() -> int:
+    """Return number of fingerprint rows currently stored."""
+    with get_connection() as conn:
+        row = conn.execute("SELECT COUNT(*) FROM fingerprints").fetchone()
+        return int(row[0]) if row else 0
+
+
 def replace_fingerprints_from_payload(fingerprint_payload: Dict[str, Any]) -> int:
     """
     Replace fingerprints table contents with the latest baseline payload.

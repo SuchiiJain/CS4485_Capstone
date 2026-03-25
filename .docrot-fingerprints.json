@@ -663,6 +663,56 @@
       },
       "stable_id": "database/storage.py::get_docs_for_scan"
     },
+    "database/storage.py::get_fingerprint_count": {
+      "calls": {
+        "call_names": [
+          "conn.execute",
+          "fetchone",
+          "get_connection",
+          "int"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "c783cccd132b44f0054f0da732a46a4e1de8335345a8c5c74623a5d403e635e1",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.execute",
+          "fetchone"
+        ],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_fingerprint_count",
+        "params": [],
+        "return_annotation": "Name(id='int', ctx=Load())"
+      },
+      "stable_id": "database/storage.py::get_fingerprint_count"
+    },
     "database/storage.py::get_issues_for_scan": {
       "calls": {
         "call_names": [
@@ -814,6 +864,113 @@
       },
       "stable_id": "database/storage.py::get_latest_scan_summary"
     },
+    "database/storage.py::get_report_for_scan": {
+      "calls": {
+        "call_names": [
+          "conn.execute",
+          "dict",
+          "fetchone",
+          "get_connection"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "2a25d3c3ed990fe1188885829c555131e4c850bcc18d504044599527f08ca3e0",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.execute",
+          "fetchone"
+        ],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [
+          "Constant(value='json')"
+        ],
+        "name": "get_report_for_scan",
+        "params": [
+          "scan_id",
+          "fmt"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "database/storage.py::get_report_for_scan"
+    },
+    "database/storage.py::get_scan_by_id": {
+      "calls": {
+        "call_names": [
+          "conn.execute",
+          "dict",
+          "fetchone",
+          "get_connection"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "a3f0ca122c7dd65feb7465aac1bed06aff5ec9b4ed33201d2f17840e8489399a",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.execute",
+          "fetchone"
+        ],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_scan_by_id",
+        "params": [
+          "scan_id"
+        ],
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "database/storage.py::get_scan_by_id"
+    },
     "database/storage.py::init_db": {
       "calls": {
         "call_names": [
@@ -863,6 +1020,62 @@
         "return_annotation": null
       },
       "stable_id": "database/storage.py::init_db"
+    },
+    "database/storage.py::list_scans": {
+      "calls": {
+        "call_names": [
+          "conn.execute",
+          "dict",
+          "fetchall",
+          "get_connection"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "d5f21ae57b20b011075cc09b143793c935ae17fdf5007f115d9b36f17d929a40",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.execute",
+          "fetchall"
+        ],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [
+          "Constant(value=50)",
+          "Constant(value=0)"
+        ],
+        "name": "list_scans",
+        "params": [
+          "limit",
+          "offset"
+        ],
+        "return_annotation": "Subscript(value=Name(id='List', ctx=Load()), slice=Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "database/storage.py::list_scans"
     },
     "database/storage.py::replace_fingerprints_from_payload": {
       "calls": {
@@ -4348,6 +4561,58 @@
       "stable_id": "run.py::test_two_file_comparison"
     }
   },
+  "scripts/check_db.py": {
+    "scripts/check_db.py::count": {
+      "calls": {
+        "call_names": [
+          "cur.execute",
+          "fetchone"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "scripts/check_db.py",
+      "fingerprint_hash": "c042e807cbaa406a80877b640e0aa175efe0535005ef2e284df1de7fc115ee61",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "cur.execute",
+          "fetchone"
+        ],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "count",
+        "params": [
+          "table"
+        ],
+        "return_annotation": "Name(id='int', ctx=Load())"
+      },
+      "stable_id": "scripts/check_db.py::count"
+    }
+  },
   "src/alerts.py": {
     "src/alerts.py::evaluate_doc_flags": {
       "calls": {
@@ -4575,6 +4840,621 @@
         "return_annotation": "Constant(value=None)"
       },
       "stable_id": "src/alerts.py::publish_baseline_notice"
+    }
+  },
+  "src/api_server.py": {
+    "src/api_server.py::_add_cors_headers": {
+      "calls": {
+        "call_names": []
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "8369a51bfe3044aa334add2551e0371a8bf07b45f7ca44effffed1d3e7d76d02",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_add_cors_headers",
+        "params": [
+          "response"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::_add_cors_headers"
+    },
+    "src/api_server.py::_auth_ok": {
+      "calls": {
+        "call_names": [
+          "auth_header.removeprefix",
+          "auth_header.startswith",
+          "request.headers.get",
+          "strip"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 3,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "1513486e45bb811ec488c6f6b9497b783428f120ba2786f5a34653bb81e044eb",
+      "is_public": false,
+      "returns": {
+        "return_count": 3,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "request.headers.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_auth_ok",
+        "params": [],
+        "return_annotation": "Name(id='bool', ctx=Load())"
+      },
+      "stable_id": "src/api_server.py::_auth_ok"
+    },
+    "src/api_server.py::_json_error": {
+      "calls": {
+        "call_names": [
+          "jsonify"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "e62b1ed4d1032eee1777b1798ba3a7b26c6fc563d40ab63867de510143341b04",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_json_error",
+        "params": [
+          "message",
+          "status"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::_json_error"
+    },
+    "src/api_server.py::_protect_api_routes": {
+      "calls": {
+        "call_names": [
+          "_auth_ok",
+          "_json_error",
+          "request.path.startswith"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And"
+        ],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "3ff9cfdeaf2a85d46b889e422f1d3ebc7c3d3c33273cd4486f350adad31eca5b",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "request.path.startswith"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_protect_api_routes",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::_protect_api_routes"
+    },
+    "src/api_server.py::api_fingerprint_summary": {
+      "calls": {
+        "call_names": [
+          "app.route",
+          "get_fingerprint_count",
+          "jsonify"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "b4ef88c40f29f36fda7e9d15433dc9c9daaab5a196e54ae4dc4a38185c3004c4",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "api_fingerprint_summary",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::api_fingerprint_summary"
+    },
+    "src/api_server.py::api_get_scan": {
+      "calls": {
+        "call_names": [
+          "_json_error",
+          "app.route",
+          "get_scan_by_id",
+          "jsonify"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 3,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "2231d43399528066043c321a47bf2ef6ea57d099845beeb2b79e534b6e7263f5",
+      "is_public": true,
+      "returns": {
+        "return_count": 3,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "api_get_scan",
+        "params": [
+          "scan_id"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::api_get_scan"
+    },
+    "src/api_server.py::api_list_scans": {
+      "calls": {
+        "call_names": [
+          "_json_error",
+          "app.route",
+          "int",
+          "int",
+          "jsonify",
+          "list_scans",
+          "max",
+          "max",
+          "min",
+          "request.args.get",
+          "request.args.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 3,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "ValueError"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "3314f2d02665fc6d5d76c3983bdf3556b4fd93ead87420c18082c8833a827a33",
+      "is_public": true,
+      "returns": {
+        "return_count": 3,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "request.args.get",
+          "request.args.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "api_list_scans",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::api_list_scans"
+    },
+    "src/api_server.py::api_scan_docs": {
+      "calls": {
+        "call_names": [
+          "_json_error",
+          "app.route",
+          "get_docs_for_scan",
+          "get_scan_by_id",
+          "jsonify"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 3,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "a1950739e0867b5b42c621dcdf28380adb123c10de5d1c14902bed50e64cebc5",
+      "is_public": true,
+      "returns": {
+        "return_count": 3,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "api_scan_docs",
+        "params": [
+          "scan_id"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::api_scan_docs"
+    },
+    "src/api_server.py::api_scan_issues": {
+      "calls": {
+        "call_names": [
+          "_json_error",
+          "app.route",
+          "get_issues_for_scan",
+          "get_scan_by_id",
+          "jsonify"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 3,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "212f340b7216a93a82b38035f9be2dd185b9fe1d4d1c77374b4c22bd3443de59",
+      "is_public": true,
+      "returns": {
+        "return_count": 3,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "api_scan_issues",
+        "params": [
+          "scan_id"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::api_scan_issues"
+    },
+    "src/api_server.py::api_scan_report": {
+      "calls": {
+        "call_names": [
+          "_json_error",
+          "_json_error",
+          "app.route",
+          "get_report_for_scan",
+          "get_scan_by_id",
+          "json.loads",
+          "jsonify",
+          "row.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 4,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "Attribute(value=Name(id='json', ctx=Load()), attr='JSONDecodeError', ctx=Load())"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "f5af357792bb9bf11e6c2cf5e8cf3a0bd1e31af435087184cd43dbd1339d4129",
+      "is_public": true,
+      "returns": {
+        "return_count": 4,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "row.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "api_scan_report",
+        "params": [
+          "scan_id"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::api_scan_report"
+    },
+    "src/api_server.py::health": {
+      "calls": {
+        "call_names": [
+          "app.route",
+          "jsonify"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "f4eb0bd23dd4c8ef7c082dd8f650ae799e2c157927fc1138b2566e1680c5521d",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "health",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "src/api_server.py::health"
+    },
+    "src/api_server.py::main": {
+      "calls": {
+        "call_names": [
+          "app.run",
+          "init_db",
+          "int",
+          "os.environ.get",
+          "os.environ.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "src/api_server.py",
+      "fingerprint_hash": "9e8adbaeefe30102a5f017b5d1c4cd9852ec1346495c9934d9cb46ef0d1505f8",
+      "is_public": true,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "os.environ.get",
+          "os.environ.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "main",
+        "params": [],
+        "return_annotation": "Constant(value=None)"
+      },
+      "stable_id": "src/api_server.py::main"
     }
   },
   "src/ast_parser.py": {
