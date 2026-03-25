@@ -319,13 +319,19 @@
           "_build_fallback_report",
           "init_db",
           "json.load",
+          "json.load",
+          "open",
           "open",
           "os.makedirs",
           "os.path.abspath",
           "os.path.dirname",
           "os.path.exists",
+          "os.path.exists",
           "os.path.join",
           "os.path.join",
+          "os.path.join",
+          "print",
+          "replace_fingerprints_from_payload",
           "save_normalized_scan_report"
         ]
       },
@@ -338,7 +344,7 @@
         "elif_count": 0,
         "else_count": 1,
         "for_count": 0,
-        "if_count": 1,
+        "if_count": 2,
         "while_count": 0
       },
       "exceptions": {
@@ -347,7 +353,7 @@
         "raises": []
       },
       "file_path": "action_entrypoint.py",
-      "fingerprint_hash": "5196f30caf663611b84041763aa6fdf0c1100b0226ceac6588e686e602cd03d1",
+      "fingerprint_hash": "aa93c5bdd102c5580c0e92248e14f62147e795009574220965eefdfd0dcddc0e",
       "is_public": false,
       "returns": {
         "return_count": 0,
@@ -357,6 +363,7 @@
         "auth_calls": [],
         "db_calls": [],
         "file_calls": [
+          "open",
           "open",
           "os.makedirs"
         ],
@@ -856,6 +863,73 @@
         "return_annotation": null
       },
       "stable_id": "database/storage.py::init_db"
+    },
+    "database/storage.py::replace_fingerprints_from_payload": {
+      "calls": {
+        "call_names": [
+          "conn.commit",
+          "conn.cursor",
+          "cur.execute",
+          "cur.execute",
+          "file_fps.items",
+          "fingerprint_payload.items",
+          "fp_data.get",
+          "get_connection",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "json.dumps",
+          "str",
+          "str",
+          "str"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 2,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "62152e3de94556046ba5bd8b3514b5f396b6c9f1b6bd5f8b57b1ce1876c6a769",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.commit",
+          "conn.cursor",
+          "cur.execute",
+          "cur.execute"
+        ],
+        "file_calls": [],
+        "network_calls": [
+          "fp_data.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "replace_fingerprints_from_payload",
+        "params": [
+          "fingerprint_payload"
+        ],
+        "return_annotation": "Name(id='int', ctx=Load())"
+      },
+      "stable_id": "database/storage.py::replace_fingerprints_from_payload"
     },
     "database/storage.py::save_normalized_scan_report": {
       "calls": {

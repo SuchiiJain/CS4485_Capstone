@@ -13,7 +13,11 @@ from datetime import datetime, timezone
 
 import requests
 
-from database.storage import init_db, save_normalized_scan_report
+from database.storage import (
+    init_db,
+    save_normalized_scan_report,
+    replace_fingerprints_from_payload,
+)
 from src.run import run as run_pipeline
 from src.github_integration import format_pr_comment
 
@@ -61,6 +65,13 @@ def _persist_scan_to_db(repo_path: str, sha: str, exit_code: int) -> None:
 
     init_db()
     save_normalized_scan_report(sha, report_payload)
+
+    fingerprints_path = os.path.join(repo_abs, ".docrot-fingerprints.json")
+    if os.path.exists(fingerprints_path):
+        with open(fingerprints_path, "r", encoding="utf-8") as f:
+            fingerprint_payload = json.load(f)
+        inserted = replace_fingerprints_from_payload(fingerprint_payload)
+        print(f"[docrot-action] Fingerprints synced to database: {inserted} row(s).")
 
 
 def _gh_headers() -> dict:

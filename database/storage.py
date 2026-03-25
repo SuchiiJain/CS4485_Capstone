@@ -232,3 +232,49 @@ def get_issues_for_scan(scan_id: int) -> List[Dict[str, Any]]:
             (scan_id,),
         ).fetchall()
         return [dict(r) for r in rows]
+
+
+def replace_fingerprints_from_payload(fingerprint_payload: Dict[str, Any]) -> int:
+    """
+    Replace fingerprints table contents with the latest baseline payload.
+
+    Args:
+        fingerprint_payload: Dict shaped as
+            {file_path: {stable_id: fingerprint_dict}}
+
+    Returns:
+        Number of rows inserted.
+    """
+    if not isinstance(fingerprint_payload, dict):
+        return 0
+
+    inserted = 0
+    with get_connection() as conn:
+        cur = conn.cursor()
+        cur.execute("DELETE FROM fingerprints")
+
+        for file_path, file_fps in fingerprint_payload.items():
+            if not isinstance(file_fps, dict):
+                continue
+
+            for stable_id, fp_data in file_fps.items():
+                if not isinstance(fp_data, dict):
+                    continue
+
+                cur.execute(
+                    """
+                    INSERT INTO fingerprints (file_path, stable_id, fingerprint_hash, raw_data)
+                    VALUES (?, ?, ?, ?)
+                    """,
+                    (
+                        str(file_path),
+                        str(stable_id),
+                        str(fp_data.get("fingerprint_hash", "")),
+                        json.dumps(fp_data),
+                    ),
+                )
+                inserted += 1
+
+        conn.commit()
+
+    return inserted
