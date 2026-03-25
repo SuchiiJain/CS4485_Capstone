@@ -9,15 +9,58 @@ GitHub Actions (no PATs or collaborator access needed).
 import json
 import os
 import sys
+from datetime import datetime, timezone
 
 import requests
 
+from database.storage import init_db, save_normalized_scan_report
 from src.run import run as run_pipeline
 from src.github_integration import format_pr_comment
 
 
 ISSUE_TITLE = "⚠️ Docrot Detector — Documentation may be stale"
 ISSUE_LABEL = "docrot"
+
+
+def _build_fallback_report(repo_path: str, sha: str, exit_code: int) -> dict:
+    """Build a minimal report if the pipeline did not emit .docrot-report.json."""
+    status = "clean"
+    if exit_code == 1:
+        status = "issues_found"
+    elif exit_code == 2:
+        status = "error"
+
+    return {
+        "meta": {
+            "repo_path": os.path.abspath(repo_path),
+            "commit_hash": sha,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "status": status,
+            "exit_code": exit_code,
+            "total_issues": 0,
+            "severity_summary": {"high": 0, "medium": 0, "low": 0},
+        },
+        "issues": [],
+    }
+
+
+def _persist_scan_to_db(repo_path: str, sha: str, exit_code: int) -> None:
+    """Initialize DB and persist this run's report JSON."""
+    repo_abs = os.path.abspath(repo_path)
+    repo_db_path = os.path.join(repo_abs, "database", "docrot.db")
+    os.makedirs(os.path.dirname(repo_db_path), exist_ok=True)
+    os.environ["DOCROT_DB_PATH"] = repo_db_path
+
+    report_path = os.path.join(repo_abs, ".docrot-report.json")
+
+    if os.path.exists(report_path):
+        with open(report_path, "r", encoding="utf-8") as f:
+            report_payload = json.load(f)
+    else:
+        report_payload = _build_fallback_report(repo_path, sha, exit_code)
+
+    init_db()
+    save_normalized_scan_report(sha, report_payload)
 
 
 def _gh_headers() -> dict:
@@ -97,8 +140,22 @@ def main() -> None:
     repo = os.environ["GITHUB_REPOSITORY"]
     sha = os.environ.get("GITHUB_SHA", "unknown")
 
+    # Prevent stale report reuse when a clean run does not emit report files.
+    report_path = os.path.join(os.path.abspath(repo_path), ".docrot-report.json")
+    if os.path.exists(report_path):
+        os.remove(report_path)
+
     # Run the pipeline
     exit_code = run_pipeline(repo_path, commit_hash=sha)
+
+    # Persist the run into SQLite for every push.
+    try:
+        _persist_scan_to_db(repo_path, sha, exit_code)
+        print(f"[docrot-action] Persisted scan report to database for {sha[:8]}.")
+    except Exception as exc:
+        print(f"[docrot-action] Failed to persist scan report to database: {exc}")
+        # Treat DB persistence as required for push processing.
+        sys.exit(2)
 
     if not create_issue:
         # When issue creation is disabled, use exit code to signal CI

@@ -1,5 +1,58 @@
 {
   "action_entrypoint.py": {
+    "action_entrypoint.py::_build_fallback_report": {
+      "calls": {
+        "call_names": [
+          "datetime.now",
+          "isoformat",
+          "os.path.abspath"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq",
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 1,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 2,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "action_entrypoint.py",
+      "fingerprint_hash": "c8dc475d7f911db3f8197ba8eab2d3c5255b3d966366f37bdf36e985f3cafdfe",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_build_fallback_report",
+        "params": [
+          "repo_path",
+          "sha",
+          "exit_code"
+        ],
+        "return_annotation": "Name(id='dict', ctx=Load())"
+      },
+      "stable_id": "action_entrypoint.py::_build_fallback_report"
+    },
     "action_entrypoint.py::_close_issue": {
       "calls": {
         "call_names": [
@@ -260,6 +313,67 @@
       },
       "stable_id": "action_entrypoint.py::_gh_headers"
     },
+    "action_entrypoint.py::_persist_scan_to_db": {
+      "calls": {
+        "call_names": [
+          "_build_fallback_report",
+          "init_db",
+          "json.load",
+          "open",
+          "os.makedirs",
+          "os.path.abspath",
+          "os.path.dirname",
+          "os.path.exists",
+          "os.path.join",
+          "os.path.join",
+          "save_normalized_scan_report"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 1,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "action_entrypoint.py",
+      "fingerprint_hash": "5196f30caf663611b84041763aa6fdf0c1100b0226ceac6588e686e602cd03d1",
+      "is_public": false,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [
+          "open",
+          "os.makedirs"
+        ],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_persist_scan_to_db",
+        "params": [
+          "repo_path",
+          "sha",
+          "exit_code"
+        ],
+        "return_annotation": "Constant(value=None)"
+      },
+      "stable_id": "action_entrypoint.py::_persist_scan_to_db"
+    },
     "action_entrypoint.py::_update_issue": {
       "calls": {
         "call_names": [
@@ -321,6 +435,7 @@
           "_close_issue",
           "_create_issue",
           "_find_existing_issue",
+          "_persist_scan_to_db",
           "_update_issue",
           "format_pr_comment",
           "lower",
@@ -328,8 +443,15 @@
           "os.environ.get",
           "os.environ.get",
           "os.path.abspath",
+          "os.path.abspath",
+          "os.path.exists",
           "os.path.join",
+          "os.path.join",
+          "os.remove",
+          "print",
+          "print",
           "run_pipeline",
+          "sys.exit",
           "sys.exit",
           "sys.exit"
         ]
@@ -350,16 +472,18 @@
         "elif_count": 1,
         "else_count": 1,
         "for_count": 0,
-        "if_count": 5,
+        "if_count": 6,
         "while_count": 0
       },
       "exceptions": {
-        "except_handlers": [],
+        "except_handlers": [
+          "Exception"
+        ],
         "has_bare_except": false,
         "raises": []
       },
       "file_path": "action_entrypoint.py",
-      "fingerprint_hash": "4c1e86b9b4c6e6ec6459a4c8430d24cbae7b59d6d8c20cfe69db08fde8eb4759",
+      "fingerprint_hash": "97f416b0d4aeae1135e2c6acc58de7dd391e29d21a0d87af69a25fcc97117603",
       "is_public": true,
       "returns": {
         "return_count": 0,
@@ -368,7 +492,9 @@
       "side_effects": {
         "auth_calls": [],
         "db_calls": [],
-        "file_calls": [],
+        "file_calls": [
+          "os.remove"
+        ],
         "network_calls": [
           "os.environ.get",
           "os.environ.get",
@@ -388,6 +514,7 @@
     "database/storage.py::get_connection": {
       "calls": {
         "call_names": [
+          "get_db_path",
           "sqlite3.connect"
         ]
       },
@@ -409,7 +536,7 @@
         "raises": []
       },
       "file_path": "database/storage.py",
-      "fingerprint_hash": "8ba5d18343f7805c38f95fbd47313da128ba21de70e015373c23b50bcbb92c28",
+      "fingerprint_hash": "e212578c4ef8e1d95ad9a6374165d3d900daaa94c84501e07140a9b3a9c23020",
       "is_public": true,
       "returns": {
         "return_count": 1,
@@ -430,6 +557,156 @@
         "return_annotation": null
       },
       "stable_id": "database/storage.py::get_connection"
+    },
+    "database/storage.py::get_db_path": {
+      "calls": {
+        "call_names": [
+          "os.environ.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "c7f8964f7252e1756a3d4d013232df62b9056b0edfb91750424dd1e39b892b48",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "os.environ.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_db_path",
+        "params": [],
+        "return_annotation": "Name(id='str', ctx=Load())"
+      },
+      "stable_id": "database/storage.py::get_db_path"
+    },
+    "database/storage.py::get_docs_for_scan": {
+      "calls": {
+        "call_names": [
+          "conn.execute",
+          "dict",
+          "fetchall",
+          "get_connection"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "bc7a2454d14e275b0a8524193dca31501ec2a5067be6156b4d651142eec45884",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.execute",
+          "fetchall"
+        ],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_docs_for_scan",
+        "params": [
+          "scan_id"
+        ],
+        "return_annotation": "Subscript(value=Name(id='List', ctx=Load()), slice=Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "database/storage.py::get_docs_for_scan"
+    },
+    "database/storage.py::get_issues_for_scan": {
+      "calls": {
+        "call_names": [
+          "conn.execute",
+          "dict",
+          "fetchall",
+          "get_connection"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "6bb4fc458c3493cfaba1b7fd6cf33328486fe56246c59d1fc9e477f188bf81ac",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.execute",
+          "fetchall"
+        ],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_issues_for_scan",
+        "params": [
+          "scan_id"
+        ],
+        "return_annotation": "Subscript(value=Name(id='List', ctx=Load()), slice=Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "database/storage.py::get_issues_for_scan"
     },
     "database/storage.py::get_latest_report": {
       "calls": {
@@ -480,6 +757,56 @@
       },
       "stable_id": "database/storage.py::get_latest_report"
     },
+    "database/storage.py::get_latest_scan_summary": {
+      "calls": {
+        "call_names": [
+          "conn.execute",
+          "dict",
+          "fetchone",
+          "get_connection"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "61c92f518cbc0a822c32c38d6d925e2d4888b9ba15e5e774c97bad64e8a15772",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.execute",
+          "fetchone"
+        ],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_latest_scan_summary",
+        "params": [],
+        "return_annotation": "Subscript(value=Name(id='Optional', ctx=Load()), slice=Subscript(value=Name(id='Dict', ctx=Load()), slice=Tuple(elts=[Name(id='str', ctx=Load()), Name(id='Any', ctx=Load())], ctx=Load()), ctx=Load()), ctx=Load())"
+      },
+      "stable_id": "database/storage.py::get_latest_scan_summary"
+    },
     "database/storage.py::init_db": {
       "calls": {
         "call_names": [
@@ -529,6 +856,148 @@
         "return_annotation": null
       },
       "stable_id": "database/storage.py::init_db"
+    },
+    "database/storage.py::save_normalized_scan_report": {
+      "calls": {
+        "call_names": [
+          "code_element.get",
+          "code_element.get",
+          "code_element.get",
+          "code_element.get",
+          "conn.commit",
+          "conn.cursor",
+          "cur.execute",
+          "cur.execute",
+          "cur.execute",
+          "cur.execute",
+          "cur.execute",
+          "doc_ref.get",
+          "docs_seen.add",
+          "endswith",
+          "get_connection",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "isinstance",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "json.dumps",
+          "json.dumps",
+          "json.dumps",
+          "meta.get",
+          "meta.get",
+          "meta.get",
+          "meta.get",
+          "meta.get",
+          "possible_doc.lower",
+          "report_payload.get",
+          "report_payload.get",
+          "set",
+          "sev.get",
+          "sev.get",
+          "sev.get",
+          "str"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [
+          "And",
+          "And",
+          "Or",
+          "Or",
+          "Or",
+          "Or",
+          "Or",
+          "Or"
+        ],
+        "comparison_ops": [
+          "Gt",
+          "NotIn"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 7,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "database/storage.py",
+      "fingerprint_hash": "210a25b41187c25e9b66d8435bb6867f8ecbfd0b40a43d3359925a504c4cbcc4",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [
+          "conn.commit",
+          "conn.cursor",
+          "cur.execute",
+          "cur.execute",
+          "cur.execute",
+          "cur.execute",
+          "cur.execute"
+        ],
+        "file_calls": [],
+        "network_calls": [
+          "code_element.get",
+          "code_element.get",
+          "code_element.get",
+          "code_element.get",
+          "doc_ref.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "issue.get",
+          "meta.get",
+          "meta.get",
+          "meta.get",
+          "meta.get",
+          "meta.get",
+          "report_payload.get",
+          "report_payload.get",
+          "sev.get",
+          "sev.get",
+          "sev.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "save_normalized_scan_report",
+        "params": [
+          "commit_hash",
+          "report_payload"
+        ],
+        "return_annotation": "Name(id='int', ctx=Load())"
+      },
+      "stable_id": "database/storage.py::save_normalized_scan_report"
     },
     "database/storage.py::save_scan_report": {
       "calls": {
