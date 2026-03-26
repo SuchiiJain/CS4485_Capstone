@@ -4,17 +4,25 @@ from datetime import datetime
 from typing import Optional
 
 from src.flagging_threshold import Flag, Severity, FlagReason
+from src.models import AISuggestion
 
 
 # --- ScanReport Class ---
 
 # Holds all the data for a single scan run, including repo info and all flags found
 class ScanReport:
-    def __init__(self, repo_path: str, commit_hash: Optional[str], flags: list[Flag]):
+    def __init__(
+        self,
+        repo_path: str,
+        commit_hash: Optional[str],
+        flags: list[Flag],
+        ai_suggestions: Optional[list[AISuggestion]] = None,
+    ):
         self.repo_path = repo_path                    # Path to the scanned repository
         self.commit_hash = commit_hash or "unknown"   # Commit hash at time of scan
         self.timestamp = datetime.now().isoformat()   # Timestamp of when scan ran
         self.flags = flags                            # List of all flags found
+        self.ai_suggestions = ai_suggestions or []    # Optional LLM-generated suggestions
 
     # Returns a count of flags grouped by severity level
     def count_by_severity(self) -> dict[str, int]:
@@ -75,6 +83,18 @@ def generate_json_report(
         },
         "issues": [_flag_to_dict(f) for f in report.flags],
     }
+
+    # Include AI suggestions if any were generated
+    if report.ai_suggestions:
+        data["ai_suggestions"] = [
+            {
+                "doc_path": s.doc_path,
+                "triggered_by": s.triggered_by,
+                "suggestion": s.suggestion_text,
+                "model_used": s.model_used,
+            }
+            for s in report.ai_suggestions
+        ]
 
     with open(output_path, "w", encoding="utf-8") as fh:
         json.dump(data, fh, indent=2)
@@ -172,6 +192,24 @@ def generate_txt_report(
         for i, flag in enumerate(report.flags):
             lines.extend(_txt_flag_block(i, flag))
 
+    # Append AI suggestions section if present
+    if report.ai_suggestions:
+        lines.append("")
+        lines.append(_SEPARATOR)
+        lines.append(" AI-GENERATED SUGGESTIONS")
+        lines.append(_SEPARATOR)
+        lines.append(f" Model: {report.ai_suggestions[0].model_used}")
+        lines.append(" NOTE: These are AI-generated suggestions — review before applying.")
+        for s in report.ai_suggestions:
+            lines.append("")
+            lines.append(_SUB_SEP)
+            lines.append(f" Doc: {s.doc_path}")
+            if s.triggered_by:
+                lines.append(f" Triggered by: {', '.join(s.triggered_by)}")
+            lines.append("")
+            for line in s.suggestion_text.splitlines():
+                lines.append(f"   {line}")
+
     lines.extend(_txt_footer(report))
 
     with open(output_path, "w", encoding="utf-8") as fh:
@@ -189,9 +227,15 @@ def generate_reports(
     commit_hash: Optional[str] = None,
     json_path: str = ".docrot-report.json",
     txt_path: str = ".docrot-report.txt",
+    ai_suggestions: Optional[list[AISuggestion]] = None,
 ) -> dict[str, str]:
     # Create the report object with all scan metadata
-    report = ScanReport(repo_path=repo_path, commit_hash=commit_hash, flags=flags)
+    report = ScanReport(
+        repo_path=repo_path,
+        commit_hash=commit_hash,
+        flags=flags,
+        ai_suggestions=ai_suggestions,
+    )
 
     # Generate both output formats
     generate_txt_report(report, txt_path)

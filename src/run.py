@@ -32,8 +32,8 @@ from src.alerts import (
     publish_alerts_to_report,
     publish_baseline_notice,
 )
-from src.config import load_config, get_doc_mappings, get_thresholds
-from src.models import ChangeEvent, DocAlert, FunctionFingerprint
+from src.config import load_config, get_doc_mappings, get_thresholds, get_ai_config
+from src.models import AISuggestion, ChangeEvent, DocAlert, FunctionFingerprint
 from src.persistence import (
     is_first_run,
     load_fingerprints,
@@ -52,6 +52,7 @@ from src.flagging_threshold import (
     run_flagging,
 )
 from src.report_generation import generate_reports
+from src.ai_suggestions import generate_ai_suggestions
 
 
 # ---------------------------------------------------------------------------
@@ -401,6 +402,8 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
     doc_mappings = get_doc_mappings(config)
     thresholds = get_thresholds(config)
 
+    ai_config = get_ai_config(config)
+
     if not doc_mappings:
         print(
             "[docrot] Warning: no doc_mappings in .docrot-config.json — "
@@ -479,7 +482,15 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
     order = {Severity.HIGH: 0, Severity.MEDIUM: 1, Severity.LOW: 2}
     flags.sort(key=lambda f: order[f.severity])
 
-    # 8. Generate .txt and .json reports
+    # 8. AI suggestions (optional — only runs if AI is configured)
+    ai_suggestions: List[AISuggestion] = generate_ai_suggestions(
+        ai_config=ai_config,
+        doc_alerts=doc_alerts,
+        all_events=all_events,
+        repo_path=repo_path,
+    )
+
+    # 9. Generate .txt and .json reports
     elapsed = time.time() - start
     json_path = os.path.join(repo_path, ".docrot-report.json")
     txt_path = os.path.join(repo_path, ".docrot-report.txt")
@@ -491,13 +502,13 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
         txt_path=txt_path,
     )
 
-    # 9. Print stdout summary
+    # 10. Print stdout summary
     _print_report(
         all_events, doc_alerts, flags, elapsed,
         len(py_files), total_funcs, report_paths,
     )
 
-    # 10. Persist updated baseline.
+    # 11. Persist updated baseline.
     # FIX: Preserve old fingerprints for any files that failed to scan this
     # run, so they aren't treated as newly-added on the next run.
     serialized: Dict[str, Dict] = {

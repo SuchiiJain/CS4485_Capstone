@@ -11,5 +11,6 @@ requests>=2.31,<3.0
 # Auto-load .env file for server config
 python-dotenv>=1.0,<2.0
 
-psycopg2-binary>=2.9,<3.0
-
+# Optional: AI-powered documentation suggestions (install the one you need)
+# anthropic>=0.39,<1.0
+# openai>=1.50,<2.0

@@ -13,5 +13,10 @@
   "thresholds": {
     "per_function_substantial": 4,
     "per_doc_cumulative": 8
+  },
+  "ai": {
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "api_key_env": "ANTHROPIC_API_KEY"
   }
 }

@@ -38,7 +38,7 @@ Post-MVP: per-module threshold overrides.
 import fnmatch
 import json
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 
 DEFAULT_CONFIG: Dict[str, Any] = {
@@ -48,6 +48,7 @@ DEFAULT_CONFIG: Dict[str, Any] = {
         "per_function_substantial": 4,
         "per_doc_cumulative": 8,
     },
+    "ai": None,
 }
 
 DEFAULT_THRESHOLDS: Dict[str, int] = {
@@ -145,6 +146,9 @@ def load_config(repo_path: str) -> Dict[str, Any]:
         user_thresholds = {}
     merged["thresholds"] = _normalize_thresholds(user_thresholds)
 
+    # Optional AI configuration — stored as-is; validated at runtime by get_ai_config()
+    merged["ai"] = user_config.get("ai", None)
+
     return merged
 
 
@@ -215,6 +219,44 @@ def get_threshold_info(config: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
                 "to flag a documentation file."
             ),
         },
+    }
+
+
+def get_ai_config(config: Dict[str, Any]) -> Optional[Dict[str, str]]:
+    """
+    Extract and validate the optional AI configuration block.
+
+    Returns a dict with keys (provider, model, api_key) if AI is fully
+    configured and the API key environment variable is set.  Returns None
+    otherwise — callers should treat None as "AI features disabled".
+
+    Supported providers: "anthropic", "openai".
+    """
+    ai_block = config.get("ai")
+    if not ai_block or not isinstance(ai_block, dict):
+        return None
+
+    provider = ai_block.get("provider", "").strip().lower()
+    model = ai_block.get("model", "").strip()
+    api_key_env = ai_block.get("api_key_env", "").strip()
+
+    if not provider or not model or not api_key_env:
+        print("[docrot] Warning: incomplete 'ai' config — need provider, model, and api_key_env.")
+        return None
+
+    if provider not in ("anthropic", "openai"):
+        print(f"[docrot] Warning: unsupported AI provider '{provider}'. Supported: anthropic, openai.")
+        return None
+
+    api_key = os.environ.get(api_key_env, "").strip()
+    if not api_key:
+        print(f"[docrot] AI features disabled: environment variable '{api_key_env}' is not set.")
+        return None
+
+    return {
+        "provider": provider,
+        "model": model,
+        "api_key": api_key,
     }
 
 
