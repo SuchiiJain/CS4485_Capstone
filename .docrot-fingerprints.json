@@ -483,16 +483,65 @@
       "stable_id": "backend/app.py::receive_scan"
     }
   },
-  "backend/storage.py": {
-    "backend/storage.py::init_db": {
+  "backend/database/storage.py": {
+    "backend/database/storage.py::get_connection": {
+      "calls": {
+        "call_names": [
+          "RuntimeError",
+          "os.getenv",
+          "psycopg2.connect"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": [
+          "RuntimeError"
+        ]
+      },
+      "file_path": "backend/database/storage.py",
+      "fingerprint_hash": "c525abee8675afc157f60cdccbbb239016c4818e957193cf7729d72da6520f34",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "psycopg2.connect"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "get_connection",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "backend/database/storage.py::get_connection"
+    },
+    "backend/database/storage.py::init_db": {
       "calls": {
         "call_names": [
           "conn.close",
-          "conn.commit",
           "conn.cursor",
           "cur.execute",
           "cur.execute",
-          "sqlite3.connect"
+          "get_connection"
         ]
       },
       "conditions": {
@@ -512,8 +561,8 @@
         "has_bare_except": false,
         "raises": []
       },
-      "file_path": "backend/storage.py",
-      "fingerprint_hash": "0b9505169958491b086dd97cefc34ec81e6e62731b1d652d211f39c9148c4a53",
+      "file_path": "backend/database/storage.py",
+      "fingerprint_hash": "66c603121bddbd9ed9f54fb9e1ecfd727e446bce5ad2c47620a83c73a1e30991",
       "is_public": true,
       "returns": {
         "return_count": 0,
@@ -522,7 +571,6 @@
       "side_effects": {
         "auth_calls": [],
         "db_calls": [
-          "conn.commit",
           "conn.cursor",
           "cur.execute",
           "cur.execute"
@@ -530,9 +578,7 @@
         "file_calls": [
           "conn.close"
         ],
-        "network_calls": [
-          "sqlite3.connect"
-        ]
+        "network_calls": []
       },
       "signature": {
         "defaults": [],
@@ -540,18 +586,17 @@
         "params": [],
         "return_annotation": null
       },
-      "stable_id": "backend/storage.py::init_db"
+      "stable_id": "backend/database/storage.py::init_db"
     },
-    "backend/storage.py::save_scan": {
+    "backend/database/storage.py::save_scan": {
       "calls": {
         "call_names": [
           "conn.close",
-          "conn.commit",
           "conn.cursor",
           "cur.execute",
           "cur.execute",
           "datetime.utcnow",
-          "isoformat",
+          "get_connection",
           "issue.get",
           "meta.get",
           "meta.get",
@@ -560,7 +605,6 @@
           "severity.get",
           "severity.get",
           "severity.get",
-          "sqlite3.connect",
           "str",
           "str",
           "uuid.uuid4",
@@ -584,8 +628,8 @@
         "has_bare_except": false,
         "raises": []
       },
-      "file_path": "backend/storage.py",
-      "fingerprint_hash": "088b9f0c8647e693c834614e58c4e07a3b867b59db0c75e9383a32c04d761c12",
+      "file_path": "backend/database/storage.py",
+      "fingerprint_hash": "252abaa33ee109be9aaa3bcc7731f3281ed7f2ffaa7c4da0bde45f8e9a332337",
       "is_public": true,
       "returns": {
         "return_count": 0,
@@ -594,7 +638,6 @@
       "side_effects": {
         "auth_calls": [],
         "db_calls": [
-          "conn.commit",
           "conn.cursor",
           "cur.execute",
           "cur.execute"
@@ -610,8 +653,7 @@
           "report_json.get",
           "severity.get",
           "severity.get",
-          "severity.get",
-          "sqlite3.connect"
+          "severity.get"
         ]
       },
       "signature": {
@@ -624,7 +666,7 @@
         ],
         "return_annotation": null
       },
-      "stable_id": "backend/storage.py::save_scan"
+      "stable_id": "backend/database/storage.py::save_scan"
     }
   },
   "docs/pseudocode.py": {
@@ -3476,17 +3518,13 @@
           "conn.cursor",
           "cur.execute",
           "cur.execute",
-          "cur.execute",
           "cur.fetchone",
           "cur.fetchone",
-          "cur.fetchone",
+          "get_connection",
           "init_db",
           "json.load",
           "open",
           "os.path.exists",
-          "os.path.exists",
-          "os.path.join",
-          "os.remove",
           "print",
           "print",
           "print",
@@ -3495,12 +3533,7 @@
           "print",
           "print",
           "print",
-          "print",
-          "print",
-          "print",
-          "print",
-          "save_scan",
-          "sqlite3.connect"
+          "save_scan"
         ]
       },
       "conditions": {
@@ -3509,8 +3542,8 @@
           "Or"
         ],
         "comparison_ops": [
-          "Eq",
           "Gt",
+          "GtE",
           "Is"
         ]
       },
@@ -3519,7 +3552,7 @@
         "elif_count": 0,
         "else_count": 1,
         "for_count": 0,
-        "if_count": 4,
+        "if_count": 2,
         "while_count": 0
       },
       "exceptions": {
@@ -3528,7 +3561,7 @@
         "raises": []
       },
       "file_path": "run.py",
-      "fingerprint_hash": "aeb463bc0d9100cc880e31f28f8144654f236ee2481fe7add2f801918af85903",
+      "fingerprint_hash": "cb77a7219d8f9ca19a5198fe5fb1784042e07f1321319b9a66282937df0fdaf7",
       "is_public": true,
       "returns": {
         "return_count": 3,
@@ -3540,19 +3573,14 @@
           "conn.cursor",
           "cur.execute",
           "cur.execute",
-          "cur.execute",
-          "cur.fetchone",
           "cur.fetchone",
           "cur.fetchone"
         ],
         "file_calls": [
           "conn.close",
-          "open",
-          "os.remove"
+          "open"
         ],
-        "network_calls": [
-          "sqlite3.connect"
-        ]
+        "network_calls": []
       },
       "signature": {
         "defaults": [],
