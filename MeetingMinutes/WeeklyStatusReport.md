@@ -14,10 +14,21 @@
 ---
 
 ### Marie Liske
-- **Hours:**
+- **Hours:** 12
 - **Tasks Complete:**
+  - Worked with Suchi to configure databse to store JSON reports
+  - Worked with SQLite to effectively display data from scans
+  - Troubleshooted issued with SQLite, helped brainstorm Postgres & Supabase solutions w/ Suchi
+  - Met with team to agree on assigned tasks and milestones for the week
+  - Watched videos on Supabase as I was unfamiliar with using
 - **Upcoming Tasks:**
+  - Confirm DB schema structure & API calls
+  - Assist in connecting to user's Github, adding multiple projects/repos
 - **Issues:**
+  - SQLite had issues with updating on every scan, as the database was contingent on API server running
+  - In order to update, the server must be disconnected, changes pulled, and then frontend & backend must be restarted
+  - SQLite would not work in production, found that Postgres was necesasary
+  - Issues using tokens for auth, spent time working this out
 
 ---
 
