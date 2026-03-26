@@ -1486,50 +1486,6 @@
     }
   },
   "examples/sample_code_v1.py": {
-    "examples/sample_code_v1.py::_format_currency": {
-      "calls": {
-        "call_names": []
-      },
-      "conditions": {
-        "boolean_ops": [],
-        "comparison_ops": []
-      },
-      "control_flow": {
-        "early_return_count": 1,
-        "elif_count": 0,
-        "else_count": 0,
-        "for_count": 0,
-        "if_count": 0,
-        "while_count": 0
-      },
-      "exceptions": {
-        "except_handlers": [],
-        "has_bare_except": false,
-        "raises": []
-      },
-      "file_path": "examples/sample_code_v1.py",
-      "fingerprint_hash": "37684c557a7496ec443985c3c0d35b822d2fc6195587ae3b36e548efdb822e0f",
-      "is_public": false,
-      "returns": {
-        "return_count": 1,
-        "returns_none": false
-      },
-      "side_effects": {
-        "auth_calls": [],
-        "db_calls": [],
-        "file_calls": [],
-        "network_calls": []
-      },
-      "signature": {
-        "defaults": [],
-        "name": "_format_currency",
-        "params": [
-          "amount"
-        ],
-        "return_annotation": null
-      },
-      "stable_id": "examples/sample_code_v1.py::_format_currency"
-    },
     "examples/sample_code_v1.py::authenticate_user": {
       "calls": {
         "call_names": [
@@ -1585,57 +1541,6 @@
         "return_annotation": null
       },
       "stable_id": "examples/sample_code_v1.py::authenticate_user"
-    },
-    "examples/sample_code_v1.py::calculate_shipping": {
-      "calls": {
-        "call_names": [
-          "round"
-        ]
-      },
-      "conditions": {
-        "boolean_ops": [],
-        "comparison_ops": [
-          "Eq",
-          "Gt",
-          "Gt"
-        ]
-      },
-      "control_flow": {
-        "early_return_count": 1,
-        "elif_count": 1,
-        "else_count": 1,
-        "for_count": 0,
-        "if_count": 3,
-        "while_count": 0
-      },
-      "exceptions": {
-        "except_handlers": [],
-        "has_bare_except": false,
-        "raises": []
-      },
-      "file_path": "examples/sample_code_v1.py",
-      "fingerprint_hash": "bf67c7a86677def44dd36981213f8fa09678854d1bb65c72d5e39b6fd140340c",
-      "is_public": true,
-      "returns": {
-        "return_count": 1,
-        "returns_none": false
-      },
-      "side_effects": {
-        "auth_calls": [],
-        "db_calls": [],
-        "file_calls": [],
-        "network_calls": []
-      },
-      "signature": {
-        "defaults": [],
-        "name": "calculate_shipping",
-        "params": [
-          "weight",
-          "destination"
-        ],
-        "return_annotation": null
-      },
-      "stable_id": "examples/sample_code_v1.py::calculate_shipping"
     },
     "examples/sample_code_v1.py::get_user_profile": {
       "calls": {
