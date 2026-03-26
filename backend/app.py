@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from storage import init_db, save_scan
+from backend.database.storage import init_db, save_scan
 
 app = Flask(__name__)
 init_db()

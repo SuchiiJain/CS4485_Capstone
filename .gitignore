@@ -42,3 +42,5 @@ Thumbs.db
 #.docrot-fingerprints.json
 .docrot-report.json
 .docrot-report.txt
+
+.tmp-report-*.json
