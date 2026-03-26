@@ -54,8 +54,10 @@
 ---
 
 ### Portia Hamid
-- **Hours:**
+- **Hours:** 6
 - **Tasks Complete:**
+  - Brainstormed how to add the AI features to the current pipeline
+  - Started implementing AI features (LLM API key, prompting, etc.) on a new branch called AI-integration
 - **Upcoming Tasks:**
 - **Issues:**
 
