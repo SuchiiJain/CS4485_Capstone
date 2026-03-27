@@ -7,7 +7,7 @@
 ---
 # Week 6 — March 23-27, 2026
 
-**Team Leader for Week 6: Anusua Halder**
+**Team Leader for Week 6: Portia Hamid**
 
 **Total Hours Spent:**
 
