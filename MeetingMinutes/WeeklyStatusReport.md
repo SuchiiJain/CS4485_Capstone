@@ -71,7 +71,7 @@
 
 **Team Leader for Week 6: Portia Hamid**
 
-**Total Hours Spent: 61**
+**Total Hours Spent: 63**
 
 ---
 
