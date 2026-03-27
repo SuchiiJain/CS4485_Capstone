@@ -49,7 +49,7 @@
   - Worked with the team to troubleshoot DNS and connection issues
   - Watched videos to understand authentication systems
 - **Upcoming Tasks:**
-  - Finalize Bake Structure
+  - Finalize Backend Structure
   - Work with Sammy to build authentication system
 - **Issues:**
   - SQLite caused file-locking and update problems
