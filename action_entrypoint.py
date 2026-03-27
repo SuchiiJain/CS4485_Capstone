@@ -14,6 +14,7 @@ import requests
 
 from src.run import run as run_pipeline
 from src.github_integration import format_pr_comment
+from backend.database.storage import init_db, save_scan
 
 
 ISSUE_TITLE = "⚠️ Docrot Detector — Documentation may be stale"
@@ -100,11 +101,22 @@ def main() -> None:
     # Run the pipeline
     exit_code = run_pipeline(repo_path, commit_hash=sha)
 
+    # Save scan to database if report was generated
+    report_path = os.path.join(os.path.abspath(repo_path), ".docrot-report.json")
+    if os.path.exists(report_path):
+        try:
+            init_db()
+            with open(report_path, "r", encoding="utf-8") as f:
+                report_json = json.load(f)
+            save_scan(repo, sha, report_json)
+            print(f"[docrot-action] Scan saved to database for {repo}")
+        except Exception as e:
+            print(f"[docrot-action] Warning: Could not save scan to database: {e}")
+
     if not create_issue:
         # When issue creation is disabled, use exit code to signal CI
         sys.exit(exit_code)
 
-    report_path = os.path.join(os.path.abspath(repo_path), ".docrot-report.json")
     existing_issue = _find_existing_issue(repo)
 
     if exit_code == 1:
