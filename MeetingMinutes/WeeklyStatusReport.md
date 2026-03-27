@@ -41,7 +41,7 @@
 ---
 
 ### Suchi Jain
-- **Hours:14**
+- **Hours: 14**
 - **Tasks Complete:**
   - Worked on migrating the database from SQLite to Postgres (Supabase) and configured Postgres connection using DATABASE_URL and psycopg2
   - Created and updated DB schema for scan_runs and flags tables
