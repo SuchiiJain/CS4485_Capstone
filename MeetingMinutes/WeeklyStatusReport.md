@@ -63,10 +63,22 @@
 ---
 
 ### Samuel Say
-- **Hours:**
+- **Hours: 11**
 - **Tasks Complete:**
+  - Implemented GitHub OAuth authentication on the backend (authentication branch)
+    - Created backend/auth.py with OAuth login/callback routes and JWT middleware
+    - Protected /api/scan endpoint with JWT authentication
+    - Added PyJWT dependency to requirements.txt
+  - Implemented frontend authentication on the auth-test branch
+    - Created AuthContext.tsx for token storage and OAuth callback handling
+    - Created LoginPage.tsx with "Login with GitHub" button
+    - Updated client.ts to read JWT from localStorage instead of a static env var
+    - Updated App.tsx to show login page when unauthenticated and real user info in sidebar
+  - Successfully tested full OAuth login/logout flow locally
 - **Upcoming Tasks:**
 - **Issues:**
+  - GitHub integration account (5enyl) lacks write access to both repos — files had to be committed manually
+
 
 ---
 
