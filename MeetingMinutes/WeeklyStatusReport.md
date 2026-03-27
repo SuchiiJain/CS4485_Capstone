@@ -168,11 +168,14 @@
 ---
 
 ### Portia Hamid
-- **Hours: 7** 
+- **Hours: 9** 
 - **Tasks Complete:**
   - Brainstormed how to add the AI features to the current pipeline
   - Started implementing AI features (LLM API key, prompting, etc.) on a new branch called AI-integration
+  - Assisted with testing for the database integration and Supabase migration
 - **Upcoming Tasks:**
+  - Finish implementing AI features
+  - Help get the database up and running
 - **Issues:**
   - N/A
 
