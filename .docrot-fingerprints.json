@@ -483,6 +483,352 @@
       "stable_id": "backend/app.py::receive_scan"
     }
   },
+  "backend/auth.py": {
+    "backend/auth.py::_create_jwt": {
+      "calls": {
+        "call_names": [
+          "datetime.now",
+          "datetime.now",
+          "jwt.encode",
+          "str",
+          "timedelta",
+          "user_data.get",
+          "user_data.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "backend/auth.py",
+      "fingerprint_hash": "4fa8f3a631ee220c6c102181119f7e392a10281caa18b4ecc68f88d6218ffb27",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [
+          "jwt.encode"
+        ],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "user_data.get",
+          "user_data.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_create_jwt",
+        "params": [
+          "user_data"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "backend/auth.py::_create_jwt"
+    },
+    "backend/auth.py::callback": {
+      "calls": {
+        "call_names": [
+          "_create_jwt",
+          "auth_bp.route",
+          "redirect",
+          "redirect",
+          "redirect",
+          "redirect",
+          "request.args.get",
+          "requests.get",
+          "requests.post",
+          "token_data.get",
+          "token_response.json",
+          "user_response.json"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "NotEq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 4,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "backend/auth.py",
+      "fingerprint_hash": "1b74f8733ed41564770687b12894121047de4288c4dd51843dacbd4ee96b9aa2",
+      "is_public": true,
+      "returns": {
+        "return_count": 4,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "request.args.get",
+          "requests.get",
+          "requests.post",
+          "token_data.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "callback",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "backend/auth.py::callback"
+    },
+    "backend/auth.py::decorated": {
+      "calls": {
+        "call_names": [
+          "auth_header.startswith",
+          "f",
+          "jsonify",
+          "jsonify",
+          "jsonify",
+          "jwt.decode",
+          "request.headers.get",
+          "request.headers.get",
+          "request.headers.get",
+          "wraps"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 4,
+        "elif_count": 1,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "Attribute(value=Name(id='jwt', ctx=Load()), attr='ExpiredSignatureError', ctx=Load())",
+          "Attribute(value=Name(id='jwt', ctx=Load()), attr='InvalidTokenError', ctx=Load())"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "backend/auth.py",
+      "fingerprint_hash": "b7342dd3bb2eeea6a13314a7ec4e356641fd61918c9361c055f62b2ff238e446",
+      "is_public": true,
+      "returns": {
+        "return_count": 4,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [
+          "jwt.decode"
+        ],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "request.headers.get",
+          "request.headers.get",
+          "request.headers.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "decorated",
+        "params": [
+          "*args",
+          "**kwargs"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "backend/auth.py::decorated"
+    },
+    "backend/auth.py::login": {
+      "calls": {
+        "call_names": [
+          "auth_bp.route",
+          "jsonify",
+          "redirect"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 2,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "backend/auth.py",
+      "fingerprint_hash": "e0efbc24d699f7adb7471801b858af07aee3578da382a2a68f25ef6c19eefcd4",
+      "is_public": true,
+      "returns": {
+        "return_count": 2,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "login",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "backend/auth.py::login"
+    },
+    "backend/auth.py::me": {
+      "calls": {
+        "call_names": [
+          "auth_bp.route",
+          "jsonify",
+          "request.user.get",
+          "request.user.get"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "backend/auth.py",
+      "fingerprint_hash": "f82a782ec9e7dfa48cda5c01b08760840c9b7d791e6262fa2fa77fa3aee67d9b",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "request.user.get",
+          "request.user.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "me",
+        "params": [],
+        "return_annotation": null
+      },
+      "stable_id": "backend/auth.py::me"
+    },
+    "backend/auth.py::require_auth": {
+      "calls": {
+        "call_names": [
+          "auth_header.startswith",
+          "f",
+          "jsonify",
+          "jsonify",
+          "jsonify",
+          "jwt.decode",
+          "request.headers.get",
+          "request.headers.get",
+          "request.headers.get",
+          "wraps"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 5,
+        "elif_count": 1,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 3,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [
+          "Attribute(value=Name(id='jwt', ctx=Load()), attr='ExpiredSignatureError', ctx=Load())",
+          "Attribute(value=Name(id='jwt', ctx=Load()), attr='InvalidTokenError', ctx=Load())"
+        ],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "backend/auth.py",
+      "fingerprint_hash": "e02fbcfb79ce8b7ad98292c8577bb53eaba3bb81009e35f5121117461cdb62bd",
+      "is_public": true,
+      "returns": {
+        "return_count": 5,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [
+          "jwt.decode"
+        ],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "request.headers.get",
+          "request.headers.get",
+          "request.headers.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "require_auth",
+        "params": [
+          "f"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "backend/auth.py::require_auth"
+    }
+  },
   "backend/storage.py": {
     "backend/storage.py::init_db": {
       "calls": {
