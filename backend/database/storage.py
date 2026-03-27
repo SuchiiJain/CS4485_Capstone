@@ -1,6 +1,7 @@
 import os
 import uuid
 from datetime import datetime
+import socket
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -12,7 +13,16 @@ def get_connection():
     database_url = os.getenv("DATABASE_URL")
     if not database_url:
         raise RuntimeError("DATABASE_URL not set.")
-    return psycopg2.connect(database_url, cursor_factory=RealDictCursor)
+    # Force IPv4 only to avoid IPv6 connectivity issues
+    old_getaddrinfo = socket.getaddrinfo
+    def ipv4_only(*args, **kwargs):
+        result = old_getaddrinfo(*args, **kwargs)
+        return [r for r in result if r[0] == socket.AF_INET]
+    socket.getaddrinfo = ipv4_only
+    try:
+        return psycopg2.connect(database_url, cursor_factory=RealDictCursor)
+    finally:
+        socket.getaddrinfo = old_getaddrinfo
 
 def init_db():
     conn = get_connection()
