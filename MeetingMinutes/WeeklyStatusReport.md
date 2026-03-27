@@ -158,8 +158,11 @@
     - Updated App.tsx to show login page when unauthenticated and real user info in sidebar
   - Successfully tested full OAuth login/logout flow locally
 - **Upcoming Tasks:**
+  - Deploy the backend to a server 
+  - Deploy the frontend to a hosting service 
+  - Update the GitHub OAuth App callback URL to real domain
+  - Set the env vars on your hosting platform instead of a local .env file
 - **Issues:**
-  - GitHub integration account (5enyl) lacks write access to both repos — files had to be committed manually
 
 
 ---
