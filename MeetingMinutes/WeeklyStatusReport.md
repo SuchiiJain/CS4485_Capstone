@@ -163,6 +163,7 @@
   - Update the GitHub OAuth App callback URL to real domain
   - Set the env vars on your hosting platform instead of a local .env file
 - **Issues:**
+  - N/A
 
 
 ---
