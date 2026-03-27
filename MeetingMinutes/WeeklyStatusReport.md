@@ -97,9 +97,18 @@
 ### Anusua Halder
 - **Hours: 7**
 - **Tasks Complete:**
+  - Attended team meetings to sort out tasks and follow up with project.
+  - Updated the project specification to reflect current Phase 3 implementation progress
+  - Added a “Current Implementation Status” section outlining database migration, frontend integration, authentication progress, and deployment research
+  - Updated persistence section to reflect transition from SQLite to PostgreSQL (Supabase)
+  - Updated frontend environment variables in spec to match actual implementation
+  - Uploaded updated spec file to frontend repository and replaced outdated version
+  - Completed MOM #6 and updated weekly team progress documentation
 - **Upcoming Tasks:**
+  - Continue refining spec file as implementation evolves
+  - Research and document hosting/deployment strategy options
 - **Issues:**
-
+  - N/A
 ---
 
 ### Suchi Jain
@@ -162,6 +171,7 @@
   - Started implementing AI features (LLM API key, prompting, etc.) on a new branch called AI-integration
 - **Upcoming Tasks:**
 - **Issues:**
+  - N/A
 
 ---
 
