@@ -71,12 +71,12 @@
 
 **Team Leader for Week 6: Portia Hamid**
 
-**Total Hours Spent:**
+**Total Hours Spent: 61**
 
 ---
 
 ### Marie Liske
-- **Hours:** 12
+- **Hours: 12** 
 - **Tasks Complete:**
   - Worked with Suchi to configure databse to store JSON reports
   - Worked with SQLite to effectively display data from scans
@@ -95,7 +95,7 @@
 ---
 
 ### Anusua Halder
-- **Hours:**
+- **Hours: 7**
 - **Tasks Complete:**
 - **Upcoming Tasks:**
 - **Issues:**
@@ -122,7 +122,7 @@
 ---
 
 ### Aaron Santhosh
-- **Hours:** 10
+- **Hours: 10** 
 - **Tasks Complete:**
   - Reviewed team weekly meeting and task assignments
   - Updated the frontend auth UI with cleaner login/sign-up design
@@ -156,7 +156,7 @@
 ---
 
 ### Portia Hamid
-- **Hours:** 6
+- **Hours: 7** 
 - **Tasks Complete:**
   - Brainstormed how to add the AI features to the current pipeline
   - Started implementing AI features (LLM API key, prompting, etc.) on a new branch called AI-integration
