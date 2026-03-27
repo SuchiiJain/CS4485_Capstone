@@ -49,11 +49,17 @@
 ---
 
 ### Aaron Santhosh
-- **Hours:**
+- **Hours:** 10
 - **Tasks Complete:**
+  - Reviewed team weekly meeting and task assignments
+  - Updated the frontend auth UI with cleaner login/sign-up design
+  - Removed unused placeholder pages from the side navigation and cleaned up routing
+  - Made dashboard components interactive and added drill-down navigation to detail screens
+  - Enhanced the Issues, Projects, and Scan History pages with more interactive detail views
 - **Upcoming Tasks:**
+  - Bug fix frontend behavior once the updated backend/database version is finalized
 - **Issues:**
-
+  - Confusion around the current state of the backend/database
 ---
 
 ### Samuel Say
