@@ -41,10 +41,21 @@
 ---
 
 ### Suchi Jain
-- **Hours:**
+- **Hours:14**
 - **Tasks Complete:**
+  - Worked on migrating the database from SQLite to Postgres (Supabase) and configured Postgres connection using DATABASE_URL and psycopg2
+  - Created and updated DB schema for scan_runs and flags tables
+  - Moved database files into backend/database for better structure and removed SQLite file from repo; updated .gitignore
+  - Worked with the team to troubleshoot DNS and connection issues
+  - Watched videos to understand authentication systems
 - **Upcoming Tasks:**
+  - Finalize Bake Structure
+  - Work with Sammy to build authentication system
 - **Issues:**
+  - SQLite caused file-locking and update problems
+  - DNS issues when connecting to Supabase
+  - Database was not initially connected to production pipeline
+  - Had to adjust imports and project structure after migration
 
 ---
 
