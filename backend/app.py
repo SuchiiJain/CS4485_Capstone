@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 from storage import init_db, save_scan
+from auth import auth_bp, require_auth
 
 app = Flask(__name__)
+app.register_blueprint(auth_bp)
 init_db()
 
 
@@ -11,6 +13,7 @@ def health():
 
 
 @app.route("/api/scan", methods=["POST"])
+@require_auth
 def receive_scan():
     data = request.json
 
