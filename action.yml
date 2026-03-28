@@ -36,7 +36,7 @@ runs:
         GITHUB_SHA: ${{ github.sha }}
         INPUT_REPO_PATH: ${{ inputs.repo_path }}
         INPUT_CREATE_ISSUE: ${{ inputs.create_issue }}
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        DATABASE_URL: ${{ env.DATABASE_URL }}
       run: |
         python "${{ github.action_path }}/action_entrypoint.py"
 
