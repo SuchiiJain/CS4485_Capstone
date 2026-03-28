@@ -323,13 +323,20 @@
           "_find_existing_issue",
           "_update_issue",
           "format_pr_comment",
+          "init_db",
+          "json.load",
           "lower",
+          "open",
           "os.environ.get",
           "os.environ.get",
           "os.environ.get",
           "os.path.abspath",
+          "os.path.exists",
           "os.path.join",
+          "print",
+          "print",
           "run_pipeline",
+          "save_scan",
           "sys.exit",
           "sys.exit"
         ]
@@ -350,16 +357,18 @@
         "elif_count": 1,
         "else_count": 1,
         "for_count": 0,
-        "if_count": 5,
+        "if_count": 6,
         "while_count": 0
       },
       "exceptions": {
-        "except_handlers": [],
+        "except_handlers": [
+          "Exception"
+        ],
         "has_bare_except": false,
         "raises": []
       },
       "file_path": "action_entrypoint.py",
-      "fingerprint_hash": "4c1e86b9b4c6e6ec6459a4c8430d24cbae7b59d6d8c20cfe69db08fde8eb4759",
+      "fingerprint_hash": "74c46dbcc4083a61858cbed8f673c3c6086b8963007444dafc7b4e1779a69002",
       "is_public": true,
       "returns": {
         "return_count": 0,
@@ -368,7 +377,9 @@
       "side_effects": {
         "auth_calls": [],
         "db_calls": [],
-        "file_calls": [],
+        "file_calls": [
+          "open"
+        ],
         "network_calls": [
           "os.environ.get",
           "os.environ.get",
@@ -488,16 +499,19 @@
       "calls": {
         "call_names": [
           "RuntimeError",
+          "old_getaddrinfo",
           "os.getenv",
           "psycopg2.connect"
         ]
       },
       "conditions": {
         "boolean_ops": [],
-        "comparison_ops": []
+        "comparison_ops": [
+          "Eq"
+        ]
       },
       "control_flow": {
-        "early_return_count": 1,
+        "early_return_count": 2,
         "elif_count": 0,
         "else_count": 0,
         "for_count": 0,
@@ -512,10 +526,10 @@
         ]
       },
       "file_path": "backend/database/storage.py",
-      "fingerprint_hash": "c525abee8675afc157f60cdccbbb239016c4818e957193cf7729d72da6520f34",
+      "fingerprint_hash": "0f366f0ca22356f7f8ff7820609fc6d86489fe826a4b1ae98c7eccd2c8d8926a",
       "is_public": true,
       "returns": {
-        "return_count": 1,
+        "return_count": 2,
         "returns_none": false
       },
       "side_effects": {
@@ -587,6 +601,55 @@
         "return_annotation": null
       },
       "stable_id": "backend/database/storage.py::init_db"
+    },
+    "backend/database/storage.py::ipv4_only": {
+      "calls": {
+        "call_names": [
+          "old_getaddrinfo"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": [
+          "Eq"
+        ]
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "backend/database/storage.py",
+      "fingerprint_hash": "20fa1d2776541cbb43ebf141ad505c4ed29ec065e716b71a4d318bcdda08d184",
+      "is_public": true,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "ipv4_only",
+        "params": [
+          "*args",
+          "**kwargs"
+        ],
+        "return_annotation": null
+      },
+      "stable_id": "backend/database/storage.py::ipv4_only"
     },
     "backend/database/storage.py::save_scan": {
       "calls": {
