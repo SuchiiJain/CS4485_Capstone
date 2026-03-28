@@ -25,7 +25,7 @@ runs:
     - name: Install Docrot Detector
       shell: bash
       run: |
-        pip install --quiet requests
+        pip install --quiet requests psycopg2-binary python-dotenv
 
     - name: Run Docrot scan
       id: scan
@@ -36,6 +36,7 @@ runs:
         GITHUB_SHA: ${{ github.sha }}
         INPUT_REPO_PATH: ${{ inputs.repo_path }}
         INPUT_CREATE_ISSUE: ${{ inputs.create_issue }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
       run: |
         python "${{ github.action_path }}/action_entrypoint.py"
 
