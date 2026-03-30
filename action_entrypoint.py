@@ -34,16 +34,20 @@ def _supabase_headers() -> dict:
     }
 
 
-def _save_to_supabase(repo: str, sha: str, report_json: dict) -> None:
+def _save_to_supabase(repo: str, sha: str, branch: str, status: str, report_json: dict) -> None:
     """Save scan results to Supabase via its REST API."""
     scan_id = str(uuid.uuid4())
     meta = report_json.get("meta", {})
     severity = meta.get("severity_summary", {})
+    headers = _supabase_headers()
 
+    # 1. Insert scan run
     scan_row = {
         "id": scan_id,
         "repo_name": repo,
         "commit_hash": sha,
+        "branch": branch,
+        "status": status,
         "scanned_at": datetime.now(timezone.utc).isoformat(),
         "total_issues": meta.get("total_issues", 0),
         "high_count": severity.get("high", 0),
@@ -54,32 +58,55 @@ def _save_to_supabase(repo: str, sha: str, report_json: dict) -> None:
     resp = requests.post(
         f"{SUPABASE_URL}/rest/v1/scan_runs",
         json=scan_row,
-        headers=_supabase_headers(),
+        headers=headers,
         timeout=15,
     )
     resp.raise_for_status()
 
+    # 2. Insert flags with full detail
     flags = []
     for issue in report_json.get("issues", []):
+        code_el = issue.get("code_element", {})
+        doc_ref = issue.get("doc_reference")
         flags.append({
             "id": str(uuid.uuid4()),
             "scan_id": scan_id,
             "reason": issue["reason"],
             "severity": issue["severity"],
-            "file_path": issue["code_element"]["file_path"],
-            "symbol": issue["code_element"]["name"],
+            "file_path": code_el.get("file_path"),
+            "symbol": code_el.get("name"),
             "message": issue["message"],
             "suggestion": issue.get("suggestion"),
+            "signature": code_el.get("signature"),
+            "params": json.dumps(code_el.get("params", [])),
+            "return_type": code_el.get("return_type"),
+            "doc_file": doc_ref["file_path"] if doc_ref else None,
+            "doc_symbol": doc_ref["referenced_symbol"] if doc_ref else None,
         })
 
     if flags:
         resp = requests.post(
             f"{SUPABASE_URL}/rest/v1/flags",
             json=flags,
-            headers=_supabase_headers(),
+            headers=headers,
             timeout=15,
         )
         resp.raise_for_status()
+
+    # 3. Upsert repo (create on first scan, update latest_scan_id on subsequent)
+    repo_row = {
+        "full_name": repo,
+        "github_url": f"https://github.com/{repo}",
+        "latest_scan_id": scan_id,
+    }
+    upsert_headers = {**headers, "Prefer": "return=minimal,resolution=merge-duplicates"}
+    resp = requests.post(
+        f"{SUPABASE_URL}/rest/v1/repos?on_conflict=full_name",
+        json=repo_row,
+        headers=upsert_headers,
+        timeout=15,
+    )
+    resp.raise_for_status()
 
 
 def _gh_headers() -> dict:
@@ -158,17 +185,19 @@ def main() -> None:
     create_issue = os.environ.get("INPUT_CREATE_ISSUE", "true").lower() == "true"
     repo = os.environ["GITHUB_REPOSITORY"]
     sha = os.environ.get("GITHUB_SHA", "unknown")
+    branch = os.environ.get("GITHUB_REF_NAME", "unknown")
 
     # Run the pipeline
     exit_code = run_pipeline(repo_path, commit_hash=sha)
 
     # Save scan to database
     report_path = os.path.join(os.path.abspath(repo_path), ".docrot-report.json")
+    status = "issues_found" if exit_code == 1 else "clean"
     try:
         if os.path.exists(report_path):
             with open(report_path, "r", encoding="utf-8") as f:
                 report_json = json.load(f)
-            _save_to_supabase(repo, sha, report_json)
+            _save_to_supabase(repo, sha, branch, status, report_json)
             print(f"[docrot-action] Scan saved to database for {repo}")
     except Exception as e:
         print(f"[docrot-action] Warning: could not save to database: {e}")
