@@ -267,19 +267,9 @@ publish_alerts_to_log(alerts)
 
 ## GitHub Action (Recommended)
 
-Use this Action from any other repository by adding one workflow file, one config file, and (optionally) one secret.
+Use this Action from any other repository by adding one workflow file and one config file. No secrets or database setup required.
 
-### Step 1: Create a DATABASE_URL Secret
-
-In the target repository:
-
-1. Go to **Settings -> Secrets and variables -> Actions**.
-2. Create a new repository secret named `DATABASE_URL`.
-3. Paste your Supabase Postgres connection string.
-
-If you skip this step, scanning still works, but scan reports are not persisted to Supabase.
-
-### Step 2: Add .docrot-config.json to the Target Repository
+### Step 1: Add .docrot-config.json to the Target Repository
 
 Create `.docrot-config.json` at the root of the target repo:
 
@@ -301,7 +291,7 @@ Create `.docrot-config.json` at the root of the target repo:
 
 Without this file, Docrot still scans code changes, but it cannot map changes to specific documentation files.
 
-### Step 3: Add Workflow File in the Target Repository
+### Step 2: Add Workflow File in the Target Repository
 
 Create `.github/workflows/docrot.yml`:
 
@@ -322,14 +312,9 @@ jobs:
 
       # Prefer a stable tag (for example: @v1) after release.
       - uses: SuchiiJain/CS4485_Capstone@main
-        with:
-          repo_path: .
-          create_issue: "true"
-          database_url: ${{ secrets.DATABASE_URL }}
-          fail_on_db_error: "true"
 ```
 
-### Step 4: Push and Verify
+### Step 3: Push and Verify
 
 On each push, the action will:
 
@@ -337,7 +322,7 @@ On each push, the action will:
 2. Write `.docrot-report.json` and `.docrot-report.txt`.
 3. Create or update a `docrot` issue when docs may be stale.
 4. Close the existing `docrot` issue when scan results are clean.
-5. Save the JSON report to Supabase when `database_url` is configured.
+5. Save the scan report to the Docrot database automatically.
 
 ### Action Inputs
 
@@ -345,15 +330,8 @@ On each push, the action will:
 |-------|----------|---------|-------------|
 | `repo_path` | No | `.` | Path to the repository root to scan |
 | `create_issue` | No | `true` | Create/update a GitHub issue when alerts are found |
-| `database_url` | No | `` | Supabase/Postgres connection string. Falls back to `DATABASE_URL` workflow env if omitted |
-| `fail_on_db_error` | No | `true` | Fail the action when DB persistence fails |
 
-### Common Setup Errors
-
-- `Unexpected input(s) 'database_url', 'fail_on_db_error'`: the `uses:` reference points to a branch/tag/commit that has an older `action.yml`. Point to a ref that includes these inputs.
-- `password authentication failed for user ...`: `DATABASE_URL` is incorrect (wrong credentials, stale secret, or improperly encoded password).
-
-The Action uses the default `GITHUB_TOKEN` provided by GitHub Actions; no personal access token is required.
+The Action uses the default `GITHUB_TOKEN` provided by GitHub Actions; no personal access token or database credentials are required.
 
 ## GitHub Webhook Server
 
