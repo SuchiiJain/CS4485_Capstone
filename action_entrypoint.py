@@ -95,23 +95,38 @@ def _close_issue(repo: str, issue_number: int) -> None:
 def main() -> None:
     repo_path = os.environ.get("INPUT_REPO_PATH", ".")
     create_issue = os.environ.get("INPUT_CREATE_ISSUE", "true").lower() == "true"
+    input_database_url = os.environ.get("INPUT_DATABASE_URL", "").strip()
+    env_database_url = os.environ.get("DATABASE_URL", "").strip()
+    database_url = input_database_url or env_database_url
+    fail_on_db_error = os.environ.get("INPUT_FAIL_ON_DB_ERROR", "true").lower() == "true"
     repo = os.environ["GITHUB_REPOSITORY"]
     sha = os.environ.get("GITHUB_SHA", "unknown")
+
+    if database_url:
+        os.environ["DATABASE_URL"] = database_url
 
     # Run the pipeline
     exit_code = run_pipeline(repo_path, commit_hash=sha)
 
-    # Save scan to database if report was generated
+    # Save scan to database when DB is configured
     report_path = os.path.join(os.path.abspath(repo_path), ".docrot-report.json")
-    if os.path.exists(report_path):
+    if database_url:
         try:
+            if not os.path.exists(report_path):
+                raise FileNotFoundError(f"Report file not found: {report_path}")
             init_db()
             with open(report_path, "r", encoding="utf-8") as f:
                 report_json = json.load(f)
             save_scan(repo, sha, report_json)
             print(f"[docrot-action] Scan saved to database for {repo}")
         except Exception as e:
-            print(f"[docrot-action] Warning: Could not save scan to database: {e}")
+            msg = f"[docrot-action] Failed to save scan to database: {e}"
+            if fail_on_db_error:
+                print(msg)
+                sys.exit(2)
+            print(f"{msg} (continuing because fail_on_db_error=false)")
+    else:
+        print("[docrot-action] DATABASE_URL not provided; skipping DB persistence.")
 
     if not create_issue:
         # When issue creation is disabled, use exit code to signal CI

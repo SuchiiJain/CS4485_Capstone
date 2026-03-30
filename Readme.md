@@ -281,13 +281,16 @@ jobs:
   docrot:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       issues: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: SuchiiJain/CS4485_Capstone@main
+        with:
+          database_url: ${{ secrets.DATABASE_URL }}
+          fail_on_db_error: "true"
 ```
 
 That's it. On every push, Docrot will:
@@ -302,6 +305,14 @@ That's it. On every push, Docrot will:
 |-------|----------|---------|-------------|
 | `repo_path` | No | `.` | Path to the repository root to scan |
 | `create_issue` | No | `true` | Create/update a GitHub issue when alerts are found |
+| `database_url` | No | `` | Supabase/Postgres connection string. Falls back to `DATABASE_URL` workflow env if omitted |
+| `fail_on_db_error` | No | `true` | Fail the action when DB persistence fails |
+
+### Database Persistence
+
+- Every scan now writes `.docrot-report.json` and `.docrot-report.txt`, including clean scans and first-run baseline scans.
+- When `database_url` (or workflow `DATABASE_URL`) is provided, the Action stores the generated JSON report in Supabase.
+- If DB persistence fails and `fail_on_db_error` is `true`, the workflow fails so storage problems are visible immediately.
 
 ### Configuration
 

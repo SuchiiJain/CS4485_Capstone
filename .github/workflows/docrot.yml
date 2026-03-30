@@ -12,3 +12,6 @@ jobs:
         with:
           fetch-depth: 0
       - uses: SuchiiJain/CS4485_Capstone@github-integration
+        with:
+          database_url: ${{ secrets.DATABASE_URL }}
+          fail_on_db_error: "true"
