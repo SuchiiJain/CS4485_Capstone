@@ -6,9 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: SuchiiJain/CS4485_Capstone@github-integration
+      - uses: SuchiiJain/CS4485_Capstone@portias-supabase-integration

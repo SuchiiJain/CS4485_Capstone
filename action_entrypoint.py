@@ -9,6 +9,8 @@ GitHub Actions (no PATs or collaborator access needed).
 import json
 import os
 import sys
+import uuid
+from datetime import datetime, timezone
 
 import requests
 
@@ -18,6 +20,137 @@ from src.github_integration import format_pr_comment
 
 ISSUE_TITLE = "⚠️ Docrot Detector — Documentation may be stale"
 ISSUE_LABEL = "docrot"
+
+SUPABASE_URL = "https://eqpnmxqzgxiedwywwmlt.supabase.co"
+SUPABASE_ANON_KEY = "sb_publishable_tcalfMrQ1BhCAojEvcKH9g_g7H5IfZs"
+
+
+def _supabase_headers() -> dict:
+    return {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal",
+    }
+
+
+def _load_baseline(repo: str, branch: str, repo_path: str) -> None:
+    """Download the fingerprint baseline from Supabase and write it to the repo."""
+    resp = requests.get(
+        f"{SUPABASE_URL}/rest/v1/fingerprint_baselines",
+        params={
+            "repo_name": f"eq.{repo}",
+            "branch": f"eq.{branch}",
+            "select": "fingerprints",
+            "limit": "1",
+        },
+        headers=_supabase_headers(),
+        timeout=15,
+    )
+    resp.raise_for_status()
+    rows = resp.json()
+    if rows:
+        fp_path = os.path.join(repo_path, ".docrot-fingerprints.json")
+        with open(fp_path, "w", encoding="utf-8") as f:
+            json.dump(rows[0]["fingerprints"], f, indent=2, sort_keys=True)
+        print(f"[docrot-action] Loaded fingerprint baseline from database.")
+
+
+def _save_baseline(repo: str, branch: str, repo_path: str) -> None:
+    """Upload the updated fingerprint baseline to Supabase."""
+    fp_path = os.path.join(repo_path, ".docrot-fingerprints.json")
+    if not os.path.exists(fp_path):
+        return
+    with open(fp_path, "r", encoding="utf-8") as f:
+        fingerprints = json.load(f)
+    headers = {**_supabase_headers(), "Prefer": "return=minimal,resolution=merge-duplicates"}
+    resp = requests.post(
+        f"{SUPABASE_URL}/rest/v1/fingerprint_baselines?on_conflict=repo_name,branch",
+        json={
+            "repo_name": repo,
+            "branch": branch,
+            "fingerprints": fingerprints,
+        },
+        headers=headers,
+        timeout=30,
+    )
+    resp.raise_for_status()
+    print(f"[docrot-action] Fingerprint baseline saved to database.")
+
+
+def _save_to_supabase(repo: str, sha: str, branch: str, status: str, report_json: dict) -> None:
+    """Save scan results to Supabase via its REST API."""
+    scan_id = str(uuid.uuid4())
+    meta = report_json.get("meta", {})
+    severity = meta.get("severity_summary", {})
+    headers = _supabase_headers()
+
+    # 1. Insert scan run
+    scan_row = {
+        "id": scan_id,
+        "repo_name": repo,
+        "commit_hash": sha,
+        "branch": branch,
+        "status": status,
+        "scanned_at": datetime.now(timezone.utc).isoformat(),
+        "total_issues": meta.get("total_issues", 0),
+        "high_count": severity.get("high", 0),
+        "medium_count": severity.get("medium", 0),
+        "low_count": severity.get("low", 0),
+    }
+
+    resp = requests.post(
+        f"{SUPABASE_URL}/rest/v1/scan_runs",
+        json=scan_row,
+        headers=headers,
+        timeout=15,
+    )
+    resp.raise_for_status()
+
+    # 2. Insert flags with full detail
+    flags = []
+    for issue in report_json.get("issues", []):
+        code_el = issue.get("code_element", {})
+        doc_ref = issue.get("doc_reference")
+        flags.append({
+            "id": str(uuid.uuid4()),
+            "scan_id": scan_id,
+            "reason": issue["reason"],
+            "severity": issue["severity"],
+            "file_path": code_el.get("file_path"),
+            "symbol": code_el.get("name"),
+            "message": issue["message"],
+            "suggestion": issue.get("suggestion"),
+            "signature": code_el.get("signature"),
+            "params": json.dumps(code_el.get("params", [])),
+            "return_type": code_el.get("return_type"),
+            "doc_file": doc_ref["file_path"] if doc_ref else None,
+            "doc_symbol": doc_ref["referenced_symbol"] if doc_ref else None,
+        })
+
+    if flags:
+        resp = requests.post(
+            f"{SUPABASE_URL}/rest/v1/flags",
+            json=flags,
+            headers=headers,
+            timeout=15,
+        )
+        resp.raise_for_status()
+
+    # 3. Upsert repo (create on first scan, update latest_scan_id on subsequent)
+    repo_row = {
+        "full_name": repo,
+        "github_url": f"https://github.com/{repo}",
+        "latest_scan_id": scan_id,
+    }
+    upsert_headers = {**headers, "Prefer": "return=minimal,resolution=merge-duplicates"}
+    resp = requests.post(
+        f"{SUPABASE_URL}/rest/v1/repos?on_conflict=full_name",
+        json=repo_row,
+        headers=upsert_headers,
+        timeout=15,
+    )
+    resp.raise_for_status()
 
 
 def _gh_headers() -> dict:
@@ -96,15 +229,34 @@ def main() -> None:
     create_issue = os.environ.get("INPUT_CREATE_ISSUE", "true").lower() == "true"
     repo = os.environ["GITHUB_REPOSITORY"]
     sha = os.environ.get("GITHUB_SHA", "unknown")
+    branch = os.environ.get("GITHUB_REF_NAME", "unknown")
+
+    # Load fingerprint baseline from database (if one exists)
+    try:
+        _load_baseline(repo, branch, os.path.abspath(repo_path))
+    except Exception as e:
+        print(f"[docrot-action] Warning: could not load baseline from database: {e}")
 
     # Run the pipeline
     exit_code = run_pipeline(repo_path, commit_hash=sha)
+
+    # Save scan results and updated baseline to database
+    report_path = os.path.join(os.path.abspath(repo_path), ".docrot-report.json")
+    status = "issues_found" if exit_code == 1 else "clean"
+    try:
+        if os.path.exists(report_path):
+            with open(report_path, "r", encoding="utf-8") as f:
+                report_json = json.load(f)
+            _save_to_supabase(repo, sha, branch, status, report_json)
+            print(f"[docrot-action] Scan saved to database for {repo}")
+        _save_baseline(repo, branch, os.path.abspath(repo_path))
+    except Exception as e:
+        print(f"[docrot-action] Warning: could not save to database: {e}")
 
     if not create_issue:
         # When issue creation is disabled, use exit code to signal CI
         sys.exit(exit_code)
 
-    report_path = os.path.join(os.path.abspath(repo_path), ".docrot-report.json")
     existing_issue = _find_existing_issue(repo)
 
     if exit_code == 1:

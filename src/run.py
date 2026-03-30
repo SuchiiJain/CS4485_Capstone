@@ -430,6 +430,15 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
             for fp, fps in current_fps.items()
         }
         baseline_stats = update_fingerprint_baseline(repo_path, serialized)
+        json_path = os.path.join(repo_path, ".docrot-report.json")
+        txt_path = os.path.join(repo_path, ".docrot-report.txt")
+        generate_reports(
+            flags=[],
+            repo_path=repo_path,
+            commit_hash=commit_hash,
+            json_path=json_path,
+            txt_path=txt_path,
+        )
         publish_baseline_notice()
         print(
             "[docrot] Baseline created: "
@@ -472,17 +481,15 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
 
     # 8. Generate .txt and .json reports
     elapsed = time.time() - start
-    report_paths: Dict[str, str] = {}
-    if all_events:
-        json_path = os.path.join(repo_path, ".docrot-report.json")
-        txt_path = os.path.join(repo_path, ".docrot-report.txt")
-        report_paths = generate_reports(
-            flags=flags,
-            repo_path=repo_path,
-            commit_hash=commit_hash,
-            json_path=json_path,
-            txt_path=txt_path,
-        )
+    json_path = os.path.join(repo_path, ".docrot-report.json")
+    txt_path = os.path.join(repo_path, ".docrot-report.txt")
+    report_paths: Dict[str, str] = generate_reports(
+        flags=flags,
+        repo_path=repo_path,
+        commit_hash=commit_hash,
+        json_path=json_path,
+        txt_path=txt_path,
+    )
 
     # 9. Print stdout summary
     _print_report(

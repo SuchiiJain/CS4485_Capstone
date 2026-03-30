@@ -48,7 +48,7 @@ from src.persistence import (
     serialize_file_fingerprints,
 )
 from src.run import run as run_pipeline
-from backend.storage import init_db, save_scan, DB_PATH
+from database.storage import init_db, save_scan, get_connection
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 EXAMPLES_DIR = os.path.join(PROJECT_ROOT, "examples")
@@ -311,8 +311,8 @@ def test_repo_pipeline(repo_path, repo_name, v2_swaps):
 # ── Test 5: Database storage ────────────────────────────────────────────────
 
 def test_database_storage(report_json_path, repo_name):
-    """Save a report to the SQLite database and verify it was stored."""
-    banner("TEST 5: Database Storage (SQLite)")
+    """Save a report to Postgres (Supabase) and verify it was stored."""
+    banner("TEST 5: Database Storage (Postgres)")
 
     if report_json_path is None or not os.path.exists(report_json_path):
         print(f"  {FAIL} No report JSON available to store.")
@@ -321,46 +321,33 @@ def test_database_storage(report_json_path, repo_name):
     with open(report_json_path, "r", encoding="utf-8") as f:
         report_json = json.load(f)
 
-    # Remove old test database if it exists
-    db_abs = os.path.join(PROJECT_ROOT, DB_PATH)
-    if os.path.exists(db_abs):
-        os.remove(db_abs)
-
-    print(f"  Initializing database at: {db_abs}")
+    print("  Initializing database (Postgres)...")
     init_db()
 
     print(f"  Saving scan for '{repo_name}'...")
     save_scan(repo_name, "test-commit-abc123", report_json)
 
-    # Verify by reading back
-    import sqlite3
-    conn = sqlite3.connect(db_abs)
+    # Verify by reading back via Postgres
+    conn = get_connection()
     cur = conn.cursor()
 
-    cur.execute("SELECT COUNT(*) FROM scan_runs")
-    scan_count = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(*) AS count FROM scan_runs")
+    scan_count = cur.fetchone()["count"]
 
-    cur.execute("SELECT COUNT(*) FROM flags")
-    flag_count = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(*) AS count FROM flags")
+    flag_count = cur.fetchone()["count"]
 
-    cur.execute("SELECT id, repo_name, total_issues, high_count, medium_count, low_count FROM scan_runs")
-    row = cur.fetchone()
     conn.close()
 
     print(f"\n  Database contents:")
     print(f"    scan_runs rows : {scan_count}")
     print(f"    flags rows     : {flag_count}")
-    if row:
-        print(f"    Scan ID        : {row[0][:12]}...")
-        print(f"    Repo name      : {row[1]}")
-        print(f"    Total issues   : {row[2]}")
-        print(f"    High/Med/Low   : {row[3]}/{row[4]}/{row[5]}")
 
-    if scan_count == 1 and flag_count > 0:
-        print(f"\n  {PASS} Report successfully stored in database ({flag_count} flags).")
+    if scan_count >= 1 and flag_count > 0:
+        print(f"\n  {PASS} Report successfully stored in Postgres ({flag_count} flags).")
         return True
     else:
-        print(f"\n  {FAIL} Expected 1 scan and >0 flags in database.")
+        print(f"\n  {FAIL} Expected >=1 scan and >0 flags in database.")
         return False
 
 

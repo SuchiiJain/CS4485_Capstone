@@ -268,11 +268,33 @@ publish_alerts_to_log(alerts)
 
 ## GitHub Action (Recommended)
 
-The easiest way to use Docrot Detector is as a GitHub Action. No server, no tokens to configure — just add a workflow file to your repo.
+Use this Action from any other repository by adding one workflow file and one config file. No secrets or database setup required.
 
-### Quick Start
+### Step 1: Add .docrot-config.json to the Target Repository
 
-Create `.github/workflows/docrot.yml` in your repository:
+Create `.docrot-config.json` at the root of the target repo:
+
+```json
+{
+  "language": "python",
+  "doc_mappings": [
+    {
+      "code_glob": "src/*.py",
+      "docs": ["Readme.md", "docs/Architecture.md"]
+    }
+  ],
+  "thresholds": {
+    "per_function_substantial": 4,
+    "per_doc_cumulative": 8
+  }
+}
+```
+
+Without this file, Docrot still scans code changes, but it cannot map changes to specific documentation files.
+
+### Step 2: Add Workflow File in the Target Repository
+
+Create `.github/workflows/docrot.yml`:
 
 ```yaml
 name: Docrot Detector
@@ -288,14 +310,22 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      # Prefer a stable tag (for example: @v1) after release.
       - uses: SuchiiJain/CS4485_Capstone@main
 ```
 
-That's it. On every push, Docrot will:
-1. Scan all Python files for semantic code changes
-2. Compare against the stored baseline (`.docrot-fingerprints.json`)
-3. If documentation rot is detected, **create a GitHub issue** with a detailed report
-4. If a previous issue exists and the scan is now clean, **close it automatically**
+The action only needs **read** access to your code. It never pushes commits or modifies your repository.
+
+### Step 3: Push and Verify
+
+On each push, the action will:
+
+1. Load the fingerprint baseline from the Docrot database.
+2. Scan Python code and compare against the baseline.
+3. Create or update a `docrot` issue when docs may be stale.
+4. Close the existing `docrot` issue when scan results are clean.
+5. Save the scan report and updated baseline to the database.
 
 ### Action Inputs
 
@@ -304,34 +334,7 @@ That's it. On every push, Docrot will:
 | `repo_path` | No | `.` | Path to the repository root to scan |
 | `create_issue` | No | `true` | Create/update a GitHub issue when alerts are found |
 
-### Configuration
-
-The Action reads `.docrot-config.json` from the root of the repo it's scanning. This is how users configure doc mappings and thresholds — just add the file to their own repo:
-
-```json
-{
-  "language": "python",
-  "doc_mappings": [
-    {
-      "code_glob": "src/*.py",
-      "docs": ["Readme.md", "Architecture.md"]
-    }
-  ],
-  "thresholds": {
-    "per_function_substantial": 4,
-    "per_doc_cumulative": 8
-  }
-}
-```
-
-If the file is absent, Docrot runs with no doc mappings and default thresholds — it will still scan and report function-level changes, but won't flag specific documentation files.
-
-### How It Works
-
-- The Action uses the `GITHUB_TOKEN` provided automatically by GitHub Actions — no PATs or shared accounts needed.
-- A `docrot` label is created automatically on the first alert.
-- If alerts are found, a single issue is created (or the existing one is updated).
-- When a subsequent scan is clean, the issue is closed automatically.
+The Action uses the default `GITHUB_TOKEN` provided by GitHub Actions; no personal access token or database credentials are required.
 
 ## GitHub Webhook Server
 
