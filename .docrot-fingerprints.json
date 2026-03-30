@@ -260,6 +260,127 @@
       },
       "stable_id": "action_entrypoint.py::_gh_headers"
     },
+    "action_entrypoint.py::_save_to_supabase": {
+      "calls": {
+        "call_names": [
+          "_supabase_headers",
+          "_supabase_headers",
+          "datetime.now",
+          "flags.append",
+          "isoformat",
+          "issue.get",
+          "meta.get",
+          "meta.get",
+          "report_json.get",
+          "report_json.get",
+          "requests.post",
+          "requests.post",
+          "resp.raise_for_status",
+          "resp.raise_for_status",
+          "severity.get",
+          "severity.get",
+          "severity.get",
+          "str",
+          "str",
+          "uuid.uuid4",
+          "uuid.uuid4"
+        ]
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 0,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 1,
+        "if_count": 1,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "action_entrypoint.py",
+      "fingerprint_hash": "a330b6d16a53c151735bc478317fb490211ad238593489f2c382e266bd18aa19",
+      "is_public": false,
+      "returns": {
+        "return_count": 0,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": [
+          "issue.get",
+          "meta.get",
+          "meta.get",
+          "report_json.get",
+          "report_json.get",
+          "requests.post",
+          "requests.post",
+          "severity.get",
+          "severity.get",
+          "severity.get"
+        ]
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_save_to_supabase",
+        "params": [
+          "repo",
+          "sha",
+          "report_json"
+        ],
+        "return_annotation": "Constant(value=None)"
+      },
+      "stable_id": "action_entrypoint.py::_save_to_supabase"
+    },
+    "action_entrypoint.py::_supabase_headers": {
+      "calls": {
+        "call_names": []
+      },
+      "conditions": {
+        "boolean_ops": [],
+        "comparison_ops": []
+      },
+      "control_flow": {
+        "early_return_count": 1,
+        "elif_count": 0,
+        "else_count": 0,
+        "for_count": 0,
+        "if_count": 0,
+        "while_count": 0
+      },
+      "exceptions": {
+        "except_handlers": [],
+        "has_bare_except": false,
+        "raises": []
+      },
+      "file_path": "action_entrypoint.py",
+      "fingerprint_hash": "16228fe87fe8c8ead57ead2ca1ff6dee4330597c58f31f6219f96e10b412b3a4",
+      "is_public": false,
+      "returns": {
+        "return_count": 1,
+        "returns_none": false
+      },
+      "side_effects": {
+        "auth_calls": [],
+        "db_calls": [],
+        "file_calls": [],
+        "network_calls": []
+      },
+      "signature": {
+        "defaults": [],
+        "name": "_supabase_headers",
+        "params": [],
+        "return_annotation": "Name(id='dict', ctx=Load())"
+      },
+      "stable_id": "action_entrypoint.py::_supabase_headers"
+    },
     "action_entrypoint.py::_update_issue": {
       "calls": {
         "call_names": [
@@ -318,20 +439,15 @@
     "action_entrypoint.py::main": {
       "calls": {
         "call_names": [
-          "FileNotFoundError",
           "_close_issue",
           "_create_issue",
           "_find_existing_issue",
+          "_save_to_supabase",
           "_update_issue",
           "format_pr_comment",
-          "init_db",
           "json.load",
           "lower",
-          "lower",
           "open",
-          "os.environ.get",
-          "os.environ.get",
-          "os.environ.get",
           "os.environ.get",
           "os.environ.get",
           "os.environ.get",
@@ -340,24 +456,16 @@
           "os.path.join",
           "print",
           "print",
-          "print",
-          "print",
           "run_pipeline",
-          "save_scan",
-          "strip",
-          "strip",
-          "sys.exit",
           "sys.exit",
           "sys.exit"
         ]
       },
       "conditions": {
         "boolean_ops": [
-          "And",
-          "Or"
+          "And"
         ],
         "comparison_ops": [
-          "Eq",
           "Eq",
           "Eq",
           "Eq",
@@ -367,9 +475,9 @@
       "control_flow": {
         "early_return_count": 0,
         "elif_count": 1,
-        "else_count": 2,
+        "else_count": 1,
         "for_count": 0,
-        "if_count": 9,
+        "if_count": 6,
         "while_count": 0
       },
       "exceptions": {
@@ -377,12 +485,10 @@
           "Exception"
         ],
         "has_bare_except": false,
-        "raises": [
-          "FileNotFoundError"
-        ]
+        "raises": []
       },
       "file_path": "action_entrypoint.py",
-      "fingerprint_hash": "466455074cfb7e33aa30ac3e59b973f259dcfa667f5c2dcdc01a274c28d83f21",
+      "fingerprint_hash": "7550f78b1da20dcdbf5a85da869273b5a0f979ccaae089c9b2bcc4a046ab509d",
       "is_public": true,
       "returns": {
         "return_count": 0,
@@ -395,9 +501,6 @@
           "open"
         ],
         "network_calls": [
-          "os.environ.get",
-          "os.environ.get",
-          "os.environ.get",
           "os.environ.get",
           "os.environ.get",
           "os.environ.get"
