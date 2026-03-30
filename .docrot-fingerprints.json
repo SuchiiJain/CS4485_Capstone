@@ -318,6 +318,7 @@
     "action_entrypoint.py::main": {
       "calls": {
         "call_names": [
+          "FileNotFoundError",
           "_close_issue",
           "_create_issue",
           "_find_existing_issue",
@@ -326,7 +327,11 @@
           "init_db",
           "json.load",
           "lower",
+          "lower",
           "open",
+          "os.environ.get",
+          "os.environ.get",
+          "os.environ.get",
           "os.environ.get",
           "os.environ.get",
           "os.environ.get",
@@ -335,17 +340,24 @@
           "os.path.join",
           "print",
           "print",
+          "print",
+          "print",
           "run_pipeline",
           "save_scan",
+          "strip",
+          "strip",
+          "sys.exit",
           "sys.exit",
           "sys.exit"
         ]
       },
       "conditions": {
         "boolean_ops": [
-          "And"
+          "And",
+          "Or"
         ],
         "comparison_ops": [
+          "Eq",
           "Eq",
           "Eq",
           "Eq",
@@ -355,9 +367,9 @@
       "control_flow": {
         "early_return_count": 0,
         "elif_count": 1,
-        "else_count": 1,
+        "else_count": 2,
         "for_count": 0,
-        "if_count": 6,
+        "if_count": 9,
         "while_count": 0
       },
       "exceptions": {
@@ -365,10 +377,12 @@
           "Exception"
         ],
         "has_bare_except": false,
-        "raises": []
+        "raises": [
+          "FileNotFoundError"
+        ]
       },
       "file_path": "action_entrypoint.py",
-      "fingerprint_hash": "74c46dbcc4083a61858cbed8f673c3c6086b8963007444dafc7b4e1779a69002",
+      "fingerprint_hash": "466455074cfb7e33aa30ac3e59b973f259dcfa667f5c2dcdc01a274c28d83f21",
       "is_public": true,
       "returns": {
         "return_count": 0,
@@ -381,6 +395,9 @@
           "open"
         ],
         "network_calls": [
+          "os.environ.get",
+          "os.environ.get",
+          "os.environ.get",
           "os.environ.get",
           "os.environ.get",
           "os.environ.get"
@@ -8415,6 +8432,7 @@
           "evaluate_doc_flags",
           "flags.sort",
           "generate_reports",
+          "generate_reports",
           "get_doc_mappings",
           "get_thresholds",
           "is_first_run",
@@ -8427,6 +8445,8 @@
           "old_fps.get",
           "os.path.abspath",
           "os.path.isdir",
+          "os.path.join",
+          "os.path.join",
           "os.path.join",
           "os.path.join",
           "print",
@@ -8468,7 +8488,7 @@
         "elif_count": 0,
         "else_count": 0,
         "for_count": 2,
-        "if_count": 8,
+        "if_count": 7,
         "while_count": 0
       },
       "exceptions": {
@@ -8477,7 +8497,7 @@
         "raises": []
       },
       "file_path": "src/run.py",
-      "fingerprint_hash": "a703a865070aa53003219219cf6d420d16766166473f8c28c8933c8e1d1e991d",
+      "fingerprint_hash": "209c65e2fd944e9a05de59fdb4db97b7612a6f952e77c4b8a39c53a993a725bd",
       "is_public": true,
       "returns": {
         "return_count": 4,
