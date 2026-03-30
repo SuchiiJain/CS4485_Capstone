@@ -48,7 +48,7 @@ from src.persistence import (
     serialize_file_fingerprints,
 )
 from src.run import run as run_pipeline
-from backend.database.storage import init_db, save_scan, get_connection
+from database.storage import init_db, save_scan, get_connection
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 EXAMPLES_DIR = os.path.join(PROJECT_ROOT, "examples")
