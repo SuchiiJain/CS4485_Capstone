@@ -106,6 +106,8 @@ def _save_to_supabase(repo: str, sha: str, branch: str, status: str, report_json
         headers=upsert_headers,
         timeout=15,
     )
+    if not resp.ok:
+        print(f"[docrot-action] repos upsert failed: {resp.status_code} {resp.text}")
     resp.raise_for_status()
 
 
