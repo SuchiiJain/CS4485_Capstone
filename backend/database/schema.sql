@@ -71,7 +71,22 @@ ON flags (scan_id);
 
 
 -- ============================================================
--- 4. FOREIGN KEY: repos.latest_scan_id -> scan_runs
+-- 4. FINGERPRINT BASELINES
+-- One row per repo+branch, stores the full fingerprint snapshot
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS fingerprint_baselines (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    repo_name TEXT NOT NULL,
+    branch TEXT NOT NULL,
+    fingerprints JSONB NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    UNIQUE(repo_name, branch)
+);
+
+
+-- ============================================================
+-- 5. FOREIGN KEY: repos.latest_scan_id -> scan_runs
 -- Added after both tables exist
 -- ============================================================
 
@@ -82,7 +97,7 @@ ALTER TABLE repos
 
 
 -- ============================================================
--- 5. ROW LEVEL SECURITY
+-- 6. ROW LEVEL SECURITY
 -- ============================================================
 
 ALTER TABLE repos ENABLE ROW LEVEL SECURITY;
@@ -93,6 +108,12 @@ ALTER TABLE flags ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Allow anon select" ON repos FOR SELECT TO anon USING (true);
 CREATE POLICY "Allow anon insert" ON repos FOR INSERT TO anon WITH CHECK (true);
 CREATE POLICY "Allow anon update" ON repos FOR UPDATE TO anon USING (true) WITH CHECK (true);
+
+-- fingerprint_baselines: SELECT + upsert (read baseline, write updates)
+ALTER TABLE fingerprint_baselines ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow anon select" ON fingerprint_baselines FOR SELECT TO anon USING (true);
+CREATE POLICY "Allow anon insert" ON fingerprint_baselines FOR INSERT TO anon WITH CHECK (true);
+CREATE POLICY "Allow anon update" ON fingerprint_baselines FOR UPDATE TO anon USING (true) WITH CHECK (true);
 
 -- scan_runs / flags: INSERT-only
 CREATE POLICY "Allow anon insert" ON scan_runs FOR INSERT TO anon WITH CHECK (true);

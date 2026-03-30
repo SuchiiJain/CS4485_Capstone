@@ -303,7 +303,7 @@ jobs:
   docrot:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       issues: write
     steps:
       - uses: actions/checkout@v4
@@ -314,15 +314,17 @@ jobs:
       - uses: SuchiiJain/CS4485_Capstone@main
 ```
 
+The action only needs **read** access to your code. It never pushes commits or modifies your repository.
+
 ### Step 3: Push and Verify
 
 On each push, the action will:
 
-1. Scan Python code and compare against `.docrot-fingerprints.json`.
-2. Write `.docrot-report.json` and `.docrot-report.txt`.
+1. Load the fingerprint baseline from the Docrot database.
+2. Scan Python code and compare against the baseline.
 3. Create or update a `docrot` issue when docs may be stale.
 4. Close the existing `docrot` issue when scan results are clean.
-5. Save the scan report to the Docrot database automatically.
+5. Save the scan report and updated baseline to the database.
 
 ### Action Inputs
 
