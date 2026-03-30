@@ -264,17 +264,26 @@
       "calls": {
         "call_names": [
           "_supabase_headers",
-          "_supabase_headers",
+          "code_el.get",
+          "code_el.get",
+          "code_el.get",
+          "code_el.get",
+          "code_el.get",
           "datetime.now",
           "flags.append",
           "isoformat",
           "issue.get",
+          "issue.get",
+          "issue.get",
+          "json.dumps",
           "meta.get",
           "meta.get",
           "report_json.get",
           "report_json.get",
           "requests.post",
           "requests.post",
+          "requests.post",
+          "resp.raise_for_status",
           "resp.raise_for_status",
           "resp.raise_for_status",
           "severity.get",
@@ -304,7 +313,7 @@
         "raises": []
       },
       "file_path": "action_entrypoint.py",
-      "fingerprint_hash": "a330b6d16a53c151735bc478317fb490211ad238593489f2c382e266bd18aa19",
+      "fingerprint_hash": "76a2c7824f6937e8e4d1d9ca3282cb04f06ef2b0cf185ba020a9524252e8fa71",
       "is_public": false,
       "returns": {
         "return_count": 0,
@@ -315,11 +324,19 @@
         "db_calls": [],
         "file_calls": [],
         "network_calls": [
+          "code_el.get",
+          "code_el.get",
+          "code_el.get",
+          "code_el.get",
+          "code_el.get",
+          "issue.get",
+          "issue.get",
           "issue.get",
           "meta.get",
           "meta.get",
           "report_json.get",
           "report_json.get",
+          "requests.post",
           "requests.post",
           "requests.post",
           "severity.get",
@@ -333,6 +350,8 @@
         "params": [
           "repo",
           "sha",
+          "branch",
+          "status",
           "report_json"
         ],
         "return_annotation": "Constant(value=None)"
@@ -451,6 +470,7 @@
           "os.environ.get",
           "os.environ.get",
           "os.environ.get",
+          "os.environ.get",
           "os.path.abspath",
           "os.path.exists",
           "os.path.join",
@@ -466,6 +486,7 @@
           "And"
         ],
         "comparison_ops": [
+          "Eq",
           "Eq",
           "Eq",
           "Eq",
@@ -488,7 +509,7 @@
         "raises": []
       },
       "file_path": "action_entrypoint.py",
-      "fingerprint_hash": "7550f78b1da20dcdbf5a85da869273b5a0f979ccaae089c9b2bcc4a046ab509d",
+      "fingerprint_hash": "6295b400287fd7df3c3f254936518a3ec3d8ac174d7e2249981c463006a32cf1",
       "is_public": true,
       "returns": {
         "return_count": 0,
@@ -501,6 +522,7 @@
           "open"
         ],
         "network_calls": [
+          "os.environ.get",
           "os.environ.get",
           "os.environ.get",
           "os.environ.get"
