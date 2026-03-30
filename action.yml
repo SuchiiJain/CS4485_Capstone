@@ -13,14 +13,6 @@ inputs:
     description: "Create or update a GitHub issue when alerts are found (true/false)."
     required: false
     default: "true"
-  database_url:
-    description: "Supabase/Postgres connection string. If omitted, falls back to DATABASE_URL from workflow env."
-    required: false
-    default: ""
-  fail_on_db_error:
-    description: "Fail the action when DB persistence fails (true/false)."
-    required: false
-    default: "true"
 
 runs:
   using: "composite"
@@ -33,7 +25,7 @@ runs:
     - name: Install Docrot Detector
       shell: bash
       run: |
-        pip install --quiet requests psycopg2-binary python-dotenv
+        pip install --quiet requests python-dotenv
 
     - name: Run Docrot scan
       id: scan
@@ -44,9 +36,6 @@ runs:
         GITHUB_SHA: ${{ github.sha }}
         INPUT_REPO_PATH: ${{ inputs.repo_path }}
         INPUT_CREATE_ISSUE: ${{ inputs.create_issue }}
-        INPUT_DATABASE_URL: ${{ inputs.database_url }}
-        INPUT_FAIL_ON_DB_ERROR: ${{ inputs.fail_on_db_error }}
-        DATABASE_URL: ${{ env.DATABASE_URL }}
       run: |
         python "${{ github.action_path }}/action_entrypoint.py"
 

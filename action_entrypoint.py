@@ -9,16 +9,77 @@ GitHub Actions (no PATs or collaborator access needed).
 import json
 import os
 import sys
+import uuid
+from datetime import datetime, timezone
 
 import requests
 
 from src.run import run as run_pipeline
 from src.github_integration import format_pr_comment
-from backend.database.storage import init_db, save_scan
 
 
 ISSUE_TITLE = "⚠️ Docrot Detector — Documentation may be stale"
 ISSUE_LABEL = "docrot"
+
+SUPABASE_URL = "https://eqpnmxqzgxiedwywwmlt.supabase.co"
+SUPABASE_ANON_KEY = "sb_publishable_tcalfMrQ1BhCAojEvcKH9g_g7H5IfZs"
+
+
+def _supabase_headers() -> dict:
+    return {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal",
+    }
+
+
+def _save_to_supabase(repo: str, sha: str, report_json: dict) -> None:
+    """Save scan results to Supabase via its REST API."""
+    scan_id = str(uuid.uuid4())
+    meta = report_json.get("meta", {})
+    severity = meta.get("severity_summary", {})
+
+    scan_row = {
+        "id": scan_id,
+        "repo_name": repo,
+        "commit_hash": sha,
+        "scanned_at": datetime.now(timezone.utc).isoformat(),
+        "total_issues": meta.get("total_issues", 0),
+        "high_count": severity.get("high", 0),
+        "medium_count": severity.get("medium", 0),
+        "low_count": severity.get("low", 0),
+    }
+
+    resp = requests.post(
+        f"{SUPABASE_URL}/rest/v1/scan_runs",
+        json=scan_row,
+        headers=_supabase_headers(),
+        timeout=15,
+    )
+    resp.raise_for_status()
+
+    flags = []
+    for issue in report_json.get("issues", []):
+        flags.append({
+            "id": str(uuid.uuid4()),
+            "scan_id": scan_id,
+            "reason": issue["reason"],
+            "severity": issue["severity"],
+            "file_path": issue["code_element"]["file_path"],
+            "symbol": issue["code_element"]["name"],
+            "message": issue["message"],
+            "suggestion": issue.get("suggestion"),
+        })
+
+    if flags:
+        resp = requests.post(
+            f"{SUPABASE_URL}/rest/v1/flags",
+            json=flags,
+            headers=_supabase_headers(),
+            timeout=15,
+        )
+        resp.raise_for_status()
 
 
 def _gh_headers() -> dict:
@@ -95,38 +156,22 @@ def _close_issue(repo: str, issue_number: int) -> None:
 def main() -> None:
     repo_path = os.environ.get("INPUT_REPO_PATH", ".")
     create_issue = os.environ.get("INPUT_CREATE_ISSUE", "true").lower() == "true"
-    input_database_url = os.environ.get("INPUT_DATABASE_URL", "").strip()
-    env_database_url = os.environ.get("DATABASE_URL", "").strip()
-    database_url = input_database_url or env_database_url
-    fail_on_db_error = os.environ.get("INPUT_FAIL_ON_DB_ERROR", "true").lower() == "true"
     repo = os.environ["GITHUB_REPOSITORY"]
     sha = os.environ.get("GITHUB_SHA", "unknown")
-
-    if database_url:
-        os.environ["DATABASE_URL"] = database_url
 
     # Run the pipeline
     exit_code = run_pipeline(repo_path, commit_hash=sha)
 
-    # Save scan to database when DB is configured
+    # Save scan to database
     report_path = os.path.join(os.path.abspath(repo_path), ".docrot-report.json")
-    if database_url:
-        try:
-            if not os.path.exists(report_path):
-                raise FileNotFoundError(f"Report file not found: {report_path}")
-            init_db()
+    try:
+        if os.path.exists(report_path):
             with open(report_path, "r", encoding="utf-8") as f:
                 report_json = json.load(f)
-            save_scan(repo, sha, report_json)
+            _save_to_supabase(repo, sha, report_json)
             print(f"[docrot-action] Scan saved to database for {repo}")
-        except Exception as e:
-            msg = f"[docrot-action] Failed to save scan to database: {e}"
-            if fail_on_db_error:
-                print(msg)
-                sys.exit(2)
-            print(f"{msg} (continuing because fail_on_db_error=false)")
-    else:
-        print("[docrot-action] DATABASE_URL not provided; skipping DB persistence.")
+    except Exception as e:
+        print(f"[docrot-action] Warning: could not save to database: {e}")
 
     if not create_issue:
         # When issue creation is disabled, use exit code to signal CI
