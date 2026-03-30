@@ -60,10 +60,16 @@
 
 ### Portia Hamid
 
-- **Hours:** 
-- **Tasks Complete:** 
+- **Hours:** 6
+- **Tasks Complete:**
+  - Fixed security flaw in database integration. User no longer needs to set up a github secret that permits them access to the private DB connection string + password.
+  - Added more tables and rows to make querying more robust. Previously there were no rows for stale docs, params, return types, etc., so querying detailed scan information from the frontend would have been impossible. There should be much more versatility now.
+  - Also added a table for repos, which will make it easier to query specific information for each repo/branch.
+  - Properly connected the database to the scanner so the scanner will actually read the fingerprint baseline from the DB rather than relying on the JSON file. Added a fingerprints_baseline table for this purpose. This makes it so the user no longer needs to grant write permission to the action runner, which should bring peace of mind to the user. Read permissions are sufficient.
 - **Upcoming Tasks:** 
 - **Issues:** 
+  - Removing mentions of the private database information from the code and switching everything to use Supabase's public API. I've never used Supabase before, so this took some trial and error to figure out.
+  - Had difficulty with the DB perms required for the repos table, which required some debugging.
 
 ---
 
