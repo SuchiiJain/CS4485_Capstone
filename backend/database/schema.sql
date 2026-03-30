@@ -89,10 +89,11 @@ ALTER TABLE repos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scan_runs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE flags ENABLE ROW LEVEL SECURITY;
 
--- Anon can insert and upsert repos (for latest_scan_id updates)
+-- repos: SELECT needed for upsert conflict detection
+CREATE POLICY "Allow anon select" ON repos FOR SELECT TO anon USING (true);
 CREATE POLICY "Allow anon insert" ON repos FOR INSERT TO anon WITH CHECK (true);
 CREATE POLICY "Allow anon update" ON repos FOR UPDATE TO anon USING (true) WITH CHECK (true);
 
--- Anon can insert scans and flags
+-- scan_runs / flags: INSERT-only
 CREATE POLICY "Allow anon insert" ON scan_runs FOR INSERT TO anon WITH CHECK (true);
 CREATE POLICY "Allow anon insert" ON flags FOR INSERT TO anon WITH CHECK (true);
