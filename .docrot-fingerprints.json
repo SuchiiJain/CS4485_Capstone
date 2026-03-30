@@ -278,7 +278,6 @@
           "json.dumps",
           "meta.get",
           "meta.get",
-          "print",
           "report_json.get",
           "report_json.get",
           "requests.post",
@@ -305,7 +304,7 @@
         "elif_count": 0,
         "else_count": 0,
         "for_count": 1,
-        "if_count": 2,
+        "if_count": 1,
         "while_count": 0
       },
       "exceptions": {
@@ -314,7 +313,7 @@
         "raises": []
       },
       "file_path": "action_entrypoint.py",
-      "fingerprint_hash": "08238fd1449f7a0929ee6cf9ae1f84ccb523081fe7c3a3e7b7d6a861fdedd022",
+      "fingerprint_hash": "76a2c7824f6937e8e4d1d9ca3282cb04f06ef2b0cf185ba020a9524252e8fa71",
       "is_public": false,
       "returns": {
         "return_count": 0,
