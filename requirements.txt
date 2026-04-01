@@ -14,3 +14,4 @@ python-dotenv>=1.0,<2.0
 # Optional: AI-powered documentation suggestions (install the one you need)
 # anthropic>=0.39,<1.0
 # openai>=1.50,<2.0
+# groq>=0.13,<1.0

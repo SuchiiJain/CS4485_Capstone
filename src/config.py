@@ -244,8 +244,8 @@ def get_ai_config(config: Dict[str, Any]) -> Optional[Dict[str, str]]:
         print("[docrot] Warning: incomplete 'ai' config — need provider, model, and api_key_env.")
         return None
 
-    if provider not in ("anthropic", "openai"):
-        print(f"[docrot] Warning: unsupported AI provider '{provider}'. Supported: anthropic, openai.")
+    if provider not in ("anthropic", "openai", "groq"):
+        print(f"[docrot] Warning: unsupported AI provider '{provider}'. Supported: anthropic, openai, groq.")
         return None
 
     api_key = os.environ.get(api_key_env, "").strip()

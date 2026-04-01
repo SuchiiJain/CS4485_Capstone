@@ -126,6 +126,36 @@ class OpenAIClient(LLMClient):
         return response.choices[0].message.content or ""
 
 
+class GroqClient(LLMClient):
+    """Groq inference client (requires `groq` package).
+
+    Groq hosts open-source models (Llama 3, Mixtral, etc.) on custom LPU
+    hardware.  The API mirrors the OpenAI chat-completions format.
+    """
+
+    def __init__(self, api_key: str, model: str):
+        try:
+            import groq  # noqa: F811
+        except ImportError:
+            raise ImportError(
+                "The 'groq' package is required for Groq AI suggestions. "
+                "Install it with: pip install groq"
+            )
+        self._client = groq.Groq(api_key=api_key)
+        self._model = model
+
+    def complete(self, system: str, user: str) -> str:
+        response = self._client.chat.completions.create(
+            model=self._model,
+            max_tokens=1024,
+            messages=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+        )
+        return response.choices[0].message.content or ""
+
+
 def _create_client(ai_config: Dict[str, str]) -> LLMClient:
     """Instantiate the correct LLMClient based on the provider name."""
     provider = ai_config["provider"]
@@ -133,6 +163,8 @@ def _create_client(ai_config: Dict[str, str]) -> LLMClient:
         return AnthropicClient(api_key=ai_config["api_key"], model=ai_config["model"])
     elif provider == "openai":
         return OpenAIClient(api_key=ai_config["api_key"], model=ai_config["model"])
+    elif provider == "groq":
+        return GroqClient(api_key=ai_config["api_key"], model=ai_config["model"])
     else:
         raise ValueError(f"Unsupported AI provider: {provider}")
 
