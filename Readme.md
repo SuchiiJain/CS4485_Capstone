@@ -329,8 +329,6 @@ jobs:
           backend_token: ${{ steps.auth.outputs.id_token }}
 ```
 
-The action only needs **read** access to your code. It never pushes commits or modifies your repository.
-
 ### Step 3: Push and Verify
 
 On each push, the action will:
@@ -367,10 +365,6 @@ export DOCROT_WEBHOOK_SECRET=$(python -c "import secrets; print(secrets.token_he
 
 # (Optional) Set a GitHub token for private repos + commit status posting
 export GITHUB_TOKEN=ghp_your_token_here
-
-# Start the server
-python -m src.webhook_server
-```
 
 ### Setting Up the GitHub Webhook
 
