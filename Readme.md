@@ -268,7 +268,7 @@ publish_alerts_to_log(alerts)
 
 ## GitHub Action (Recommended)
 
-Use this Action from any other repository by adding one workflow file and one config file. No secrets or database setup required.
+Use this Action from any other repository by adding one workflow file and one config file. For Firebase/Firestore persistence, use GitHub OIDC + Google Workload Identity Federation (WIF).
 
 ### Step 1: Add .docrot-config.json to the Target Repository
 
@@ -304,6 +304,7 @@ jobs:
   docrot:
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       contents: read
       issues: write
     steps:
@@ -311,8 +312,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/YOUR_PROJECT_NUMBER/locations/global/workloadIdentityPools/docrot-github-pool/providers/github-provider
+          service_account: docrot-github-action@YOUR_FIREBASE_PROJECT_ID.iam.gserviceaccount.com
+          token_format: id_token
+          id_token_audience: https://YOUR_CLOUD_FUNCTION_URL
+          id_token_include_email: true
+
       # Prefer a stable tag (for example: @v1) after release.
       - uses: SuchiiJain/CS4485_Capstone@main
+        with:
+          backend_url: https://YOUR_CLOUD_FUNCTION_URL
+          backend_token: ${{ steps.auth.outputs.id_token }}
 ```
 
 The action only needs **read** access to your code. It never pushes commits or modifies your repository.
@@ -321,11 +335,11 @@ The action only needs **read** access to your code. It never pushes commits or m
 
 On each push, the action will:
 
-1. Load the fingerprint baseline from the Docrot database.
-2. Scan Python code and compare against the baseline.
-3. Create or update a `docrot` issue when docs may be stale.
-4. Close the existing `docrot` issue when scan results are clean.
-5. Save the scan report and updated baseline to the database.
+1. Scan Python code and generate issue/report output.
+2. Create or update a `docrot` issue when docs may be stale.
+3. Exchange GitHub OIDC token for a Google-authenticated ID token (WIF step).
+4. Send scan payload to your authenticated Cloud Function URL.
+5. Let the Cloud Function write scan data to Firestore via Admin SDK.
 
 ### Action Inputs
 
@@ -333,8 +347,10 @@ On each push, the action will:
 |-------|----------|---------|-------------|
 | `repo_path` | No | `.` | Path to the repository root to scan |
 | `create_issue` | No | `true` | Create/update a GitHub issue when alerts are found |
+| `backend_url` | No | `` | Cloud Function URL used for backend ingestion |
+| `backend_token` | No | `` | ID token from `google-github-actions/auth@v2` |
 
-The Action uses the default `GITHUB_TOKEN` provided by GitHub Actions; no personal access token or database credentials are required.
+The Action uses the default `GITHUB_TOKEN` for GitHub issue operations and supports passing WIF-minted ID tokens for backend calls.
 
 ## GitHub Webhook Server
 

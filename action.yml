@@ -13,6 +13,14 @@ inputs:
     description: "Create or update a GitHub issue when alerts are found (true/false)."
     required: false
     default: "true"
+  backend_url:
+    description: "Cloud Function URL to receive Docrot scan payloads."
+    required: false
+    default: ""
+  backend_token:
+    description: "Bearer token produced by google-github-actions/auth (id_token)."
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -37,5 +45,7 @@ runs:
         GITHUB_REF_NAME: ${{ github.ref_name }}
         INPUT_REPO_PATH: ${{ inputs.repo_path }}
         INPUT_CREATE_ISSUE: ${{ inputs.create_issue }}
+        DOCROT_BACKEND_URL: ${{ inputs.backend_url }}
+        DOCROT_BACKEND_TOKEN: ${{ inputs.backend_token }}
       run: |
         python "${{ github.action_path }}/action_entrypoint.py"
