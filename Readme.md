@@ -407,7 +407,7 @@ See `.env.example` for the full list. Key variables:
 - **Trigger:** GitHub webhook (push events), CI run, or manual invocation.
 - **Storage:** JSON file (`.docrot-fingerprints.json`). SQLite planned for post-MVP.
 - **Output:** CI log warnings + `.docrot-report.json` artifact + GitHub commit statuses. PR comments planned for post-MVP.
-- **Thresholds:** Global only. Per-module overrides planned for post-MVP.
+
 
 ## License
 
