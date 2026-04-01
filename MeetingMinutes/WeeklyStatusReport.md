@@ -60,16 +60,19 @@
 
 ### Portia Hamid
 
-- **Hours:** 6
+- **Hours:** 9
 - **Tasks Complete:**
   - Fixed security flaw in database integration. User no longer needs to set up a github secret that permits them access to the private DB connection string + password.
   - Added more tables and rows to make querying more robust. Previously there were no rows for stale docs, params, return types, etc., so querying detailed scan information from the frontend would have been impossible. There should be much more versatility now.
   - Also added a table for repos, which will make it easier to query specific information for each repo/branch.
   - Properly connected the database to the scanner so the scanner will actually read the fingerprint baseline from the DB rather than relying on the JSON file. Added a fingerprints_baseline table for this purpose. This makes it so the user no longer needs to grant write permission to the action runner, which should bring peace of mind to the user. Read permissions are sufficient.
+  - Due to some security concerns that were flagged by Supabase following the previous updates, we decided to redo how our backend is hosted and have begun the process of switching to Firebase/Firestore. Marie and I started working to get the project set up on Firebase.
+  - Decided on using OIDC and WIF to authenticate the GitHub Action and allow it to write the scan results to Firebase. Spent several hours with Marie, trying to work out how to get that set up.
 - **Upcoming Tasks:** 
 - **Issues:** 
   - Removing mentions of the private database information from the code and switching everything to use Supabase's public API. I've never used Supabase before, so this took some trial and error to figure out.
   - Had difficulty with the DB perms required for the repos table, which required some debugging.
+  - Even with the old security flaws on Supabase fixed, our current architecture still left a huge security hole in the pipeline: the GitHub Action needed to write to the Supabase directly, which required us to have read/write access to anon users on Supabase, which created another inherent security flaw. We spent some time brainstorming and decided that switching everything over to Firebase would let us take care of those vulnerabilities easier, since Firebase will be able to host the database, the backend API, and the frontend, as well as already have oauth baked in. It will take some time to set up, but ultimately we think it will be the path of least resistance.
 
 ---
 
