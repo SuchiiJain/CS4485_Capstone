@@ -51,10 +51,21 @@
 
 ### Samuel Say
 
-- **Hours:** 
-- **Tasks Complete:** 
-- **Upcoming Tasks:** 
+- **Hours:** 10
+- **Tasks Complete:**
+  - Implemented Firebase Authentication (email/password + GitHub OAuth)
+  - Created `src/firebase.ts` with Firebase app initialization
+  - Rewrote `src/auth/AuthContext.tsx` to use Firebase `onAuthStateChanged`, replacing custom JWT/localStorage auth
+  - Updated `src/api/client.ts` to attach Firebase ID tokens to API requests
+  - Wired up `src/pages/AuthPage.tsx` with real form state, error handling, and loading states
+  - Refactored `src/App.tsx` to use Firebase user state, removing the old `LoginPage` and redundant `isSignedIn` gate
+  - Configured Firebase env vars in `.env` and `.env.example`
+  - Enabled Email/Password and GitHub sign-in in Firebase Console
+  - Set up GitHub OAuth App
+  - Deployed frontend to Firebase Hosting
+- **Upcoming Tasks:** Add production domain to Firebase Authorized Domains, connect backend API to production deployment
 - **Issues:** 
+
 
 ---
 
