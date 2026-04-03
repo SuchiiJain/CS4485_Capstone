@@ -169,7 +169,7 @@
   - Enabled Email/Password and GitHub sign-in in Firebase Console
   - Set up GitHub OAuth App
   - Deployed frontend to Firebase Hosting
-- **Upcoming Tasks:** Add production domain to Firebase Authorized Domains, connect backend API to production deployment
+- **Upcoming Tasks:** 
 - **Issues:** 
 
 
