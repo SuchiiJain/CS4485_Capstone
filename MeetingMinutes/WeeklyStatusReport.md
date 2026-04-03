@@ -133,8 +133,8 @@
     - Attended team meetings and understood Firebase/NoSQL syntax with Marie and Portia
 - **Upcoming Tasks:**
     - Work with Aaron to finalize Frontend and fix scanning issues
-- **Issues:** 
-
+- **Issues:**
+    - I was initially very lost with all the changes so it took me a while to adapt to them (and I have still not understood them fully)
 ---
 
 ### Aaron Santhosh
