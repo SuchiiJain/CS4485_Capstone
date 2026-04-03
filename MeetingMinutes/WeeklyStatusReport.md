@@ -101,14 +101,15 @@
 
 - **Hours: 10** 
 - **Tasks Complete:**
-  - Set up local development environment on Windows PC (installed Node.js, configured npm, resolved execution policy issues)
-  - Pulled latest frontend and backend repositories and ensured local branches were up to date
-  - Successfully ran frontend application locally using Vite for testing and development
-  - Implemented UI update by moving the User Settings page from the main navigation to the sidebar footer (bottom-left placement)
-  - Verified functionality of navigation and ensured no disruption to existing routing or backend logic
-  - Updated proposal and spec file to reflect current implementation changes (Firebase Firestore, Firebase Authentication, Cloud Functions ingestion, and hosting updates)
-  - Ensured consistency between proposal, spec file, and actual system architecture
-  - Prepared and finalized Minutes of Meeting #6 and contributed to drafting Minutes of Meeting #7 with updated project progress 
+  - Set up and configured local development environment on Windows (Node.js, npm), including resolving execution policy issues to enable full project build and runtime support
+  - Synced frontend and backend repositories with latest updates and verified compatibility with recent Firebase migration changes
+  - Ran and tested the React frontend locally using Vite to validate current system behavior and UI functionality
+  - Implemented a UI architecture improvement by refactoring sidebar navigation and relocating the User Settings component to the sidebar footer (bottom-left), aligning with standard dashboard UX patterns
+  - Ensured seamless integration with existing navigation logic (`navigateToPage`) without modifying routing or backend dependencies
+  - Verified that UI changes did not impact authentication flow, page rendering, or Firestore-driven data updates
+  - Contributed to system-wide documentation updates by aligning proposal and spec files with the new Firebase-based architecture (Firestore, Firebase Auth, Cloud Functions, and CI/CD pipeline)
+  - Ensured consistency between documented system design and actual deployed implementation
+  - Prepared and updated meeting documentation (MOM #6 and draft of MOM #7) to reflect current project progress and architectural changes 
 - **Upcoming Tasks:**
   - Continue assisting with frontend polish and UI consistency improvements
   - Support final documentation updates and alignment across all project materials
