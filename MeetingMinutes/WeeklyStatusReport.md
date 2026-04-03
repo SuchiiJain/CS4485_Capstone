@@ -185,7 +185,7 @@
 
 ### Portia Hamid
 
-- **Hours: 10** 
+- **Hours: 12** 
 - **Tasks Complete:**
   - Fixed security flaw in database integration. User no longer needs to set up a github secret that permits them access to the private DB connection string + password.
   - Added more tables and rows to make querying more robust. Previously there were no rows for stale docs, params, return types, etc., so querying detailed scan information from the frontend would have been impossible. There should be much more versatility now.
@@ -193,7 +193,9 @@
   - Properly connected the database to the scanner so the scanner will actually read the fingerprint baseline from the DB rather than relying on the JSON file. Added a fingerprints_baseline table for this purpose. This makes it so the user no longer needs to grant write permission to the action runner, which should bring peace of mind to the user. Read permissions are sufficient.
   - Due to some security concerns that were flagged by Supabase following the previous updates, we decided to redo how our backend is hosted and have begun the process of switching to Firebase/Firestore. Marie and I started working to get the project set up on Firebase.
   - Decided on using OIDC and WIF to authenticate the GitHub Action and allow it to write the scan results to Firebase. Spent several hours with Marie, trying to work out how to get that set up.
+  - Began adding infrastructure in the AI-implementation branch to support Groq as the default LLM suggestion provider (with options for the user to use an OpenAI or Anthropic API key if they prefer)
 - **Upcoming Tasks:** 
+  - Finish AI implementation and start planning on where to place it on the frontend.
 - **Issues:** 
   - Removing mentions of the private database information from the code and switching everything to use Supabase's public API. I've never used Supabase before, so this took some trial and error to figure out.
   - Had difficulty with the DB perms required for the repos table, which required some debugging.
