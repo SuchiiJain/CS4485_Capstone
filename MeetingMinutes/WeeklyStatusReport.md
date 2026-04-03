@@ -55,10 +55,27 @@
 
 ### Aaron Santhosh
 
-- **Hours:** 
+- **Hours:** 12
 - **Tasks Complete:** 
+  - Connected the entire frontend to Firebase/Firestore, replacing old API layer
+  - Rewired Dashboard, Projects, Scan History, and Issues pages to read from Firestore
+  - Replaced mock/Supabase data hooks (useReports, useScanEvents) with live Firestore queries
+  - Rebuilt auth flow to GitHub-only (removed email/password sign-up)
+  - Added function to filter and display only repos made by the GitHub user
+  - Rewired UserSettingsWireframePage to read/write user preferences from Firestore
+  - Updated ProjectsPage to pull scan data from Firestore subcollections
+  - Fixed scan history success rate metric
+  - Migrated backend action entrypoint from Supabase to Firestore
+  - Created a repo called "docrot-demo" with intentional doc rot for end-to-end testing
+  - Verified full pipeline: GitHub Action → Firestore → frontend dashboard
+  - Implemented rot score calculation and connected it to frontend
 - **Upcoming Tasks:** 
+  - Bug fix rot score calculation
+  - Improve login/signup UI
+  - Continue testing web app for more bugs/issues
+  - Assist other team members
 - **Issues:** 
+  - I was hitting my max Claude Code limits because I made a lot of changes in short periods of time rather than spreading it throughout the week. 
 
 ---
 
