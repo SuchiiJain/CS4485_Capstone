@@ -100,9 +100,9 @@ def _save_baseline(repo: str, branch: str, repo_path: str) -> None:
 
 
 def _compute_rot_score(high: int, medium: int, low: int) -> int:
-    """Compute a documentation health score (0-100). 100 = perfectly healthy."""
+    """Compute a documentation rot score (0-100). 0 = clean, 100 = heavily rotted."""
     penalty = high * 15 + medium * 8 + low * 3
-    return max(0, 100 - penalty)
+    return min(100, penalty)
 
 
 def _save_to_firestore(repo: str, sha: str, branch: str, status: str, report_json: dict) -> None:
