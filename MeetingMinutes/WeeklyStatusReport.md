@@ -101,23 +101,23 @@
 
 - **Hours: 10** 
 - **Tasks Complete:**
-  - Prepared and finalized Minutes of Meeting #6 and began drafting Minutes of Meeting #7 with updated project progress  
-  - Reviewed project architecture and current Phase 3 implementation to stay aligned with backend, frontend, and database changes  
-  - Assisted with team coordination by tracking progress across Firebase migration, frontend integration, and deployment updates  
-  - Reviewed frontend structure and navigation components in preparation for UI-related tasks  
-  - Identified and began working on UI improvement task (moving Settings to bottom left of sidebar) to improve dashboard layout consistency  
-  - Supported documentation updates to ensure alignment between implementation and spec file changes 
+  - Set up local development environment on Windows PC (installed Node.js, configured npm, resolved execution policy issues)
+  - Pulled latest frontend and backend repositories and ensured local branches were up to date
+  - Successfully ran frontend application locally using Vite for testing and development
+  - Implemented UI update by moving the User Settings page from the main navigation to the sidebar footer (bottom-left placement)
+  - Verified functionality of navigation and ensured no disruption to existing routing or backend logic
+  - Updated proposal and spec file to reflect current implementation changes (Firebase Firestore, Firebase Authentication, Cloud Functions ingestion, and hosting updates)
+  - Ensured consistency between proposal, spec file, and actual system architecture
+  - Prepared and finalized Minutes of Meeting #6 and contributed to drafting Minutes of Meeting #7 with updated project progress 
 - **Upcoming Tasks:**
-  - Check frontend UI task (Settings navigation placement and layout adjustments)  
-  - Continue updating MOM #7 with TA and professor feedback during meeting  
-  - Assist with frontend polish and navigation consistency across dashboard pages  
-  - Support final documentation and spec updates for Phase 3 completion  
-  - Help test demo flow and identify UI/UX issues before final presentation
+  - Continue assisting with frontend polish and UI consistency improvements
+  - Support final documentation updates and alignment across all project materials
+  - Assist with testing demo flow and identifying UI/UX issues before final presentation
+  - Help verify integration across frontend, backend, and database for final deployment
 - **Issues:**
-  - Still gaining familiarity with frontend codebase structure and React components, which initially slowed down UI task progress  
-  - Needed additional time to understand how navigation and layout styling are implemented before making changes  
-  - Coordinating updates across rapidly changing frontend and backend components required extra time to stay aligned 
-
+  - Initial environment setup challenges with npm and execution policy on Windows, resolved successfully
+  - Required time to understand frontend structure and navigation logic before implementing UI changes
+  - Needed to stay aligned with rapidly evolving backend and database changes during Firebase migration
 ---
 
 ### Suchi Jain
