@@ -5,9 +5,9 @@
 > This document is updated each week. Each team member logs their hours and contributions for the week. The most recent week appears at the top.
 
 ---
-# Week 7 — March 30 - April 3, 2026
+# Week 8 — April 6 - April 10, 2026
 
-**Team Leader for Week 7: Portia Hamid**
+**Team Leader for Week 8: Aaron Santhosh** 
 
 **Total Hours Spent:**
 
@@ -15,23 +15,10 @@
 
 ### Marie Liske
 
-- **Hours:** 14
-- **Tasks Complete:**
-  - Set up AWS Elastic Beanstalk server to host backend API server for the initial Supabase setup.
-  - We did not end up needing AWS, so i undid the implementation, taking it as learning experience.
-  - Once we decided the Supabase setup has security flaws, I brainstoned with Portia on how to best manage security so the Github action would not have direct write access to database
-  - We decided Firebase has a lot of hosting and security tools built in, so I set up a Firebase Cloud Function to host our backend.
-  - This used OIDC tokens and Workload Identity Federation to authorize GitHub worksflows without the need for long lived security tokens.
-  - Set up backend to Authenticate with Google Cloud before writing data to our new Firestore DB that Portia set up
-- **Upcoming Tasks:**
-  - Test V1 web app for bugs
-  - Assist with AI integration
-  - Clean up dashboard if needed & set up any additonal features outside of MVP
-- **Issues:**
-  - Had never used AWS before, so setting up the API server took longer than anticipated as I navigated the platform
-  - Encountered learning curves in both AWS and Firebase
-  - After review with team, realized AWS server was too convoluted and using an outdated flask implementation.
-  - Had issues getting action authorized to write to Firestore DB and other repos' actions to be able to write.
+- **Hours:** 
+- **Tasks Complete:** 
+- **Upcoming Tasks:** 
+- **Issues:** 
 
 ---
 
@@ -55,7 +42,82 @@
 
 ### Aaron Santhosh
 
-- **Hours:** 12
+- **Hours:** 
+- **Tasks Complete:** 
+- **Upcoming Tasks:** 
+- **Issues:** 
+
+---
+
+### Samuel Say
+
+- **Hours:** 
+- **Tasks Complete:** 
+- **Upcoming Tasks:** 
+- **Issues:** 
+
+---
+
+### Portia Hamid
+
+- **Hours:** 
+- **Tasks Complete:** 
+- **Upcoming Tasks:** 
+- **Issues:**
+
+---
+  
+# Week 7 — March 30 - April 3, 2026
+
+**Team Leader for Week 7: Portia Hamid**
+
+**Total Hours Spent: 56**
+
+---
+
+### Marie Liske
+
+- **Hours: 14** 
+- **Tasks Complete:**
+  - Set up AWS Elastic Beanstalk server to host backend API server for the initial Supabase setup.
+  - We did not end up needing AWS, so i undid the implementation, taking it as learning experience.
+  - Once we decided the Supabase setup has security flaws, I brainstoned with Portia on how to best manage security so the Github action would not have direct write access to database
+  - We decided Firebase has a lot of hosting and security tools built in, so I set up a Firebase Cloud Function to host our backend.
+  - This used OIDC tokens and Workload Identity Federation to authorize GitHub worksflows without the need for long lived security tokens.
+  - Set up backend to Authenticate with Google Cloud before writing data to our new Firestore DB that Portia set up
+- **Upcoming Tasks:**
+  - Test V1 web app for bugs
+  - Assist with AI integration
+  - Clean up dashboard if needed & set up any additonal features outside of MVP
+- **Issues:**
+  - Had never used AWS before, so setting up the API server took longer than anticipated as I navigated the platform
+  - Encountered learning curves in both AWS and Firebase
+  - After review with team, realized AWS server was too convoluted and using an outdated flask implementation.
+  - Had issues getting action authorized to write to Firestore DB and other repos' actions to be able to write.
+
+---
+
+### Anusua Halder
+
+- **Hours: 10** 
+- **Tasks Complete:** 
+- **Upcoming Tasks:** 
+- **Issues:** 
+
+---
+
+### Suchi Jain
+
+- **Hours:** 
+- **Tasks Complete:** 
+- **Upcoming Tasks:** 
+- **Issues:** 
+
+---
+
+### Aaron Santhosh
+
+- **Hours: 12** 
 - **Tasks Complete:** 
   - Connected the entire frontend to Firebase/Firestore, replacing old API layer
   - Rewired Dashboard, Projects, Scan History, and Issues pages to read from Firestore
@@ -81,7 +143,7 @@
 
 ### Samuel Say
 
-- **Hours:** 10
+- **Hours: 10** 
 - **Tasks Complete:**
   - Implemented Firebase Authentication (email/password + GitHub OAuth)
   - Created `src/firebase.ts` with Firebase app initialization
@@ -101,7 +163,7 @@
 
 ### Portia Hamid
 
-- **Hours:** 9
+- **Hours: 10** 
 - **Tasks Complete:**
   - Fixed security flaw in database integration. User no longer needs to set up a github secret that permits them access to the private DB connection string + password.
   - Added more tables and rows to make querying more robust. Previously there were no rows for stale docs, params, return types, etc., so querying detailed scan information from the frontend would have been impossible. There should be much more versatility now.
