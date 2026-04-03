@@ -100,9 +100,23 @@
 ### Anusua Halder
 
 - **Hours: 10** 
-- **Tasks Complete:** 
-- **Upcoming Tasks:** 
-- **Issues:** 
+- **Tasks Complete:**
+  - Prepared and finalized Minutes of Meeting #6 and began drafting Minutes of Meeting #7 with updated project progress  
+  - Reviewed project architecture and current Phase 3 implementation to stay aligned with backend, frontend, and database changes  
+  - Assisted with team coordination by tracking progress across Firebase migration, frontend integration, and deployment updates  
+  - Reviewed frontend structure and navigation components in preparation for UI-related tasks  
+  - Identified and began working on UI improvement task (moving Settings to bottom left of sidebar) to improve dashboard layout consistency  
+  - Supported documentation updates to ensure alignment between implementation and spec file changes 
+- **Upcoming Tasks:**
+  - Check frontend UI task (Settings navigation placement and layout adjustments)  
+  - Continue updating MOM #7 with TA and professor feedback during meeting  
+  - Assist with frontend polish and navigation consistency across dashboard pages  
+  - Support final documentation and spec updates for Phase 3 completion  
+  - Help test demo flow and identify UI/UX issues before final presentation
+- **Issues:**
+  - Still gaining familiarity with frontend codebase structure and React components, which initially slowed down UI task progress  
+  - Needed additional time to understand how navigation and layout styling are implemented before making changes  
+  - Coordinating updates across rapidly changing frontend and backend components required extra time to stay aligned 
 
 ---
 
