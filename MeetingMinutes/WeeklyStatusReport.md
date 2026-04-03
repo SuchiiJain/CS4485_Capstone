@@ -124,9 +124,15 @@
 
 ### Suchi Jain
 
-- **Hours:** 
-- **Tasks Complete:** 
-- **Upcoming Tasks:** 
+- **Hours: 8** 
+- **Tasks Complete:**
+    - Researched AWS and different options we could use
+    - Tested Frontend to ensure successful deployment
+    - Reviewed Supabase issues
+    - Verified full pipeline: GitHub Action → Firestore → frontend dashboard
+    - Attended team meetings and understood Firebase/NoSQL syntax with Marie and Portia
+- **Upcoming Tasks:**
+    - Work with Aaron to finalize Frontend and fix scanning issues
 - **Issues:** 
 
 ---
