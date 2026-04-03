@@ -71,7 +71,7 @@
 
 **Team Leader for Week 7: Portia Hamid**
 
-**Total Hours Spent: 56**
+**Total Hours Spent: 64**
 
 ---
 
