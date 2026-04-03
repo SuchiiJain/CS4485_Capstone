@@ -109,6 +109,7 @@
   - Verified that UI changes did not impact authentication flow, page rendering, or Firestore-driven data updates
   - Contributed to system-wide documentation updates by aligning proposal and spec files with the new Firebase-based architecture (Firestore, Firebase Auth, Cloud Functions, and CI/CD pipeline)
   - Ensured consistency between documented system design and actual deployed implementation
+  - Debugged and resolved a Firebase configuration issue (invalid API key) by correctly setting up local environment variables using `.env`
   - Prepared and updated meeting documentation (MOM #6 and draft of MOM #7) to reflect current project progress and architectural changes 
 - **Upcoming Tasks:**
   - Continue assisting with frontend polish and UI consistency improvements
