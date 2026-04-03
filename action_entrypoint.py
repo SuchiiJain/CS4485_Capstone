@@ -99,6 +99,12 @@ def _save_baseline(repo: str, branch: str, repo_path: str) -> None:
     print("[docrot-action] Fingerprint baseline saved to Firestore.")
 
 
+def _compute_rot_score(high: int, medium: int, low: int) -> int:
+    """Compute a documentation health score (0-100). 100 = perfectly healthy."""
+    penalty = high * 15 + medium * 8 + low * 3
+    return max(0, 100 - penalty)
+
+
 def _save_to_firestore(repo: str, sha: str, branch: str, status: str, report_json: dict) -> None:
     """Save scan results to Firestore."""
     db = _get_firestore_db()
@@ -108,6 +114,10 @@ def _save_to_firestore(repo: str, sha: str, branch: str, status: str, report_jso
     repo_id = _repo_doc_id(repo)
     now = datetime.now(timezone.utc)
 
+    high = severity.get("high", 0)
+    medium = severity.get("medium", 0)
+    low = severity.get("low", 0)
+
     # 1. Write scan run document
     scan_data = {
         "commit_hash": sha,
@@ -115,9 +125,10 @@ def _save_to_firestore(repo: str, sha: str, branch: str, status: str, report_jso
         "status": status,
         "scanned_at": now,
         "total_issues": meta.get("total_issues", 0),
-        "high_count": severity.get("high", 0),
-        "medium_count": severity.get("medium", 0),
-        "low_count": severity.get("low", 0),
+        "high_count": high,
+        "medium_count": medium,
+        "low_count": low,
+        "rot_score": _compute_rot_score(high, medium, low),
     }
     db.collection("repos").document(repo_id).collection("scan_runs").document(scan_id).set(scan_data)
 
