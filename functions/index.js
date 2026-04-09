@@ -184,3 +184,49 @@ exports.ingestScan = onRequest(
     }
   }
 );
+
+
+/**
+ * getBaseline — Return the stored fingerprint baseline for a repo + branch.
+ *
+ * GET ?repo=owner/repo&branch=main
+ * Returns { fingerprints: {...} } or 404 if no baseline exists.
+ */
+exports.getBaseline = onRequest(
+  { region: "us-central1" },
+  async (req, res) => {
+    if (req.method !== "GET") {
+      res.status(405).send("Method not allowed");
+      return;
+    }
+
+    const repo = req.query.repo;
+    const branch = req.query.branch;
+
+    if (!repo || !branch) {
+      res.status(400).json({ error: "Missing required query params: repo, branch" });
+      return;
+    }
+
+    try {
+      const repoDocId = repo.replace("/", "_");
+      const fpRef = db
+        .collection("repos")
+        .doc(repoDocId)
+        .collection("fingerprint_baselines")
+        .doc(branch);
+
+      const doc = await fpRef.get();
+
+      if (!doc.exists) {
+        res.status(404).json({ error: "No baseline found" });
+        return;
+      }
+
+      res.status(200).json({ fingerprints: doc.data().fingerprints });
+    } catch (error) {
+      console.error("getBaseline error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);

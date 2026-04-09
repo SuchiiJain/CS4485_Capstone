@@ -37,6 +37,35 @@ def _backend_headers() -> dict:
     return headers
 
 
+def _load_baseline(repo: str, branch: str, repo_path: str) -> None:
+    """Download the fingerprint baseline from Firestore and write it to the repo."""
+    if not BACKEND_URL:
+        return
+
+    # Derive getBaseline URL from the ingestScan URL
+    baseline_url = BACKEND_URL.rsplit("/", 1)[0] + "/getBaseline"
+
+    resp = requests.get(
+        baseline_url,
+        params={"repo": repo, "branch": branch},
+        headers=_backend_headers(),
+        timeout=15,
+    )
+
+    if resp.status_code == 404:
+        print("[docrot-action] No existing baseline found — this will be a first run.")
+        return
+
+    resp.raise_for_status()
+    data = resp.json()
+
+    if data.get("fingerprints"):
+        fp_path = os.path.join(repo_path, ".docrot-fingerprints.json")
+        with open(fp_path, "w", encoding="utf-8") as f:
+            json.dump(data["fingerprints"], f, indent=2, sort_keys=True)
+        print("[docrot-action] Loaded fingerprint baseline from database.")
+
+
 def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json: dict, repo_path: str) -> list:
     """Send scan payload to the Cloud Function backend endpoint.
 
@@ -197,6 +226,12 @@ def main() -> None:
     repo = os.environ["GITHUB_REPOSITORY"]
     sha = os.environ.get("GITHUB_SHA", "unknown")
     branch = os.environ.get("GITHUB_REF_NAME", "unknown")
+
+    # Load fingerprint baseline from database (if one exists)
+    try:
+        _load_baseline(repo, branch, os.path.abspath(repo_path))
+    except Exception as e:
+        print(f"[docrot-action] Warning: could not load baseline from database: {e}")
 
     # Run the pipeline
     exit_code = run_pipeline(repo_path, commit_hash=sha)
