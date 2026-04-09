@@ -52,7 +52,7 @@ from src.flagging_threshold import (
     run_flagging,
 )
 from src.report_generation import generate_reports
-from src.ai_suggestions import generate_ai_suggestions
+from src.ai_suggestions import generate_ai_suggestions, build_ai_context
 
 
 # ---------------------------------------------------------------------------
@@ -482,13 +482,16 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
     order = {Severity.HIGH: 0, Severity.MEDIUM: 1, Severity.LOW: 2}
     flags.sort(key=lambda f: order[f.severity])
 
-    # 8. AI suggestions (optional — only runs if AI is configured)
+    # 8. AI suggestions (optional — only runs if AI is configured locally)
     ai_suggestions: List[AISuggestion] = generate_ai_suggestions(
         ai_config=ai_config,
         doc_alerts=doc_alerts,
         all_events=all_events,
         repo_path=repo_path,
     )
+
+    # 8b. Build AI context for backend processing (always, when doc_alerts exist)
+    ai_context = build_ai_context(doc_alerts, all_events, repo_path)
 
     # 9. Generate .txt and .json reports
     elapsed = time.time() - start
@@ -501,6 +504,7 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
         json_path=json_path,
         txt_path=txt_path,
         ai_suggestions=ai_suggestions,
+        ai_context=ai_context,
     )
 
     # 10. Print stdout summary

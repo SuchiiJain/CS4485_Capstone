@@ -37,10 +37,14 @@ def _backend_headers() -> dict:
     return headers
 
 
-def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json: dict, repo_path: str) -> None:
-    """Send scan payload to the Cloud Function backend endpoint."""
+def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json: dict, repo_path: str) -> list:
+    """Send scan payload to the Cloud Function backend endpoint.
+
+    Returns a list of AI suggestion dicts from the backend response,
+    or an empty list if AI is not available or the call fails.
+    """
     if not BACKEND_URL:
-        return
+        return []
 
     scan_id = str(uuid.uuid4())
     meta = report_json.get("meta", {})
@@ -70,8 +74,6 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
         with open(fp_path, "r", encoding="utf-8") as f:
             fingerprints = json.load(f)
 
-    ai_suggestions = report_json.get("ai_suggestions", [])
-
     payload = {
         "repo_name": repo,
         "github_url": f"https://github.com/{repo}",
@@ -85,19 +87,30 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
         "medium_count": severity.get("medium", 0),
         "low_count": severity.get("low", 0),
         "flags": flags,
-        "ai_suggestions": ai_suggestions,
     }
     if fingerprints is not None:
         payload["fingerprints"] = fingerprints
+
+    # Send AI context so the backend can generate suggestions server-side
+    ai_context = report_json.get("ai_context", [])
+    if ai_context:
+        payload["ai_context"] = ai_context
 
     resp = requests.post(
         BACKEND_URL,
         json=payload,
         headers=_backend_headers(),
-        timeout=15,
+        timeout=60,
     )
 
     print(f"[docrot-action] Scan {scan_id} saved to Firestore for {repo}")
+
+    # Extract AI suggestions from the backend response
+    try:
+        body = resp.json()
+        return body.get("ai_suggestions", [])
+    except (ValueError, AttributeError):
+        return []
 
 
 # ---------------------------------------------------------------------------
@@ -191,13 +204,22 @@ def main() -> None:
     # Save scan results to Cloud Function backend
     report_path = os.path.join(os.path.abspath(repo_path), ".docrot-report.json")
     status = "issues_found" if exit_code == 1 else "clean"
+    ai_suggestions = []
     if BACKEND_URL:
         try:
             if os.path.exists(report_path):
                 with open(report_path, "r", encoding="utf-8") as f:
                     report_json = json.load(f)
-                _save_to_backend(repo, sha, branch, status, report_json, os.path.abspath(repo_path))
+                ai_suggestions = _save_to_backend(repo, sha, branch, status, report_json, os.path.abspath(repo_path))
                 print(f"[docrot-action] Scan sent to Cloud Function backend for {repo}")
+
+                # Write AI suggestions from backend into the report JSON
+                # so format_pr_comment() picks them up for the GitHub issue
+                if ai_suggestions:
+                    report_json["ai_suggestions"] = ai_suggestions
+                    with open(report_path, "w", encoding="utf-8") as f:
+                        json.dump(report_json, f, indent=2)
+                    print(f"[docrot-action] {len(ai_suggestions)} AI suggestion(s) added to report.")
         except Exception as e:
             print(f"[docrot-action] Warning: could not send scan to backend: {e}")
 

@@ -20,6 +20,7 @@ Docrot focuses on behavior-aware change detection instead of text-only diffs.
 - Maps changed code to documentation files via config.
 - Emits reports and optional issue automation in GitHub.
 - Sends scan results to Firebase Cloud Function for Firestore storage.
+- Optionally generates AI-powered documentation fix suggestions via LLM.
 
 ## Current Deployment Model
 
@@ -43,12 +44,17 @@ Not part of active model:
 3. Detect
 - Pipeline compares semantic fingerprints with stored baseline.
 
-4. Report
-- Generates machine and human readable report artifacts.
+4. Suggest (optional)
+- If AI is configured, sends flagged docs + change context to an LLM.
+- LLM returns specific, actionable edits for each stale doc.
 
-5. Persist
+5. Report
+- Generates machine and human readable report artifacts.
+- Includes AI suggestions in reports and GitHub issues when available.
+
+6. Persist
 - Action sends payload to Cloud Function endpoint.
-- Cloud Function writes scan, flags, and fingerprint baseline to Firestore.
+- Cloud Function writes scan, flags, AI suggestions, and fingerprint baseline to Firestore.
 
 ## Repository Components
 
@@ -59,6 +65,7 @@ Core Python pipeline:
 - src/fingerprint.py: Semantic feature extraction and fingerprinting.
 - src/comparator.py: Fingerprint comparison and scoring.
 - src/alerts.py: Doc mapping and threshold alert evaluation.
+- src/ai_suggestions.py: Optional LLM-powered documentation fix suggestions.
 - src/report_generation.py: .docrot-report.json and .docrot-report.txt generation.
 - src/persistence.py: Baseline fingerprint persistence in .docrot-fingerprints.json.
 
@@ -122,6 +129,7 @@ The action sends results to the Cloud Function endpoint using a short-lived OIDC
 - scan metadata (scan_id, commit, branch, status, timestamp)
 - counts (total issues, high/medium/low)
 - flags array
+- ai_suggestions array (when AI is configured)
 - optional fingerprint baseline snapshot
 
 ### Firestore write model
@@ -157,15 +165,12 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-<<<<<<< api-testing
 ## GitHub Action (Recommended)
 
 Use this Action from any other repository by adding one workflow file and one config file. For Firebase/Firestore persistence, use GitHub OIDC + Google Workload Identity Federation (WIF).
 
 ### Step 1: Add .docrot-config.json to the Target Repository
-=======
 ## 2) Create Docrot config in target repository
->>>>>>> main
 
 Create .docrot-config.json in repository root:
 
@@ -196,7 +201,6 @@ Key parts:
 
 ## 5) Deploy Firebase Cloud Function
 
-<<<<<<< api-testing
 jobs:
   docrot:
     runs-on: ubuntu-latest
@@ -246,7 +250,6 @@ On each push, the action will:
 | `backend_token` | No | `` | ID token from `google-github-actions/auth@v2` |
 
 The Action uses the default `GITHUB_TOKEN` for GitHub issue operations and supports passing WIF-minted ID tokens for backend calls.
-=======
 From functions directory:
 
 ```bash
@@ -255,39 +258,49 @@ npm install
 # deploy with your Firebase/GCP settings
 ```
 
-## GitHub Action Inputs
+## AI-Powered Suggestions
 
-Defined in action.yml:
+When the scan finds documentation that may be stale, the Cloud Function backend automatically generates AI-powered fix suggestions using Groq (Llama 3.3 70B). No API keys or extra configuration are needed in your repository — the LLM call happens server-side.
 
-- repo_path
-  - path to repository root to scan (default: .)
-- create_issue
-  - whether to create/update GitHub issue for findings (default: true)
-- backend_url
-  - Cloud Function endpoint URL
-- backend_token
-  - bearer token from google-github-actions/auth id_token output
->>>>>>> main
+### How It Works
+
+1. The scan pipeline builds prompt context for each flagged doc (doc content + change descriptions).
+2. The Action sends this context to the Cloud Function as part of the scan payload.
+3. The Cloud Function calls the Groq API with a key stored as a Google Cloud secret.
+4. Suggestions are written to Firestore and returned to the Action.
+5. The Action writes them into the report and includes them on the GitHub issue.
+
+### Where Suggestions Appear
+
+- **GitHub Issue**: AI suggestions appear in a collapsible section on the docrot tracking issue.
+- **Report files**: Included in `.docrot-report.json` after the backend responds.
+- **Firestore**: Stored in `scan_runs/{scan_id}/ai_suggestions/` for the frontend dashboard.
+
+### Local Development
+
+For local runs outside of the Action, you can still get AI suggestions by configuring a provider directly. Add an `ai` block to `.docrot-config.json`:
+
+```json
+{
+  "ai": {
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "api_key_env": "GROQ_API_KEY"
+  }
+}
+```
+
+Then install the provider package and set the key:
+
+```bash
+pip install groq
+export GROQ_API_KEY=your_key_here
+```
+
+Supported providers for local use: `groq`, `anthropic`, `openai`.
 
 ## Outputs and Behavior
 
-<<<<<<< api-testing
-Docrot can also run as a webhook server that automatically scans repos when code is pushed to GitHub.
-
-### Quick Start
-
-```sh
-# Install webhook dependencies
-pip install -r requirements.txt
-
-# Set your webhook secret
-export DOCROT_WEBHOOK_SECRET=$(python -c "import secrets; print(secrets.token_hex(32))")
-
-# (Optional) Set a GitHub token for private repos + commit status posting
-export GITHUB_TOKEN=ghp_your_token_here
-
-### Setting Up the GitHub Webhook
-=======
 Pipeline result behavior:
 - First run creates baseline with no alerts.
 - Subsequent runs compare against baseline and generate findings.
@@ -296,7 +309,6 @@ Action behavior:
 - Can create or update a tracking issue when findings are present.
 - Can close the issue when scan returns clean.
 - Sends scan payload to Firebase backend if backend_url is set.
->>>>>>> main
 
 ## Security and Auth Notes
 
@@ -321,16 +333,13 @@ Backend write not happening:
 
 For the MVP, Docrot is intentionally focused on Python code analysis only.
 
-<<<<<<< api-testing
 - **Language:** Python only (uses the built-in `ast` module).
-- **Trigger:** GitHub webhook (push events), CI run, or manual invocation.
-- **Storage:** JSON file (`.docrot-fingerprints.json`). SQLite planned for post-MVP.
-- **Output:** CI log warnings + `.docrot-report.json` artifact + GitHub commit statuses. PR comments planned for post-MVP.
+- **Trigger:** GitHub Action on push events.
+- **Storage:** Firestore via Cloud Function. Local baseline in `.docrot-fingerprints.json`.
+- **Output:** `.docrot-report.json` + `.docrot-report.txt` + GitHub issue automation + optional AI suggestions.
 
-=======
 - Current MVP scope: Python semantic fingerprinting and documentation-rot detection.
 - Why: Python-first delivery lets us validate scoring, mapping, and CI workflow reliability quickly.
->>>>>>> main
 
 For GTM and deployment strategy, the long-term goal is broad language compatibility.
 

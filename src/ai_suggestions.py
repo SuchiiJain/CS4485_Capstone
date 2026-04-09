@@ -196,6 +196,52 @@ def _describe_doc_alert(alert: DocAlert) -> str:
 # Public API
 # ---------------------------------------------------------------------------
 
+def build_ai_context(
+    doc_alerts: List[DocAlert],
+    all_events: List[ChangeEvent],
+    repo_path: str,
+) -> List[Dict[str, Any]]:
+    """
+    Build LLM prompt context for each flagged doc file without calling an LLM.
+
+    Used by the action entrypoint to send context to the Cloud Function
+    backend for server-side LLM processing.
+
+    Returns:
+        List of dicts, each with keys: doc_path, triggered_by,
+        system_prompt, user_prompt.
+    """
+    if not doc_alerts:
+        return []
+
+    context: List[Dict[str, Any]] = []
+    for alert in doc_alerts:
+        doc_abs_path = os.path.join(repo_path, alert.doc_path)
+        try:
+            with open(doc_abs_path, "r", encoding="utf-8") as f:
+                doc_content = f.read()
+        except OSError:
+            doc_content = "(could not read documentation file)"
+
+        change_descriptions: List[str] = [_describe_doc_alert(alert)]
+        for event in all_events:
+            if event.function_id in alert.functions:
+                change_descriptions.append(_describe_change_event(event))
+
+        user_prompt = _build_user_prompt(
+            alert.doc_path, doc_content, change_descriptions,
+        )
+
+        context.append({
+            "doc_path": alert.doc_path,
+            "triggered_by": list(alert.functions),
+            "system_prompt": _SYSTEM_PROMPT,
+            "user_prompt": user_prompt,
+        })
+
+    return context
+
+
 def generate_ai_suggestions(
     ai_config: Optional[Dict[str, str]],
     doc_alerts: List[DocAlert],

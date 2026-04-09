@@ -1,12 +1,81 @@
 const { onRequest } = require("firebase-functions/v2/https");
+const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 
 admin.initializeApp();
 const db = admin.firestore();
 
+const groqApiKey = defineSecret("GROQ_API_KEY");
+
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+const GROQ_MAX_TOKENS = 1024;
+
+/**
+ * Call the Groq chat completions API for a single doc's prompts.
+ */
+async function callGroq(apiKey, systemPrompt, userPrompt) {
+  const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      max_tokens: GROQ_MAX_TOKENS,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+    }),
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Groq API ${resp.status}: ${text.slice(0, 200)}`);
+  }
+
+  const data = await resp.json();
+  return data.choices?.[0]?.message?.content || "";
+}
+
+/**
+ * Process AI context items: call Groq for each flagged doc and return suggestions.
+ */
+async function generateAiSuggestions(apiKey, aiContext) {
+  const suggestions = [];
+
+  for (const item of aiContext) {
+    try {
+      const suggestionText = await callGroq(
+        apiKey,
+        item.system_prompt,
+        item.user_prompt
+      );
+      suggestions.push({
+        doc_path: item.doc_path,
+        triggered_by: item.triggered_by || [],
+        suggestion: suggestionText,
+        model_used: GROQ_MODEL,
+      });
+    } catch (err) {
+      console.error(`AI suggestion failed for ${item.doc_path}:`, err.message);
+      suggestions.push({
+        doc_path: item.doc_path,
+        triggered_by: item.triggered_by || [],
+        suggestion: `(AI suggestion unavailable: ${err.message})`,
+        model_used: GROQ_MODEL,
+      });
+    }
+  }
+
+  return suggestions;
+}
+
 exports.ingestScan = onRequest(
   {
     region: "us-central1",
+    secrets: [groqApiKey],
   },
   async (req, res) => {
     if (req.method !== "POST") {
@@ -22,6 +91,18 @@ exports.ingestScan = onRequest(
         return;
       }
 
+      // --- AI suggestions (server-side) ---
+      let aiSuggestions = [];
+      const aiContext = payload.ai_context;
+      const apiKey = groqApiKey.value();
+
+      if (aiContext && Array.isArray(aiContext) && aiContext.length > 0 && apiKey) {
+        console.log(`Generating AI suggestions for ${aiContext.length} doc(s)...`);
+        aiSuggestions = await generateAiSuggestions(apiKey, aiContext);
+        console.log(`Generated ${aiSuggestions.length} AI suggestion(s).`);
+      }
+
+      // --- Firestore writes ---
       const repoDocId = payload.repo_name.replace("/", "_");
       const batch = db.batch();
 
@@ -51,7 +132,7 @@ exports.ingestScan = onRequest(
 
       if (payload.flags && Array.isArray(payload.flags)) {
         for (const flag of payload.flags) {
-          const flagRef = scanRef.collection("flags").doc(flag.id);
+          const flagRef = scanRef.collection("flags").doc();
           batch.set(flagRef, {
             reason: flag.reason,
             severity: flag.severity,
@@ -64,6 +145,19 @@ exports.ingestScan = onRequest(
             return_type: flag.return_type || null,
             doc_file: flag.doc_file || null,
             doc_symbol: flag.doc_symbol || null,
+          });
+        }
+      }
+
+      // Write AI suggestions to Firestore
+      if (aiSuggestions.length > 0) {
+        for (const suggestion of aiSuggestions) {
+          const sugRef = scanRef.collection("ai_suggestions").doc();
+          batch.set(sugRef, {
+            doc_path: suggestion.doc_path,
+            triggered_by: suggestion.triggered_by,
+            suggestion: suggestion.suggestion,
+            model_used: suggestion.model_used,
           });
         }
       }
@@ -82,6 +176,7 @@ exports.ingestScan = onRequest(
         success: true,
         scan_id: payload.scan_id,
         flags_written: payload.flags ? payload.flags.length : 0,
+        ai_suggestions: aiSuggestions,
       });
     } catch (error) {
       console.error("ingestScan error:", error);
