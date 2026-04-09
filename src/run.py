@@ -500,6 +500,7 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
         commit_hash=commit_hash,
         json_path=json_path,
         txt_path=txt_path,
+        ai_suggestions=ai_suggestions,
     )
 
     # 10. Print stdout summary
