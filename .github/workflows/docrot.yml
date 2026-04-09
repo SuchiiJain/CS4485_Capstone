@@ -5,12 +5,25 @@ jobs:
   docrot:
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       issues: write
       contents: read
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: SuchiiJain/CS4485_Capstone@main
+          
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
         with:
-          firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          workload_identity_provider: projects/147015144729/locations/global/workloadIdentityPools/github-oidc-pool/providers/github-provider
+          service_account: docrot-github-action@docrot-detector.iam.gserviceaccount.com
+          token_format: id_token
+          id_token_audience: https://us-central1-docrot-detector.cloudfunctions.net/ingestScan
+          id_token_include_email: true
+
+      - uses: ./
+        with:
+          backend_url: https://us-central1-docrot-detector.cloudfunctions.net/ingestScan
+          backend_token: ${{ steps.auth.outputs.id_token }}

@@ -29,6 +29,11 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+node_modules/
+functions/node_modules/
+functions/.firebase/
+firebase-debug.log
+firebase-debug.*.log
 
 # IDE/editor settings
 .vscode/
@@ -47,3 +52,5 @@ Thumbs.db
 
 # Firebase CLI logs
 firebase-debug.log
+# Node/Firebase Functions dependencies
+functions/node_modules/
