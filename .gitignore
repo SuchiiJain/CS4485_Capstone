@@ -44,3 +44,6 @@ Thumbs.db
 .docrot-report.txt
 
 .tmp-report-*.json
+
+# Firebase CLI logs
+firebase-debug.log

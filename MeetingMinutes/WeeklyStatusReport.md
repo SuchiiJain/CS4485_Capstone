@@ -60,10 +60,20 @@
 
 ### Portia Hamid
 
-- **Hours:** 
-- **Tasks Complete:** 
+- **Hours: 8** 
+- **Tasks Complete:**
+  - Finished AI implementation on the AI-integration branch.
+    - A Groq API key is set up by default without any setup involved from the user other than adding the relevant lines to their config file. No need to mess with any API keys or secrets.
+    - LLM API calls are processed via Google Cloud backend so the Groq API key isn't exposed to the user.
+    - When changes are pushed and the AST parser scans the code and flags any changes, the relevant code globs and documentation are sent to the LLM (llama-3.3-70b-versatile), which will return specific, targeted suggestions on what in the documentation needs to be changed to reflect the code changes
+    - The LLM response is output in the GitHub Issue that is created when discrepancies are found, along with the changed functions and their severities
+    - The LLM response is now also stored in the Firestore database and ready to be integrated into the frontend.
+    - Support is in place for OpenAI and Anthropic API keys as well, but for the time being Groq is the easiest option for the user since it requires no additional setup.
 - **Upcoming Tasks:** 
+  - Fix the frontend to display the LLM suggestions if the user has them enabled
+  - We still need a more user-friendly way to set up the repos. Maybe a wizard in the frontend that can either walk the user through the process, or let them directly download the necessary files. Need to discuss.
 - **Issues:**
+  - Encountered difficulties getting the environment variable set up for the Groq API key in Google Cloud, but it's working now.
 
 ---
   
