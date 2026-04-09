@@ -42,11 +42,8 @@ def _load_baseline(repo: str, branch: str, repo_path: str) -> None:
     if not BACKEND_URL:
         return
 
-    # Derive getBaseline URL from the ingestScan URL
-    baseline_url = BACKEND_URL.rsplit("/", 1)[0] + "/getBaseline"
-
     resp = requests.get(
-        baseline_url,
+        BACKEND_URL,
         params={"repo": repo, "branch": branch},
         headers=_backend_headers(),
         timeout=15,
