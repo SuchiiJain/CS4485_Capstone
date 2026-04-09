@@ -50,8 +50,7 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
     for issue in report_json.get("issues", []):
         code_el = issue.get("code_element", {})
         doc_ref = issue.get("doc_reference")
-        issue_id = str(uuid.uuid4())
-        issue_data = {
+        flags.append({
             "reason": issue.get("reason", ""),
             "severity": issue.get("severity", "low"),
             "file_path": code_el.get("file_path"),
@@ -71,6 +70,8 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
         with open(fp_path, "r", encoding="utf-8") as f:
             fingerprints = json.load(f)
 
+    ai_suggestions = report_json.get("ai_suggestions", [])
+
     payload = {
         "repo_name": repo,
         "github_url": f"https://github.com/{repo}",
@@ -84,6 +85,7 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
         "medium_count": severity.get("medium", 0),
         "low_count": severity.get("low", 0),
         "flags": flags,
+        "ai_suggestions": ai_suggestions,
     }
     if fingerprints is not None:
         payload["fingerprints"] = fingerprints
