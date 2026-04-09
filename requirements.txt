@@ -11,6 +11,11 @@ requests>=2.31,<3.0
 # Auto-load .env file for server config
 python-dotenv>=1.0,<2.0
 
+<<<<<<< api-testing
 psycopg2-binary>=2.9,<3.0
 gunicorn>=22.0,<23.0
+=======
+# Firebase Admin SDK (Firestore for scan results)
+firebase-admin>=6.0,<7.0
+>>>>>>> main
 
