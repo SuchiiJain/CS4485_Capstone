@@ -44,3 +44,6 @@ Thumbs.db
 .docrot-report.txt
 
 .tmp-report-*.json
+
+# Node/Firebase Functions dependencies
+functions/node_modules/
