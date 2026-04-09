@@ -5,9 +5,9 @@
 > This document is updated each week. Each team member logs their hours and contributions for the week. The most recent week appears at the top.
 
 ---
-# Week 7 — March 30 - April 3, 2026
+# Week 8 — April 6 - April 10, 2026
 
-**Team Leader for Week 7: Portia Hamid**
+**Team Leader for Week 8: Aaron Santhosh** 
 
 **Total Hours Spent:**
 
@@ -60,7 +60,132 @@
 
 ### Portia Hamid
 
-- **Hours:** 9
+- **Hours:** 
+- **Tasks Complete:** 
+- **Upcoming Tasks:** 
+- **Issues:**
+
+---
+  
+# Week 7 — March 30 - April 3, 2026
+
+**Team Leader for Week 7: Portia Hamid**
+
+**Total Hours Spent: 64**
+
+---
+
+### Marie Liske
+
+- **Hours: 14** 
+- **Tasks Complete:**
+  - Set up AWS Elastic Beanstalk server to host backend API server for the initial Supabase setup.
+  - We did not end up needing AWS, so i undid the implementation, taking it as learning experience.
+  - Once we decided the Supabase setup has security flaws, I brainstoned with Portia on how to best manage security so the Github action would not have direct write access to database
+  - We decided Firebase has a lot of hosting and security tools built in, so I set up a Firebase Cloud Function to host our backend.
+  - This used OIDC tokens and Workload Identity Federation to authorize GitHub worksflows without the need for long lived security tokens.
+  - Set up backend to Authenticate with Google Cloud before writing data to our new Firestore DB that Portia set up
+- **Upcoming Tasks:**
+  - Test V1 web app for bugs
+  - Assist with AI integration
+  - Clean up dashboard if needed & set up any additonal features outside of MVP
+- **Issues:**
+  - Had never used AWS before, so setting up the API server took longer than anticipated as I navigated the platform
+  - Encountered learning curves in both AWS and Firebase
+  - After review with team, realized AWS server was too convoluted and using an outdated flask implementation.
+  - Had issues getting action authorized to write to Firestore DB and other repos' actions to be able to write.
+
+---
+
+### Anusua Halder
+
+- **Hours: 10** 
+- **Tasks Complete:**
+  - Set up and configured local development environment on Windows (Node.js, npm), including resolving execution policy issues to enable full project build and runtime support
+  - Synced frontend and backend repositories with latest updates and verified compatibility with recent Firebase migration changes
+  - Ran and tested the React frontend locally using Vite to validate current system behavior and UI functionality
+  - Implemented a UI architecture improvement by refactoring sidebar navigation and relocating the User Settings component to the sidebar footer (bottom-left), aligning with standard dashboard UX patterns
+  - Ensured seamless integration with existing navigation logic (`navigateToPage`) without modifying routing or backend dependencies
+  - Verified that UI changes did not impact authentication flow, page rendering, or Firestore-driven data updates
+  - Contributed to system-wide documentation updates by aligning proposal and spec files with the new Firebase-based architecture (Firestore, Firebase Auth, Cloud Functions, and CI/CD pipeline)
+  - Ensured consistency between documented system design and actual deployed implementation
+  - Debugged and resolved a Firebase configuration issue (invalid API key) by correctly setting up local environment variables using `.env`
+  - Prepared and updated meeting documentation (MOM #6 and draft of MOM #7) to reflect current project progress and architectural changes 
+- **Upcoming Tasks:**
+  - Continue assisting with frontend polish and UI consistency improvements
+  - Support final documentation updates and alignment across all project materials
+  - Assist with testing demo flow and identifying UI/UX issues before final presentation
+  - Help verify integration across frontend, backend, and database for final deployment
+- **Issues:**
+  - Initial environment setup challenges with npm and execution policy on Windows, resolved successfully
+  - Required time to understand frontend structure and navigation logic before implementing UI changes
+  - Needed to stay aligned with rapidly evolving backend and database changes during Firebase migration
+---
+
+### Suchi Jain
+
+- **Hours: 8** 
+- **Tasks Complete:**
+    - Researched AWS and different options we could use
+    - Tested Frontend to ensure successful deployment
+    - Reviewed Supabase issues
+    - Verified full pipeline: GitHub Action → Firestore → frontend dashboard
+    - Attended team meetings and understood Firebase/NoSQL syntax with Marie and Portia
+- **Upcoming Tasks:**
+    - Work with Aaron to finalize Frontend and fix scanning issues
+- **Issues:**
+    - I was initially very lost with all the changes so it took me a while to adapt to them (and I have still not understood them fully)
+---
+
+### Aaron Santhosh
+
+- **Hours: 12** 
+- **Tasks Complete:** 
+  - Connected the entire frontend to Firebase/Firestore, replacing old API layer
+  - Rewired Dashboard, Projects, Scan History, and Issues pages to read from Firestore
+  - Replaced mock/Supabase data hooks (useReports, useScanEvents) with live Firestore queries
+  - Rebuilt auth flow to GitHub-only (removed email/password sign-up)
+  - Added function to filter and display only repos made by the GitHub user
+  - Rewired UserSettingsWireframePage to read/write user preferences from Firestore
+  - Updated ProjectsPage to pull scan data from Firestore subcollections
+  - Fixed scan history success rate metric
+  - Migrated backend action entrypoint from Supabase to Firestore
+  - Created a repo called "docrot-demo" with intentional doc rot for end-to-end testing
+  - Verified full pipeline: GitHub Action → Firestore → frontend dashboard
+  - Implemented rot score calculation and connected it to frontend
+- **Upcoming Tasks:** 
+  - Bug fix rot score calculation
+  - Improve login/signup UI
+  - Continue testing web app for more bugs/issues
+  - Assist other team members
+- **Issues:** 
+  - I was hitting my max Claude Code limits because I made a lot of changes in short periods of time rather than spreading it throughout the week. 
+
+---
+
+### Samuel Say
+
+- **Hours: 10** 
+- **Tasks Complete:**
+  - Implemented Firebase Authentication (email/password + GitHub OAuth)
+  - Created `src/firebase.ts` with Firebase app initialization
+  - Rewrote `src/auth/AuthContext.tsx` to use Firebase `onAuthStateChanged`, replacing custom JWT/localStorage auth
+  - Updated `src/api/client.ts` to attach Firebase ID tokens to API requests
+  - Wired up `src/pages/AuthPage.tsx` with real form state, error handling, and loading states
+  - Refactored `src/App.tsx` to use Firebase user state, removing the old `LoginPage` and redundant `isSignedIn` gate
+  - Configured Firebase env vars in `.env` and `.env.example`
+  - Enabled Email/Password and GitHub sign-in in Firebase Console
+  - Set up GitHub OAuth App
+  - Deployed frontend to Firebase Hosting
+- **Upcoming Tasks:** 
+- **Issues:** 
+
+
+---
+
+### Portia Hamid
+
+- **Hours: 12** 
 - **Tasks Complete:**
   - Fixed security flaw in database integration. User no longer needs to set up a github secret that permits them access to the private DB connection string + password.
   - Added more tables and rows to make querying more robust. Previously there were no rows for stale docs, params, return types, etc., so querying detailed scan information from the frontend would have been impossible. There should be much more versatility now.
@@ -68,7 +193,9 @@
   - Properly connected the database to the scanner so the scanner will actually read the fingerprint baseline from the DB rather than relying on the JSON file. Added a fingerprints_baseline table for this purpose. This makes it so the user no longer needs to grant write permission to the action runner, which should bring peace of mind to the user. Read permissions are sufficient.
   - Due to some security concerns that were flagged by Supabase following the previous updates, we decided to redo how our backend is hosted and have begun the process of switching to Firebase/Firestore. Marie and I started working to get the project set up on Firebase.
   - Decided on using OIDC and WIF to authenticate the GitHub Action and allow it to write the scan results to Firebase. Spent several hours with Marie, trying to work out how to get that set up.
+  - Began adding infrastructure in the AI-implementation branch to support Groq as the default LLM suggestion provider (with options for the user to use an OpenAI or Anthropic API key if they prefer)
 - **Upcoming Tasks:** 
+  - Finish AI implementation and start planning on where to place it on the frontend.
 - **Issues:** 
   - Removing mentions of the private database information from the code and switching everything to use Supabase's public API. I've never used Supabase before, so this took some trial and error to figure out.
   - Had difficulty with the DB perms required for the repos table, which required some debugging.

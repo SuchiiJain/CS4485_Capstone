@@ -1,278 +1,173 @@
-
 # Docrot Detector
 
-## Overview
+Docrot Detector detects potential documentation rot by comparing semantic code behavior across commits. It analyzes Python (for the MVP) source code with AST-based fingerprints, scores behavior-level changes, maps those changes to docs, and reports docs that should be reviewed.
 
-Docrot Detector is a tool that detects when Python code changes in semantically meaningful ways and flags linked documentation for review. It prevents documentation rot by analyzing code changes at the AST (Abstract Syntax Tree) level, scoring them with a weighted semantic model, and alerting when mapped documentation files may be stale.
+This repository is currently designed around GitHub Actions for automation. We are not using webhook-based execution in the active flow.
 
-Built as part of the CS 4485 Capstone course.
+## Frontend Dashboard Link
 
-## How It Works
+Dashboard URL:
+- https://docrot-detector.web.app/
 
-Docrot Detector runs as a pipeline with four stages:
 
-1. **Repository Scan** — Discover all `.py` files in the target repo (excluding `.git`, `__pycache__`, `.venv`, etc.).
-2. **AST Parsing & Fingerprinting** — Parse each file's AST, extract per-function semantic fingerprints (signature, control flow, conditions, calls, side effects, exceptions, returns).
-3. **Comparison & Scoring** — Diff old vs. new fingerprints and apply a weighted scoring model to quantify how much each function's *behavior* changed.
-4. **Alert Layer + Baseline Update** — Map scored changes to documentation files via config, flag docs that exceed thresholds, then persist the updated baseline.
+## What This Project Does
 
-### Scoring Model
+Docrot focuses on behavior-aware change detection instead of text-only diffs.
 
-| Points | Change Type | Critical? |
-|--------|-------------|-----------|
-| 0 | Comment / formatting / docstring only | No |
-| 1 | Literal/constant tweak, default argument tweak | No |
-| 3 | Condition changed, loop changed, return changed | No |
-| 5 | Public function signature changed, public API added/removed | **Yes** |
-| 6 | Side-effect behavior changed (DB/file/network), auth/permission logic changed | **Yes** |
-| 8 | Exception behavior changed, core control path added/removed | **Yes** |
+- Parses Python files into semantic fingerprints per function/method.
+- Compares old vs new fingerprints from baseline to current scan.
+- Scores changes by impact (control flow, side effects, API/signature, exceptions, and more).
+- Maps changed code to documentation files via config.
+- Emits reports and optional issue automation in GitHub.
+- Sends scan results to Firebase Cloud Function for Firestore storage.
 
-A function is flagged as **substantial** if its score ≥ 4 or any critical event is present. A documentation file is flagged if any mapped function has a critical event, or the cumulative score across all mapped functions ≥ 8.
+## Current Deployment Model
 
-### First-Run Behavior
+Active model:
+- GitHub Action runs on push.
+- Composite action executes scanner.
+- Scanner sends results to Cloud Function endpoint.
+- Cloud Function writes into Firestore.
 
-On the first run (no prior baseline), Docrot generates and stores fingerprints without emitting any alerts.
+Not part of active model:
+- Webhook-triggered runtime (legacy/experimental modules may exist in repo, but are not used in the current production path).
 
-On subsequent runs, Docrot compares current fingerprints against the stored baseline, reports semantic changes, and then updates the baseline with summary stats (files/functions added, removed, changed, unchanged).
+## High-Level Architecture
 
-## Features
+1. Trigger
+- GitHub push event starts workflow.
 
-- **Semantic AST Analysis** — Compares code structure and logic, not raw text diffs. Ignores formatting, comments, and docstring-only changes.
-- **Weighted Scoring** — Tunable thresholds let teams adjust sensitivity for their needs.
-- **Critical Event Triggers** — Public API changes, side-effect changes, auth logic changes, and exception behavior changes always flag regardless of score.
-- **Doc Mapping** — JSON config maps code globs to documentation files.
-- **CI-Friendly Output** — Prints warnings to stdout and writes a `.docrot-report.json` artifact.
-- **Persistence** — Stores fingerprints in `.docrot-fingerprints.json` as the baseline for future comparisons, with detailed baseline update stats each run.
-- **Safer Baseline Writes** — Fingerprint persistence uses a temp-file + replace flow to reduce risk of partial/corrupted baseline writes.
+2. Scan
+- Action runs scanner entrypoint and full Docrot pipeline.
 
-## Folder Structure
+3. Detect
+- Pipeline compares semantic fingerprints with stored baseline.
 
-```
-.
-├── Readme.md               # This file
-├── run.py                  # Quick-test CLI (compare two files or fingerprint one)
-├── docs/
-│   ├── API_Contract.md     # API design and contract documentation
-│   ├── Architecture.md     # System architecture and design notes
-│   ├── Proposal.md         # Project proposal document
-│   ├── brainstorming.txt   # Project brainstorming and decisions
-│   └── pseudocode.py       # Pseudocode reference for the pipeline
-├── database/
-│   └── schema.sql          # Database schema (post-MVP: SQLite)
-├── examples/
-│   ├── example_basic_ast.py
-│   ├── example_compare.py
-│   ├── example_fingerprinting.py
-│   ├── sample_code_v1.py   # Sample "before" code for testing
-│   └── sample_code_v2.py   # Sample "after" code for testing
-├── MeetingMinutes/
-│   ├── CS4485_T2_MOM1.md
-│   ├── CS4485_T2_MOM2.md
-│   ├── CS4485_T2_MOM3.md
-│   ├── CS4485_T2_MOM4.md
-│   ├── CS4485_T2_MOM5.md
-│   ├── CS4485_T2_MOM6.md 
-│   ├── README.md
-│   └── WeeklyStatusReport.md
-└── src/                    # Core source code
-    ├── __init__.py
-    ├── alerts.py           # Alert evaluation + CI/report publishing
-    ├── ast_parser.py       # Python AST parsing + function extraction
-    ├── comparator.py       # Feature diffing + weighted scoring engine
-    ├── config.py           # Config loading + code→doc mapping
-    ├── fingerprint.py      # Semantic feature extraction + hashing
-    ├── flagging_threshold.py  # Flag dataclasses, severity enums, and all check functions
-    ├── models.py           # Dataclasses (fingerprints, deltas, events, alerts)
-    ├── persistence.py      # JSON fingerprint storage (load/save/serialize)
-    ├── flagging_threshold.py  # Flag dataclasses, severity enums, and all check functions
-    ├── report_generation.py     # Generates .txt and .json scan reports from flags
-    ├── run.py                # Full pipeline entry point (scan entire repo)
-    ├── webhook_server.py     # Flask webhook server for GitHub push events
-    └── github_integration.py # Git clone/pull + GitHub API (commit statuses)
-    ├── report_generation.py   # Generates .txt and .json scan reports from flags
-    └── run.py              # Full pipeline entry point (scan entire repo)
-```
+4. Report
+- Generates machine and human readable report artifacts.
 
-## Module Summary
+5. Persist
+- Action sends payload to Cloud Function endpoint.
+- Cloud Function writes scan, flags, and fingerprint baseline to Firestore.
 
-| Module | Responsibility |
-|--------|---------------|
-| `models.py` | Dataclasses for `FunctionFingerprint`, `SemanticDelta`, `ChangeEvent`, `DocAlert`, plus serialization helpers |
-| `config.py` | Loads `.docrot-config.json`, extracts doc mappings and thresholds, matches code paths to docs via fnmatch |
-| `ast_parser.py` | Parses Python source → AST, finds all function/method nodes, builds stable IDs, orchestrates fingerprint extraction |
-| `fingerprint.py` | 7 feature extractors (signature, control flow, conditions, calls, side effects, exceptions, returns), normalization, deterministic hashing, `build_fingerprint()` orchestrator |
-| `comparator.py` | `diff_features()` compares fingerprints feature-by-feature; `score_semantic_delta()` applies weighted scoring; `compare_file_functions()` handles added/removed/modified functions |
-| `persistence.py` | JSON-based fingerprint storage with `load_fingerprints()`, `persist_fingerprints()`, `update_fingerprint_baseline()`, `is_first_run()`, and round-trip serialization |
-| `alerts.py` | `evaluate_doc_flags()` accumulates per-doc scores and applies thresholds; `publish_alerts_to_log()` prints CI warnings; `publish_alerts_to_report()` writes `.docrot-report.json` |
-| `flagging_threshold.py` | Flag dataclasses (`Flag`, `CodeElement`, `DocReference`), severity enums, `SEVERITY_MAP`, and all `check_*` detection functions |
-| `report_generation.py` | `ScanReport` class, `generate_txt_report()`, `generate_json_report()`, and `generate_reports()` entry point — outputs `.docrot-report.txt` and `.docrot-report.json` |
-| `src/run.py` | Full pipeline entry point — scans an entire repo directory, extracts fingerprints for all `.py` files, compares against stored baseline, scores changes, maps to docs, prints a summary report, and writes JSON artifacts |
-| `src/webhook_server.py` | Flask app that receives GitHub webhook `push` events, verifies HMAC signatures, and spawns background pipeline runs |
-| `src/github_integration.py` | Clones/pulls repos via git CLI, posts commit statuses and PR comments via the GitHub REST API |
+## Repository Components
 
-## Configuration
+Core Python pipeline:
+- action_entrypoint.py: Action runtime orchestration, issue handling, backend POST.
+- src/run.py: Main scan pipeline for repository-level analysis.
+- src/ast_parser.py: AST parsing and function extraction.
+- src/fingerprint.py: Semantic feature extraction and fingerprinting.
+- src/comparator.py: Fingerprint comparison and scoring.
+- src/alerts.py: Doc mapping and threshold alert evaluation.
+- src/report_generation.py: .docrot-report.json and .docrot-report.txt generation.
+- src/persistence.py: Baseline fingerprint persistence in .docrot-fingerprints.json.
 
-Create a `.docrot-config.json` in the repository root:
+GitHub Action wiring:
+- action.yml: Composite action definition and inputs.
+- .github/workflows/docrot.yml: Workflow that authenticates to Google Cloud and runs action.
 
-```json
-{
-  "language": "python",
-  "doc_mappings": [
-    {
-      "code_glob": "src/*.py",
-      "docs": ["Readme.md", "docs/Architecture.md"]
-    },
-    {
-      "code_glob": "examples/*.py",
-      "docs": ["examples/fakedoc.md"]
-    }
-  ],
-  "thresholds": {
-    "per_function_substantial": 4,
-    "per_doc_cumulative": 8
-  }
-}
-```
+Firebase backend:
+- functions/index.js: Cloud Function ingest endpoint writing to Firestore.
+- firebase.json + functions/package.json: Firebase/Functions project config.
 
-- **`code_glob`** — fnmatch pattern matching source file paths.
-- **`docs`** — List of documentation files that should be reviewed when matched code changes.
-- **`per_function_substantial`** — Minimum score for a function change to be considered substantial (default: 4).
-- **`per_doc_cumulative`** — Minimum cumulative score across mapped functions for a doc file to be flagged (default: 8).
+Optional API/backend modules in repository:
+- database/app.py and database/storage.py support a separate Python API path.
+- These are not required for GitHub Action -> Firebase ingestion flow.
 
-### Threshold Validation & Defaults
+## How Detection Works
 
-Docrot now validates thresholds when loading config:
+The scanner follows this sequence:
 
-- Missing threshold values fall back to defaults.
-- Invalid values (non-numeric, boolean, or `<= 0`) are rejected and replaced with defaults.
-- Loaded thresholds are normalized to positive integers before use.
-- If `thresholds` is not a JSON object, Docrot logs a warning and uses defaults.
+1. Collect source files
+- Walk repository and gather .py files (excluding common generated/dependency folders).
 
-Default thresholds:
+2. Build fingerprints
+- For each function/method, extract normalized semantic features:
+  - signature
+  - control flow
+  - conditions
+  - calls
+  - side effects (DB/file/network/auth patterns)
+  - exception behavior
+  - return behavior
 
-```json
-{
-  "per_function_substantial": 4,
-  "per_doc_cumulative": 8
-}
-```
+3. Baseline logic
+- First run: creates .docrot-fingerprints.json baseline and exits clean.
+- Later runs: compares current fingerprints to baseline.
 
-Meaning in the pipeline:
+4. Score and classify changes
+- Builds change events and severity-oriented flags.
+- Identifies critical events and cumulative impact.
 
-- A function is treated as substantial when its score is `>= per_function_substantial` or it is critical.
-- A documentation file is flagged when any mapped change is critical, or when cumulative mapped score is `>= per_doc_cumulative`.
+5. Map to docs and threshold
+- Uses .docrot-config.json doc mappings.
+- Flags documentation files when threshold criteria are met.
 
-### Mapping Notes
+6. Emit artifacts
+- .docrot-report.json
+- .docrot-report.txt
+- Updated .docrot-fingerprints.json baseline
 
-- `code_glob` is matched against repo-relative file paths (normalized to forward slashes).
-- Multiple mappings may match the same source file; doc paths are de-duplicated.
-- If no `doc_mappings` are provided, code changes are still analyzed, but doc-file alerts are not generated.
+## Firebase Ingestion Flow
 
-If the config file is missing, defaults are used (no doc mappings, standard thresholds).
+The action sends results to the Cloud Function endpoint using a short-lived OIDC token.
+
+### Request path
+- Workflow authenticates with google-github-actions/auth.
+- Action receives backend_url and backend_token inputs.
+- action_entrypoint.py posts payload to ingestScan.
+
+### Payload content (high level)
+- repo metadata
+- scan metadata (scan_id, commit, branch, status, timestamp)
+- counts (total issues, high/medium/low)
+- flags array
+- optional fingerprint baseline snapshot
+
+### Firestore write model
+Cloud Function writes to:
+
+- repos/{repo_doc_id}
+  - metadata, latest scan pointer
+- repos/{repo_doc_id}/scan_runs/{scan_id}
+  - scan summary and counts
+- repos/{repo_doc_id}/scan_runs/{scan_id}/flags/{flag_id}
+  - issue-level records
+- repos/{repo_doc_id}/fingerprint_baselines/{branch}
+  - serialized fingerprint baseline by branch
 
 ## Setup
 
-1. **Clone the repository:**
-   ```sh
-   git clone <repo-url>
-   cd CS4485_Capstone
-   ```
+## Prerequisites
 
-2. **Python version:** Requires Python 3.8+. No external dependencies for MVP (uses only the standard library).
+- Python 3.10+
+- Git
+- Node.js 20 (for Cloud Function development/deploy)
+- Firebase project / Google Cloud project
+- GitHub repository with Actions enabled & setup
 
-3. **(Optional) Create a virtual environment:**
-   ```sh
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+## 1) Clone and install Python dependencies
 
-## Usage
-
-All commands are run from the repo root directory.
-
-### Full Repository Scan (Recommended)
-
-The primary way to use Docrot Detector is `src/run.py`, which scans an entire repository:
-
-```sh
-# Scan the current directory
-python -m src.run .
-
-# Scan a specific repo path
-python -m src.run /path/to/your/repo
+```bash
+git clone <your-repo-url>
+cd CS4485_Capstone
+python -m venv .venv
+# Windows PowerShell
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
-This runs the full pipeline:
-1. Finds all `.py` files in the repo (skipping `.git`, `__pycache__`, `venv`, etc.)
-2. Extracts semantic fingerprints for every function/method
-3. On **first run**: saves a baseline to `.docrot-fingerprints.json` and exits with no alerts
-4. On **subsequent runs**: compares against the stored baseline, scores changes, flags documentation files for review, prints a formatted summary report, and updates the baseline
-5. Prints a baseline-update summary showing file/function deltas (`+` added, `-` removed, `~` changed, `=` unchanged)
-
-**Exit codes** (useful for CI):
-| Code | Meaning |
-|------|---------|
-| 0 | No alerts (clean) or first-run baseline generated |
-| 1 | Documentation alerts were raised |
-| 2 | Error (e.g., invalid repo path) |
-
-### Quick-Test CLI (Manual Comparison)
-
-The root `run.py` is a simpler tool for ad-hoc testing of individual files:
-
-```sh
-# Compare two files (detect changes between versions)
-python run.py examples/sample_code_v1.py examples/sample_code_v2.py
-
-# Inspect a single file's fingerprints
-python run.py examples/sample_code_v1.py
-
-# Help
-python run.py --help
-```
-
-### Output Files
-
-Both entry points save results to the repo root:
-
-| File | When created | Contents |
-|------|-------------|----------|
-| `.docrot-fingerprints.json` | Every run | Stored baseline fingerprints — updated after each run so the next comparison uses the latest state |
-| `.docrot-report.txt` | When code changes are detected | Human-readable report with severity summary and flagged items |
-| `.docrot-report.json` | When doc alerts are triggered | JSON report of flagged documentation files (requires a `.docrot-config.json` with doc mappings) |
-
-### Programmatic Usage
-
-You can also import the modules directly in Python:
-
-```python
-from src.ast_parser import extract_function_fingerprints
-from src.comparator import compare_file_functions
-from src.alerts import evaluate_doc_flags, publish_alerts_to_log
-
-# Extract fingerprints from old and new versions of a file
-old_fps = extract_function_fingerprints(old_source_code, "src/auth/handlers.py")
-new_fps = extract_function_fingerprints(new_source_code, "src/auth/handlers.py")
-
-# Compare and get scored change events
-events = compare_file_functions(old_fps, new_fps, "src/auth/handlers.py")
-
-# Evaluate which docs should be flagged
-doc_mappings = [{"code_glob": "src/auth/*.py", "docs": ["docs/auth.md"]}]
-thresholds = {"per_function_substantial": 4, "per_doc_cumulative": 8}
-alerts = evaluate_doc_flags(events, doc_mappings, thresholds)
-
-# Output
-publish_alerts_to_log(alerts)
-```
-
+<<<<<<< api-testing
 ## GitHub Action (Recommended)
 
-Use this Action from any other repository by adding one workflow file and one config file. No secrets or database setup required.
+Use this Action from any other repository by adding one workflow file and one config file. For Firebase/Firestore persistence, use GitHub OIDC + Google Workload Identity Federation (WIF).
 
 ### Step 1: Add .docrot-config.json to the Target Repository
+=======
+## 2) Create Docrot config in target repository
+>>>>>>> main
 
-Create `.docrot-config.json` at the root of the target repo:
+Create .docrot-config.json in repository root:
 
 ```json
 {
@@ -290,20 +185,23 @@ Create `.docrot-config.json` at the root of the target repo:
 }
 ```
 
-Without this file, Docrot still scans code changes, but it cannot map changes to specific documentation files.
+## 4) Configure GitHub Action workflow
 
-### Step 2: Add Workflow File in the Target Repository
+Use .github/workflows/docrot.yml as the automation entry.
 
-Create `.github/workflows/docrot.yml`:
+Key parts:
+- Checkout repository with history.
+- Authenticate to Google Cloud via OIDC WIF.
+- Pass Cloud Function URL and ID token to action inputs.
 
-```yaml
-name: Docrot Detector
-on: [push]
+## 5) Deploy Firebase Cloud Function
 
+<<<<<<< api-testing
 jobs:
   docrot:
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       contents: read
       issues: write
     steps:
@@ -311,21 +209,32 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/YOUR_PROJECT_NUMBER/locations/global/workloadIdentityPools/docrot-github-pool/providers/github-provider
+          service_account: docrot-github-action@YOUR_FIREBASE_PROJECT_ID.iam.gserviceaccount.com
+          token_format: id_token
+          id_token_audience: https://YOUR_CLOUD_FUNCTION_URL
+          id_token_include_email: true
+
       # Prefer a stable tag (for example: @v1) after release.
       - uses: SuchiiJain/CS4485_Capstone@main
+        with:
+          backend_url: https://YOUR_CLOUD_FUNCTION_URL
+          backend_token: ${{ steps.auth.outputs.id_token }}
 ```
-
-The action only needs **read** access to your code. It never pushes commits or modifies your repository.
 
 ### Step 3: Push and Verify
 
 On each push, the action will:
 
-1. Load the fingerprint baseline from the Docrot database.
-2. Scan Python code and compare against the baseline.
-3. Create or update a `docrot` issue when docs may be stale.
-4. Close the existing `docrot` issue when scan results are clean.
-5. Save the scan report and updated baseline to the database.
+1. Scan Python code and generate issue/report output.
+2. Create or update a `docrot` issue when docs may be stale.
+3. Exchange GitHub OIDC token for a Google-authenticated ID token (WIF step).
+4. Send scan payload to your authenticated Cloud Function URL.
+5. Let the Cloud Function write scan data to Firestore via Admin SDK.
 
 ### Action Inputs
 
@@ -333,11 +242,36 @@ On each push, the action will:
 |-------|----------|---------|-------------|
 | `repo_path` | No | `.` | Path to the repository root to scan |
 | `create_issue` | No | `true` | Create/update a GitHub issue when alerts are found |
+| `backend_url` | No | `` | Cloud Function URL used for backend ingestion |
+| `backend_token` | No | `` | ID token from `google-github-actions/auth@v2` |
 
-The Action uses the default `GITHUB_TOKEN` provided by GitHub Actions; no personal access token or database credentials are required.
+The Action uses the default `GITHUB_TOKEN` for GitHub issue operations and supports passing WIF-minted ID tokens for backend calls.
+=======
+From functions directory:
 
-## GitHub Webhook Server
+```bash
+cd functions
+npm install
+# deploy with your Firebase/GCP settings
+```
 
+## GitHub Action Inputs
+
+Defined in action.yml:
+
+- repo_path
+  - path to repository root to scan (default: .)
+- create_issue
+  - whether to create/update GitHub issue for findings (default: true)
+- backend_url
+  - Cloud Function endpoint URL
+- backend_token
+  - bearer token from google-github-actions/auth id_token output
+>>>>>>> main
+
+## Outputs and Behavior
+
+<<<<<<< api-testing
 Docrot can also run as a webhook server that automatically scans repos when code is pushed to GitHub.
 
 ### Quick Start
@@ -352,47 +286,53 @@ export DOCROT_WEBHOOK_SECRET=$(python -c "import secrets; print(secrets.token_he
 # (Optional) Set a GitHub token for private repos + commit status posting
 export GITHUB_TOKEN=ghp_your_token_here
 
-# Start the server
-python -m src.webhook_server
-```
-
 ### Setting Up the GitHub Webhook
+=======
+Pipeline result behavior:
+- First run creates baseline with no alerts.
+- Subsequent runs compare against baseline and generate findings.
 
-1. Go to your GitHub repo → **Settings** → **Webhooks** → **Add webhook**
-2. **Payload URL**: `http://<your-server>:5000/webhook`
-3. **Content type**: `application/json`
-4. **Secret**: paste the same value as `DOCROT_WEBHOOK_SECRET`
-5. **Events**: select "Just the push event"
-6. Click **Add webhook**
+Action behavior:
+- Can create or update a tracking issue when findings are present.
+- Can close the issue when scan returns clean.
+- Sends scan payload to Firebase backend if backend_url is set.
+>>>>>>> main
 
-Now every push to the repo will trigger a Docrot scan. If `GITHUB_TOKEN` is set, results appear as commit status checks (✓/✗) on commits and PRs.
+## Security and Auth Notes
 
-### Endpoints
+- Use OIDC-based short-lived credentials from GitHub Actions.
+- Keep Cloud Function unauthenticated access disabled.
+- Restrict Workload Identity provider condition to your org/user scope.
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/webhook` | POST | GitHub webhook receiver |
-| `/health` | GET | Health check |
+## Troubleshooting
 
-### Environment Variables
+No findings on first run:
+- Expected behavior. Baseline initialization run does not alert.
 
-See `.env.example` for the full list. Key variables:
+No doc alerts produced:
+- Verify .docrot-config.json exists and doc_mappings are correct.
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DOCROT_WEBHOOK_SECRET` | Yes | Shared HMAC secret for signature verification |
-| `GITHUB_TOKEN` | No | PAT for private repos + commit status posting |
-| `DOCROT_CLONE_DIR` | No | Directory for cloned repos (default: `./repos`) |
-| `DOCROT_PORT` | No | Server port (default: `5000`) |
+Backend write not happening:
+- Confirm backend_url and backend_token are provided.
+- Confirm OIDC audience matches Cloud Function URL.
+- Check function logs for auth or payload validation failures.
 
-## MVP Scope
+## MVP Scope and Language Roadmap
 
+For the MVP, Docrot is intentionally focused on Python code analysis only.
+
+<<<<<<< api-testing
 - **Language:** Python only (uses the built-in `ast` module).
 - **Trigger:** GitHub webhook (push events), CI run, or manual invocation.
 - **Storage:** JSON file (`.docrot-fingerprints.json`). SQLite planned for post-MVP.
 - **Output:** CI log warnings + `.docrot-report.json` artifact + GitHub commit statuses. PR comments planned for post-MVP.
-- **Thresholds:** Global only. Per-module overrides planned for post-MVP.
 
-## License
+=======
+- Current MVP scope: Python semantic fingerprinting and documentation-rot detection.
+- Why: Python-first delivery lets us validate scoring, mapping, and CI workflow reliability quickly.
+>>>>>>> main
 
-This project is for academic use as part of the CS 4485 Capstone course.
+For GTM and deployment strategy, the long-term goal is broad language compatibility.
+
+- Target direction: expand the detection pipeline to support additional major languages.
+- GTM intent: position Docrot as a language-agnostic documentation freshness platform over time.
