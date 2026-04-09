@@ -157,7 +157,15 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
+<<<<<<< api-testing
+## GitHub Action (Recommended)
+
+Use this Action from any other repository by adding one workflow file and one config file. For Firebase/Firestore persistence, use GitHub OIDC + Google Workload Identity Federation (WIF).
+
+### Step 1: Add .docrot-config.json to the Target Repository
+=======
 ## 2) Create Docrot config in target repository
+>>>>>>> main
 
 Create .docrot-config.json in repository root:
 
@@ -188,6 +196,57 @@ Key parts:
 
 ## 5) Deploy Firebase Cloud Function
 
+<<<<<<< api-testing
+jobs:
+  docrot:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/YOUR_PROJECT_NUMBER/locations/global/workloadIdentityPools/docrot-github-pool/providers/github-provider
+          service_account: docrot-github-action@YOUR_FIREBASE_PROJECT_ID.iam.gserviceaccount.com
+          token_format: id_token
+          id_token_audience: https://YOUR_CLOUD_FUNCTION_URL
+          id_token_include_email: true
+
+      # Prefer a stable tag (for example: @v1) after release.
+      - uses: SuchiiJain/CS4485_Capstone@main
+        with:
+          backend_url: https://YOUR_CLOUD_FUNCTION_URL
+          backend_token: ${{ steps.auth.outputs.id_token }}
+```
+
+### Step 3: Push and Verify
+
+On each push, the action will:
+
+1. Scan Python code and generate issue/report output.
+2. Create or update a `docrot` issue when docs may be stale.
+3. Exchange GitHub OIDC token for a Google-authenticated ID token (WIF step).
+4. Send scan payload to your authenticated Cloud Function URL.
+5. Let the Cloud Function write scan data to Firestore via Admin SDK.
+
+### Action Inputs
+
+| Input | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `repo_path` | No | `.` | Path to the repository root to scan |
+| `create_issue` | No | `true` | Create/update a GitHub issue when alerts are found |
+| `backend_url` | No | `` | Cloud Function URL used for backend ingestion |
+| `backend_token` | No | `` | ID token from `google-github-actions/auth@v2` |
+
+The Action uses the default `GITHUB_TOKEN` for GitHub issue operations and supports passing WIF-minted ID tokens for backend calls.
+=======
 From functions directory:
 
 ```bash
@@ -208,9 +267,27 @@ Defined in action.yml:
   - Cloud Function endpoint URL
 - backend_token
   - bearer token from google-github-actions/auth id_token output
+>>>>>>> main
 
 ## Outputs and Behavior
 
+<<<<<<< api-testing
+Docrot can also run as a webhook server that automatically scans repos when code is pushed to GitHub.
+
+### Quick Start
+
+```sh
+# Install webhook dependencies
+pip install -r requirements.txt
+
+# Set your webhook secret
+export DOCROT_WEBHOOK_SECRET=$(python -c "import secrets; print(secrets.token_hex(32))")
+
+# (Optional) Set a GitHub token for private repos + commit status posting
+export GITHUB_TOKEN=ghp_your_token_here
+
+### Setting Up the GitHub Webhook
+=======
 Pipeline result behavior:
 - First run creates baseline with no alerts.
 - Subsequent runs compare against baseline and generate findings.
@@ -219,6 +296,7 @@ Action behavior:
 - Can create or update a tracking issue when findings are present.
 - Can close the issue when scan returns clean.
 - Sends scan payload to Firebase backend if backend_url is set.
+>>>>>>> main
 
 ## Security and Auth Notes
 
@@ -243,8 +321,16 @@ Backend write not happening:
 
 For the MVP, Docrot is intentionally focused on Python code analysis only.
 
+<<<<<<< api-testing
+- **Language:** Python only (uses the built-in `ast` module).
+- **Trigger:** GitHub webhook (push events), CI run, or manual invocation.
+- **Storage:** JSON file (`.docrot-fingerprints.json`). SQLite planned for post-MVP.
+- **Output:** CI log warnings + `.docrot-report.json` artifact + GitHub commit statuses. PR comments planned for post-MVP.
+
+=======
 - Current MVP scope: Python semantic fingerprinting and documentation-rot detection.
 - Why: Python-first delivery lets us validate scoring, mapping, and CI workflow reliability quickly.
+>>>>>>> main
 
 For GTM and deployment strategy, the long-term goal is broad language compatibility.
 

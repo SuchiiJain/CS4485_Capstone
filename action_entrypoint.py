@@ -23,11 +23,36 @@ from src.github_integration import format_pr_comment
 ISSUE_TITLE = "⚠️ Docrot Detector — Documentation may be stale"
 ISSUE_LABEL = "docrot"
 
+<<<<<<< api-testing
+BACKEND_URL = os.environ.get("DOCROT_BACKEND_URL", "").rstrip("/")
+BACKEND_TOKEN = os.environ.get("DOCROT_BACKEND_TOKEN", "")
+=======
+>>>>>>> main
 
 # ---------------------------------------------------------------------------
 # Firebase / Firestore helpers
 # ---------------------------------------------------------------------------
 
+<<<<<<< api-testing
+def _backend_headers() -> dict:
+    headers = {"Content-Type": "application/json"}
+    if BACKEND_TOKEN:
+        headers["Authorization"] = f"Bearer {BACKEND_TOKEN}"
+    return headers
+
+
+def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json: dict, repo_path: str) -> None:
+    """Send scan payload to the Cloud Function backend endpoint."""
+    if not BACKEND_URL:
+        return
+
+    scan_id = str(uuid.uuid4())
+    meta = report_json.get("meta", {})
+    severity = meta.get("severity_summary", {})
+
+    flags = []
+    for issue in report_json.get("issues", []):
+=======
 _firestore_db = None
 
 
@@ -135,6 +160,7 @@ def _save_to_firestore(repo: str, sha: str, branch: str, status: str, report_jso
     # 2. Write individual issues as sub-documents
     issues = report_json.get("issues", [])
     for issue in issues:
+>>>>>>> main
         code_el = issue.get("code_element", {})
         doc_ref = issue.get("doc_reference")
         issue_id = str(uuid.uuid4())
@@ -150,6 +176,38 @@ def _save_to_firestore(repo: str, sha: str, branch: str, status: str, report_jso
             "return_type": code_el.get("return_type"),
             "doc_file": doc_ref["file_path"] if doc_ref else None,
             "doc_symbol": doc_ref["referenced_symbol"] if doc_ref else None,
+<<<<<<< api-testing
+        })
+
+    fingerprints = None
+    fp_path = os.path.join(repo_path, ".docrot-fingerprints.json")
+    if os.path.exists(fp_path):
+        with open(fp_path, "r", encoding="utf-8") as f:
+            fingerprints = json.load(f)
+
+    payload = {
+        "repo_name": repo,
+        "github_url": f"https://github.com/{repo}",
+        "scan_id": scan_id,
+        "commit_hash": sha,
+        "branch": branch,
+        "status": status,
+        "scanned_at": datetime.now(timezone.utc).isoformat(),
+        "total_issues": meta.get("total_issues", 0),
+        "high_count": severity.get("high", 0),
+        "medium_count": severity.get("medium", 0),
+        "low_count": severity.get("low", 0),
+        "flags": flags,
+    }
+    if fingerprints is not None:
+        payload["fingerprints"] = fingerprints
+
+    resp = requests.post(
+        BACKEND_URL,
+        json=payload,
+        headers=_backend_headers(),
+        timeout=15,
+=======
         }
         (
             db.collection("repos")
@@ -171,6 +229,7 @@ def _save_to_firestore(repo: str, sha: str, branch: str, status: str, report_jso
             "first_seen_at": now,
         },
         merge=True,
+>>>>>>> main
     )
 
     print(f"[docrot-action] Scan {scan_id} saved to Firestore for {repo}")
@@ -261,6 +320,23 @@ def main() -> None:
     sha = os.environ.get("GITHUB_SHA", "unknown")
     branch = os.environ.get("GITHUB_REF_NAME", "unknown")
 
+<<<<<<< api-testing
+    # Run the pipeline
+    exit_code = run_pipeline(repo_path, commit_hash=sha)
+
+    # Save scan results to Cloud Function backend
+    report_path = os.path.join(os.path.abspath(repo_path), ".docrot-report.json")
+    status = "issues_found" if exit_code == 1 else "clean"
+    if BACKEND_URL:
+        try:
+            if os.path.exists(report_path):
+                with open(report_path, "r", encoding="utf-8") as f:
+                    report_json = json.load(f)
+                _save_to_backend(repo, sha, branch, status, report_json, os.path.abspath(repo_path))
+                print(f"[docrot-action] Scan sent to Cloud Function backend for {repo}")
+        except Exception as e:
+            print(f"[docrot-action] Warning: could not send scan to backend: {e}")
+=======
     # Load fingerprint baseline from Firestore (if one exists)
     try:
         _load_baseline(repo, branch, os.path.abspath(repo_path))
@@ -282,6 +358,7 @@ def main() -> None:
         _save_baseline(repo, branch, os.path.abspath(repo_path))
     except Exception as e:
         print(f"[docrot-action] Warning: could not save to Firestore: {e}")
+>>>>>>> main
 
     if not create_issue:
         sys.exit(exit_code)
