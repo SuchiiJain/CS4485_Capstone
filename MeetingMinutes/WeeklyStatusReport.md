@@ -42,10 +42,21 @@
 
 ### Aaron Santhosh
 
-- **Hours:** 
+- **Hours: 7** 
 - **Tasks Complete:** 
+  - Merged Portia's AI-integration branch into main
+  - Added rot_score computation to Cloud Function and deployed to Firebase
+  - Built AI suggestions display in Scan History detail panel with collapsible UI
+  - Fixed Firestore subcollection mismatch (issues → flags) so issues actually show up on the web app
+  - Fixed success rate calculation and project rot score
+  - Reordered sidebar nav, styled sign out button, updated User Settings avatar to show GitHub profile photo
+  - Conducted repo testing with varied code changes to test scan functionality
+  - Reviewed deployed DocRot web app
 - **Upcoming Tasks:** 
+  - Get frontend redeployed to docrot-detector.web.app to display the latest changes
+  - Continue testing and final demo prep
 - **Issues:** 
+  - Had to reset fingerprint baseline in Firestore manually to clear stale flags from previous scans
 
 ---
 
