@@ -15,10 +15,19 @@
 
 ### Marie Liske
 
-- **Hours:** 
-- **Tasks Complete:** 
-- **Upcoming Tasks:** 
-- **Issues:** 
+- **Hours:** 6 
+- **Tasks Complete:**
+  - Worked with Suchi on researching GTM strategy and Scalibility Plan for final presentation
+  - Worked primarily on scalability, researching methods for expansion & handling high user count & activity
+  - Fixed some branch deployment issues
+  - User testing on new AI features
+  - Update documentation on frontend & backend
+- **Upcoming Tasks:**
+  - Implement issue resolution
+  - Implement rollbacks / scan history
+  - Work on making configuration editable in dashboard?
+- **Issues:**
+  - Was not really sure how to accurately measure performance statistics
 
 ---
 
