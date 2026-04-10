@@ -119,10 +119,15 @@
 
 ### Suchi Jain
 
-- **Hours:** 
-- **Tasks Complete:** 
-- **Upcoming Tasks:** 
-- **Issues:** 
+- **Hours: 10**
+- **Tasks Complete:**
+  - Brainstormed GTM Strategy
+  - Worked with Marie on GTM Strategy
+  - Brainstormed UI Idea to add scale/spectrum feature and analytics
+- **Upcoming Tasks:**
+  - Finish GTM Strategy
+  - Implement UI Feature
+- **Issues: None** 
 
 ---
 
