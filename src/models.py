@@ -156,3 +156,16 @@ class DocAlert:
     critical_found: bool = False
     reasons: List[str] = field(default_factory=list)
     functions: List[str] = field(default_factory=list)
+
+
+# ---------------------------------------------------------------------------
+# AI Suggestion — optional LLM-generated fix for a flagged documentation file
+# ---------------------------------------------------------------------------
+
+@dataclass
+class AISuggestion:
+    """An LLM-generated suggestion for updating a flagged documentation file."""
+    doc_path: str = ""
+    triggered_by: List[str] = field(default_factory=list)  # function IDs that caused the flag
+    suggestion_text: str = ""                               # the LLM's suggested changes
+    model_used: str = ""                                    # e.g. "claude-haiku-4-5-20251001"
