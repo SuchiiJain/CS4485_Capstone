@@ -49,6 +49,38 @@ Firebase backend:
 - functions/package.json
 - firebase.json
 
+## Folder Structure
+
+```
+CS4485_Capstone/
+├── .github/                  # GitHub Actions workflows
+├── MeetingMinutes/           # Meeting notes and weekly status reports
+├── database/                 # Database schema and storage layer
+├── docs/                     # Architecture, API contract, and proposal docs
+├── examples/                 # Sample code and test repositories
+├── functions/                # Firebase Cloud Function (ingestScan)
+├── src/                      # Core scanner pipeline modules
+│   ├── ast_parser.py
+│   ├── comparator.py
+│   ├── alerts.py
+│   ├── fingerprint.py
+│   ├── flagging_threshold.py
+│   ├── models.py
+│   ├── persistence.py
+│   ├── report_generation.py
+│   └── run.py
+├── .docrot-config.json       # Docrot configuration for this repo
+├── .firebaserc               # Firebase project config
+├── .gitignore
+├── Procfile                  # Process file for deployment
+├── Readme.md
+├── action.yml                # GitHub Action definition
+├── action_entrypoint.py      # Entry point for GitHub Action runs
+├── firebase.json             # Firebase hosting and functions config
+├── requirements.txt          # Python dependencies
+└── run.py                    # Root entry script
+```
+
 ## Setup
 
 ### Prerequisites
@@ -80,7 +112,7 @@ Create .docrot-config.json at the repository root:
   "doc_mappings": [
     {
       "code_glob": "src/*.py",
-      "docs": ["Readme.md", "docs/Architecture.md"]
+      "docs": ["README.md", "docs/Architecture.md"]
     }
   ],
   "thresholds": {
@@ -89,6 +121,33 @@ Create .docrot-config.json at the repository root:
   }
 }
 ```
+
+To enable AI-generated suggestions, add an `"ai"` block:
+
+```json
+{
+  "language": "python",
+  "doc_mappings": [
+    {
+      "code_glob": "src/*.py",
+      "docs": ["README.md"]
+    }
+  ],
+  "thresholds": {
+    "per_function_substantial": 4,
+    "per_doc_cumulative": 8
+  },
+  "ai": {
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "api_key_env": "GROQ_API_KEY"
+  }
+}
+```
+
+**Important:** Doc file names in `doc_mappings` are case-sensitive. Use `README.md` not `Readme.md`.
+
+The Groq API key is managed server-side in Google Cloud. Users do not need to supply their own API key. AI responses are saved to Firestore under `repos/{repoId}/scan_runs/{scanId}/ai_suggestions`.
 
 ### 3) Required workflow file: .github/workflows/docrot.yml
 
@@ -134,6 +193,7 @@ jobs:
 Notes:
 - For development inside this repository, the local workflow can use `uses: ./`.
 - For external repositories, use `uses: SuchiiJain/CS4485_Capstone@main` (or a release tag when available).
+- To test the AI integration, point the workflow at `uses: SuchiiJain/CS4485_Capstone@ai-integration`.
 
 ### 4) Deploy the Cloud Function
 
@@ -175,11 +235,17 @@ First run has no alerts:
 
 No doc alerts:
 - Check .docrot-config.json and doc_mappings.
+- Verify doc file names match exactly — they are case-sensitive.
 
 No backend ingestion:
 - Verify backend_url and backend_token are passed.
 - Verify id_token audience matches Cloud Function URL.
 - Check Cloud Function logs for request validation/auth failures.
+
+AI suggestions not appearing:
+- Confirm the "ai" block is present in .docrot-config.json.
+- Confirm your workflow points to the ai-integration branch or a version that includes AI support.
+- Check Firestore under repos/{repoId}/scan_runs/{scanId}/ai_suggestions.
 
 ## MVP Scope and Language Roadmap
 
