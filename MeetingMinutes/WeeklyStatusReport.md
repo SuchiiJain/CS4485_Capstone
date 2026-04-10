@@ -153,10 +153,20 @@
 
 ### Samuel Say
 
-- **Hours:** 
-- **Tasks Complete:** 
-- **Upcoming Tasks:** 
-- **Issues:** 
+- **Hours:** 7
+- **Tasks Complete:**
+  - Implemented Firebase Authentication (GitHub OAuth sign-in only)
+  - Replaced localStorage JWT with Firebase ID tokens for API authorization
+  - Rewrote AuthContext to use onAuthStateChanged for persistent login state
+  - Added GitHub Actions CI/CD workflow to auto-deploy to Firebase on push to main
+  - Pulled main into auth-test branch and resolved merge conflicts
+  - Added issue closing functionality with a Close button next to View in the issues table
+  - Implemented optimistic UI update with rollback for issue closing
+  - Wired the topbar search bar to filter rows in real time on Projects, Issues, and Scan History pages
+- **Upcoming Tasks:**
+  - Merge auth-test PR into main
+  - Continue testing issue closing with live Firestore data
+- **Issues:**
 
 ---
 
