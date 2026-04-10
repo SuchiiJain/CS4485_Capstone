@@ -5,17 +5,79 @@
 > This document is updated each week. Each team member logs their hours and contributions for the week. The most recent week appears at the top.
 
 ---
-# Week 8 — April 6 - April 10, 2026
+# Week 9 — April 13 - April 17, 2026
 
-**Team Leader for Week 8: Aaron Santhosh** 
+**Team Leader for Week 9: Aaron Santhosh** 
 
-**Total Hours Spent:**
+**Total Hours Spent:** 
 
 ---
 
 ### Marie Liske
 
-- **Hours:** 6 
+- **Hours:** 
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Anusua Halder
+
+- **Hours:** 
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Suchi Jain
+
+- **Hours:** 
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Aaron Santhosh
+
+- **Hours:** 
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Samuel Say
+
+- **Hours:** 
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Portia Hamid
+
+- **Hours:** 
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+# Week 8 — April 6 - April 10, 2026
+
+**Team Leader for Week 8: Aaron Santhosh** 
+
+**Total Hours Spent: 27**
+
+---
+
+### Marie Liske
+
+- **Hours: 6**  
 - **Tasks Complete:**
   - Worked with Suchi on researching GTM strategy and Scalibility Plan for final presentation
   - Worked primarily on scalability, researching methods for expansion & handling high user count & activity
@@ -33,7 +95,7 @@
 
 ### Anusua Halder
 
-- **Hours:** 
+- **Hours: 6** 
 - **Tasks Complete:** 
 - **Upcoming Tasks:** 
 - **Issues:** 
