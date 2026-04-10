@@ -156,7 +156,6 @@
 
 - **Hours: 9** 
 - **Tasks Complete:**
-  - Implemented Firebase Authentication (GitHub OAuth sign-in only)
   - Replaced localStorage JWT with Firebase ID tokens for API authorization
   - Rewrote AuthContext to use onAuthStateChanged for persistent login state
   - Added GitHub Actions CI/CD workflow to auto-deploy to Firebase on push to main
