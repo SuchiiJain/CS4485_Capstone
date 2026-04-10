@@ -500,10 +500,23 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
     # 10. Persist updated baseline.
     # FIX: Preserve old fingerprints for any files that failed to scan this
     # run, so they aren't treated as newly-added on the next run.
+    # FIX: Also preserve old fingerprints for functions that were flagged
+    # (semantic_change) this run — otherwise the new (rotted) fingerprint
+    # becomes the baseline and the same drift will not be detected again.
+    flagged_ids = {
+        (e.code_path, e.function_id)
+        for e in all_events
+        if e.event_type == "semantic_change"
+    }
     serialized: Dict[str, Dict] = {
         fp: serialize_file_fingerprints(fps)
         for fp, fps in current_fps.items()
     }
+    for file_path, fn_dict in serialized.items():
+        stored_file = stored_raw.get(file_path, {})
+        for fn_id in list(fn_dict.keys()):
+            if (file_path, fn_id) in flagged_ids and fn_id in stored_file:
+                fn_dict[fn_id] = stored_file[fn_id]
     for failed_path in failed_files:
         if failed_path in stored_raw:
             serialized[failed_path] = stored_raw[failed_path]
