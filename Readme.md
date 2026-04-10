@@ -60,15 +60,19 @@ CS4485_Capstone/
 ├── examples/                 # Sample code and test repositories
 ├── functions/                # Firebase Cloud Function (ingestScan)
 ├── src/                      # Core scanner pipeline modules
+│   ├── __init__.py
+│   ├── alerts.py
 │   ├── ast_parser.py
 │   ├── comparator.py
-│   ├── alerts.py
+│   ├── config.py
 │   ├── fingerprint.py
 │   ├── flagging_threshold.py
+│   ├── github_integration.py
 │   ├── models.py
 │   ├── persistence.py
 │   ├── report_generation.py
-│   └── run.py
+│   ├── run.py
+│   └── webhook_server.py
 ├── .docrot-config.json       # Docrot configuration for this repo
 ├── .firebaserc               # Firebase project config
 ├── .gitignore
