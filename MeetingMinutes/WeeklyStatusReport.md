@@ -96,9 +96,24 @@
 ### Anusua Halder
 
 - **Hours: 6** 
-- **Tasks Complete:** 
-- **Upcoming Tasks:** 
-- **Issues:** 
+- **Tasks Complete:**
+  - Pulled latest updates from both frontend and backend repositories and set up local development environment
+  - Tested deployed frontend application and verified authentication and dashboard functionality
+  - Investigated project creation and issue flow; identified that certain flows (e.g., project creation, issue generation) are not fully implemented yet
+  - Located issue display logic in frontend and identified correct component (IssueTable.tsx) for implementing resolve functionality
+  - Implemented frontend Resolve/Reopen button in the issue table using existing issue.status field
+  - Created and pushed a new Git branch (anusua-resolve-issues) and opened a pull request for the feature
+  - Updated and refined both frontend and backend README files for clarity and accuracy
+  - Assisted with reviewing frontend deployment behavior and debugging inconsistencies with hosted version
+- **Upcoming Tasks:**
+  - Connect resolve/reopen functionality to backend/database for persistent issue state updates
+  - Test resolve functionality once issue generation and scan flows are fully implemented
+  - Assist with completing missing frontend flows (project creation, scan display, issue generation)
+  - Support final demo preparation and system testing
+- **Issues:**
+  - Unable to fully test resolve functionality due to missing project creation and scan generation flows
+  - Limited visibility of issues in UI since backend data pipeline is not fully connected
+  - Some frontend features (e.g., project creation) are not yet implemented, limiting end-to-end testing
 
 ---
 
