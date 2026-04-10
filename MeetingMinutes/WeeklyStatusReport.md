@@ -71,13 +71,13 @@
 
 **Team Leader for Week 8: Aaron Santhosh** 
 
-**Total Hours Spent: 27**
+**Total Hours Spent: 48**
 
 ---
 
 ### Marie Liske
 
-- **Hours: 6**  
+- **Hours: 7**  
 - **Tasks Complete:**
   - Worked with Suchi on researching GTM strategy and Scalibility Plan for final presentation
   - Worked primarily on scalability, researching methods for expansion & handling high user count & activity
@@ -95,7 +95,7 @@
 
 ### Anusua Halder
 
-- **Hours: 6** 
+- **Hours: 7** 
 - **Tasks Complete:**
   - Pulled latest updates from both frontend and backend repositories and set up local development environment
   - Tested deployed frontend application and verified authentication and dashboard functionality
@@ -154,7 +154,7 @@
 ### Samuel Say
 
 
-- **Hours:** 9
+- **Hours: 9** 
 - **Tasks Complete:**
   - Implemented Firebase Authentication (GitHub OAuth sign-in only)
   - Replaced localStorage JWT with Firebase ID tokens for API authorization
