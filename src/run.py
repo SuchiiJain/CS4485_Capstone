@@ -32,7 +32,7 @@ from src.alerts import (
     publish_alerts_to_report,
     publish_baseline_notice,
 )
-from src.config import load_config, get_doc_mappings, get_thresholds, get_ai_config
+from src.config import load_config, get_doc_mappings, get_thresholds, get_ai_config, is_ai_disabled
 from src.models import AISuggestion, ChangeEvent, DocAlert, FunctionFingerprint
 from src.persistence import (
     is_first_run,
@@ -482,16 +482,24 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
     order = {Severity.HIGH: 0, Severity.MEDIUM: 1, Severity.LOW: 2}
     flags.sort(key=lambda f: order[f.severity])
 
-    # 8. AI suggestions (optional — only runs if AI is configured locally)
-    ai_suggestions: List[AISuggestion] = generate_ai_suggestions(
-        ai_config=ai_config,
-        doc_alerts=doc_alerts,
-        all_events=all_events,
-        repo_path=repo_path,
-    )
+    # 8. AI suggestions (skipped if user set "ai": false in config)
+    ai_disabled = is_ai_disabled(config)
+    ai_suggestions: List[AISuggestion] = []
+    ai_context: list = []
 
-    # 8b. Build AI context for backend processing (always, when doc_alerts exist)
-    ai_context = build_ai_context(doc_alerts, all_events, repo_path)
+    if not ai_disabled:
+        # 8a. Local AI suggestions (only runs if provider + API key are configured)
+        ai_suggestions = generate_ai_suggestions(
+            ai_config=ai_config,
+            doc_alerts=doc_alerts,
+            all_events=all_events,
+            repo_path=repo_path,
+        )
+
+        # 8b. Build AI context for backend processing
+        ai_context = build_ai_context(doc_alerts, all_events, repo_path)
+    else:
+        print("[docrot] AI suggestions disabled via config.")
 
     # 9. Generate .txt and .json reports
     elapsed = time.time() - start

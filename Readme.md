@@ -260,44 +260,97 @@ npm install
 
 ## AI-Powered Suggestions
 
-When the scan finds documentation that may be stale, the Cloud Function backend automatically generates AI-powered fix suggestions using Groq (Llama 3.3 70B). No API keys or extra configuration are needed in your repository — the LLM call happens server-side.
+When the scan finds documentation that may be stale, Docrot can automatically generate AI-powered fix suggestions that tell you exactly what to update. AI suggestions are **enabled by default** — no configuration required.
 
 ### How It Works
 
-1. The scan pipeline builds prompt context for each flagged doc (doc content + change descriptions).
-2. The Action sends this context to the Cloud Function as part of the scan payload.
-3. The Cloud Function calls the Groq API with a key stored as a Google Cloud secret.
-4. Suggestions are written to Firestore and returned to the Action.
-5. The Action writes them into the report and includes them on the GitHub issue.
+1. The scan pipeline detects code changes and flags documentation files that may be out of date.
+2. For each flagged doc, the pipeline builds a prompt containing the doc's current content and a description of what changed in the code.
+3. The Action sends this context to the Cloud Function backend as part of the scan payload.
+4. The Cloud Function calls the Groq API (Llama 3.3 70B) using an API key stored as a Google Cloud secret.
+5. The LLM returns specific, actionable edits (quoting existing text and providing corrected versions).
+6. Suggestions are written to Firestore and returned to the Action for inclusion in the GitHub issue.
 
 ### Where Suggestions Appear
 
-- **GitHub Issue**: AI suggestions appear in a collapsible section on the docrot tracking issue.
-- **Report files**: Included in `.docrot-report.json` after the backend responds.
+- **GitHub Issue**: AI suggestions appear in a collapsible section on the docrot tracking issue, one per flagged doc.
 - **Firestore**: Stored in `scan_runs/{scan_id}/ai_suggestions/` for the frontend dashboard.
+- **Report files**: Included in `.docrot-report.json` when generated locally with an API key.
 
-### Local Development
+### Configuration Options
 
-For local runs outside of the Action, you can still get AI suggestions by configuring a provider directly. Add an `ai` block to `.docrot-config.json`:
+AI behavior is controlled through the `ai` field in `.docrot-config.json`. There are three modes:
+
+**1. Default (no `ai` field) — server-side suggestions enabled**
+
+If your config has no `ai` field at all, AI suggestions are generated automatically by the Cloud Function backend. This is the default and requires no setup from the user.
 
 ```json
 {
-  "ai": {
-    "provider": "groq",
-    "model": "llama-3.3-70b-versatile",
-    "api_key_env": "GROQ_API_KEY"
+  "language": "python",
+  "doc_mappings": [
+    {
+      "code_glob": "src/*.py",
+      "docs": ["README.md", "docs/Architecture.md"]
+    }
+  ],
+  "thresholds": {
+    "per_function_substantial": 4,
+    "per_doc_cumulative": 8
   }
 }
 ```
 
-Then install the provider package and set the key:
+**2. Opt out — disable AI suggestions entirely**
 
-```bash
-pip install groq
-export GROQ_API_KEY=your_key_here
+Set `"ai": false` to disable all AI suggestions. No LLM calls will be made, and no suggestion context will be sent to the backend.
+
+```json
+{
+  "language": "python",
+  "doc_mappings": [...],
+  "thresholds": {...},
+  "ai": false
+}
 ```
 
-Supported providers for local use: `groq`, `anthropic`, `openai`.
+**3. Custom provider — bring your own API key**
+
+If you want to use your own LLM provider instead of (or in addition to) the default Groq backend, add a full `ai` configuration block. This runs the LLM call locally during the scan, before results are sent to the backend.
+
+```json
+{
+  "language": "python",
+  "doc_mappings": [...],
+  "thresholds": {...},
+  "ai": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-4-20250514",
+    "api_key_env": "ANTHROPIC_API_KEY"
+  }
+}
+```
+
+Supported providers: `groq`, `anthropic`, `openai`.
+
+For local development, install the provider package and set the environment variable:
+
+```bash
+pip install anthropic  # or: pip install groq / pip install openai
+export ANTHROPIC_API_KEY=your_key_here
+```
+
+To use a custom provider in the GitHub Action, add the API key as a repository secret (Settings > Secrets and variables > Actions) and pass it through in your workflow:
+
+```yaml
+- uses: SuchiiJain/CS4485_Capstone@main
+  env:
+    ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  with:
+    firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+```
+
+When a custom provider is configured with a valid API key, local suggestions are generated during the scan and included in the report files. Server-side suggestions from the Cloud Function backend are also generated independently and appear on the GitHub issue.
 
 ## Outputs and Behavior
 

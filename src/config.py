@@ -222,6 +222,14 @@ def get_threshold_info(config: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     }
 
 
+def is_ai_disabled(config: Dict[str, Any]) -> bool:
+    """Return True if the user has explicitly opted out of AI suggestions.
+
+    Users can disable AI by setting ``"ai": false`` in .docrot-config.json.
+    """
+    return config.get("ai") is False
+
+
 def get_ai_config(config: Dict[str, Any]) -> Optional[Dict[str, str]]:
     """
     Extract and validate the optional AI configuration block.
@@ -230,7 +238,7 @@ def get_ai_config(config: Dict[str, Any]) -> Optional[Dict[str, str]]:
     configured and the API key environment variable is set.  Returns None
     otherwise — callers should treat None as "AI features disabled".
 
-    Supported providers: "anthropic", "openai".
+    Supported providers: "anthropic", "openai", "groq".
     """
     ai_block = config.get("ai")
     if not ai_block or not isinstance(ai_block, dict):
