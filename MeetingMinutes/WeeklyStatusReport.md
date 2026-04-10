@@ -153,7 +153,8 @@
 
 ### Samuel Say
 
-- **Hours:** 7
+
+- **Hours:** 9
 - **Tasks Complete:**
   - Implemented Firebase Authentication (GitHub OAuth sign-in only)
   - Replaced localStorage JWT with Firebase ID tokens for API authorization
@@ -163,9 +164,15 @@
   - Added issue closing functionality with a Close button next to View in the issues table
   - Implemented optimistic UI update with rollback for issue closing
   - Wired the topbar search bar to filter rows in real time on Projects, Issues, and Scan History pages
+  - Implemented performance metrics utility (`src/utils/perf.ts`) with a `measure()` async timing helper and a React Profiler callback
+  - Instrumented Firestore queries (`getRepos`, `getAllScanRuns`, `getIssuesForScan`, `getAISuggestionsForScan`) to log per-query latency via `console.debug`
+  - Instrumented `useIssues` hook to measure total data load time per scan
+  - Added React `Profiler` around page content to surface page renders exceeding 100ms
 - **Upcoming Tasks:**
   - Merge auth-test PR into main
   - Continue testing issue closing with live Firestore data
+  - Investigate serial waterfall in `getAllScanRuns` using perf logs and parallelize with `Promise.all`
+  - Add server-side Firestore `where()` filtering to replace client-side repo scan in `getRepos`
 - **Issues:**
 
 ---
