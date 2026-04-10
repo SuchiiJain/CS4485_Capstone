@@ -145,6 +145,11 @@ exports.ingestScan = onRequest(
         { merge: true }
       );
 
+      const highCount = payload.high_count || 0;
+      const mediumCount = payload.medium_count || 0;
+      const lowCount = payload.low_count || 0;
+      const rotScore = Math.min(100, highCount * 15 + mediumCount * 8 + lowCount * 3);
+
       const scanRef = repoRef.collection("scan_runs").doc(payload.scan_id);
       batch.set(scanRef, {
         commit_hash: payload.commit_hash,
@@ -152,9 +157,10 @@ exports.ingestScan = onRequest(
         status: payload.status || "unknown",
         scanned_at: admin.firestore.FieldValue.serverTimestamp(),
         total_issues: payload.total_issues || 0,
-        high_count: payload.high_count || 0,
-        medium_count: payload.medium_count || 0,
-        low_count: payload.low_count || 0,
+        high_count: highCount,
+        medium_count: mediumCount,
+        low_count: lowCount,
+        rot_score: rotScore,
       });
 
       if (payload.flags && Array.isArray(payload.flags)) {

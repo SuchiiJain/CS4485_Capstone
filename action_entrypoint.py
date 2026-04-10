@@ -224,6 +224,8 @@ def main() -> None:
     sha = os.environ.get("GITHUB_SHA", "unknown")
     branch = os.environ.get("GITHUB_REF_NAME", "unknown")
 
+    print(f"[docrot-action] BACKEND_URL={'set' if BACKEND_URL else 'empty'}")
+
     # Load fingerprint baseline from database (if one exists)
     try:
         _load_baseline(repo, branch, os.path.abspath(repo_path))
