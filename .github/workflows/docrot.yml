@@ -1,4 +1,3 @@
-# .github/workflows/docrot.yml
 name: Docrot Detector
 on: [push]
 jobs:

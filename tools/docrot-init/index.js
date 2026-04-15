@@ -53,7 +53,7 @@ function writeFileSafely(filePath, content, force) {
   return { wrote: true };
 }
 
-function buildConfigJson(sourceGlob, docs, withAi) {
+function buildConfigJson(sourceGlob, docs) {
   const parsedDocs = docs
     .split(",")
     .map((item) => item.trim())
@@ -73,70 +73,44 @@ function buildConfigJson(sourceGlob, docs, withAi) {
     },
   };
 
-  if (withAi) {
-    config.ai = {
-      provider: "groq",
-      model: "llama-3.3-70b-versatile",
-      api_key_env: "GROQ_API_KEY",
-    };
-  }
+  config.ai = {
+    provider: "groq",
+    model: "llama-3.3-70b-versatile",
+    api_key_env: "GROQ_API_KEY",
+  };
 
   return `${JSON.stringify(config, null, 2)}\n`;
 }
 
 function buildWorkflowYaml(options) {
-  const {
-    actionRef,
-    defaultBranch,
-    createIssue,
-    repoPath,
-    withBackend,
-  } = options;
-
-  const backendBlock = withBackend
-    ? `
-      - name: Authenticate to Google Cloud
-        id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: projects/YOUR_PROJECT_NUMBER/locations/global/workloadIdentityPools/docrot-github-pool/providers/github-provider
-          service_account: docrot-github-action@YOUR_FIREBASE_PROJECT_ID.iam.gserviceaccount.com
-          token_format: id_token
-          id_token_audience: https://YOUR_CLOUD_FUNCTION_URL
-          id_token_include_email: true
-`
-    : "";
-
-  const backendInputs = withBackend
-    ? `
-          backend_url: https://YOUR_CLOUD_FUNCTION_URL
-          backend_token: \${{ steps.auth.outputs.id_token }}`
-    : "";
-
-  return `name: docrot
-
-on:
-  push:
-    branches: ["${defaultBranch}"]
-  pull_request:
-    branches: ["${defaultBranch}"]
-
+  return `name: Docrot Detector
+on: [push]
 jobs:
   docrot:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      issues: write
       id-token: write
+      issues: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0${backendBlock}
-      - name: Run Docrot Detector
-        uses: ${actionRef}
+          fetch-depth: 0
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
         with:
-          repo_path: ${repoPath}
-          create_issue: "${createIssue}"${backendInputs}
+          workload_identity_provider: projects/147015144729/locations/global/workloadIdentityPools/github-oidc-pool/providers/github-provider
+          service_account: docrot-github-action@docrot-detector.iam.gserviceaccount.com
+          token_format: id_token
+          id_token_audience: https://us-central1-docrot-detector.cloudfunctions.net/ingestScan
+          id_token_include_email: true
+
+      - uses: ./
+        with:
+          backend_url: https://us-central1-docrot-detector.cloudfunctions.net/ingestScan
+          backend_token: \${{ steps.auth.outputs.id_token }}
 `;
 }
 
@@ -145,14 +119,8 @@ async function run() {
   const yesMode = hasFlag("--yes") || hasFlag("-y");
   const force = hasFlag("--force");
 
-  let actionRef = getArgValue("--action") || "SuchiiJain/CS4485_Capstone@main";
-  let defaultBranch = getArgValue("--branch") || "main";
   let sourceGlob = getArgValue("--code-glob") || "src/*.py";
   let docs = getArgValue("--docs") || "Readme.md,docs/Architecture.md";
-  let repoPath = getArgValue("--repo-path") || ".";
-  let createIssue = parseBool(getArgValue("--create-issue"), true);
-  let withBackend = parseBool(getArgValue("--with-backend"), false);
-  let withAi = parseBool(getArgValue("--with-ai"), false);
 
   if (!yesMode) {
     const rl = readline.createInterface({ input: stdin, output: stdout });
@@ -160,14 +128,8 @@ async function run() {
     stdout.write("\nDocrot Setup Wizard\n");
     stdout.write("This will create .docrot-config.json and .github/workflows/docrot.yml in the current repository.\n\n");
 
-    actionRef = await ask(rl, "Action reference (owner/repo@ref)", actionRef);
-    defaultBranch = await ask(rl, "Default branch", defaultBranch);
     sourceGlob = await ask(rl, "Code glob for mapping", sourceGlob);
     docs = await ask(rl, "Docs list (comma separated)", docs);
-    repoPath = await ask(rl, "Repository scan path", repoPath);
-    createIssue = parseBool(await ask(rl, "Create GitHub issue (true/false)", String(createIssue)), createIssue);
-    withBackend = parseBool(await ask(rl, "Enable Firebase backend block (true/false)", String(withBackend)), withBackend);
-    withAi = parseBool(await ask(rl, "Include AI config block (true/false)", String(withAi)), withAi);
 
     rl.close();
   }
@@ -175,14 +137,8 @@ async function run() {
   const configPath = path.join(cwd, ".docrot-config.json");
   const workflowPath = path.join(cwd, ".github", "workflows", "docrot.yml");
 
-  const configContent = buildConfigJson(sourceGlob, docs, withAi);
-  const workflowContent = buildWorkflowYaml({
-    actionRef,
-    defaultBranch,
-    createIssue,
-    repoPath,
-    withBackend,
-  });
+  const configContent = buildConfigJson(sourceGlob, docs);
+  const workflowContent = buildWorkflowYaml({});
 
   const configResult = writeFileSafely(configPath, configContent, force);
   const workflowResult = writeFileSafely(workflowPath, workflowContent, force);
@@ -193,12 +149,8 @@ async function run() {
 
   stdout.write("\nNext steps:\n");
   stdout.write("1) Review generated files and adjust doc mappings.\n");
-  if (withBackend) {
-    stdout.write("2) Replace Cloud Function placeholders in workflow and configure GitHub OIDC/WIF.\n");
-    stdout.write("3) Commit and push to trigger the first scan.\n\n");
-  } else {
-    stdout.write("2) Commit and push to trigger the first scan.\n\n");
-  }
+  stdout.write("2) Replace Cloud Function placeholders in workflow and configure GitHub OIDC/WIF.\n");
+  stdout.write("3) Commit and push to trigger the first scan.\n\n");
 }
 
 run().catch((error) => {

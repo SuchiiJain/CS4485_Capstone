@@ -3,11 +3,10 @@
   "doc_mappings": [
     {
       "code_glob": "src/*.py",
-      "docs": ["Readme.md", "docs/Architecture.md"]
-    },
-    {
-      "code_glob": "examples/*.py",
-      "docs": ["examples/fakedoc.md"]
+      "docs": [
+        "Readme.md",
+        "docs/Architecture.md"
+      ]
     }
   ],
   "thresholds": {
