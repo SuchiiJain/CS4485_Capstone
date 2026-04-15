@@ -154,6 +154,42 @@ Cloud Function writes to:
 - Firebase project / Google Cloud project
 - GitHub repository with Actions enabled & setup
 
+## Zero-Manual Setup Wizard (npm)
+
+If you want users to avoid manually creating `.github/workflows/docrot.yml` and `.docrot-config.json`, use the setup wizard CLI.
+
+### Option A: One-time run with npx (recommended)
+
+```bash
+npx github:SuchiiJain/CS4485_Capstone
+```
+
+The wizard asks a few questions, then writes:
+
+- `.docrot-config.json`
+- `.github/workflows/docrot.yml`
+
+### Option B: Install then run
+
+```bash
+npm install --save-dev github:SuchiiJain/CS4485_Capstone
+npx docrot-init
+```
+
+### Non-interactive mode (CI/bootstrap scripts)
+
+```bash
+npx github:SuchiiJain/CS4485_Capstone --yes --branch main --code-glob "src/*.py" --docs "Readme.md,docs/Architecture.md"
+```
+
+Useful flags:
+
+- `--yes` / `-y`: skip prompts and use defaults
+- `--force`: overwrite existing generated files
+- `--action owner/repo@ref`: action reference used in workflow
+- `--with-backend true`: include Google OIDC + backend token wiring block
+- `--with-ai true`: include AI provider block in `.docrot-config.json`
+
 ## 1) Clone and install Python dependencies
 
 ```bash
