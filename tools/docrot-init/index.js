@@ -119,8 +119,8 @@ async function run() {
   const yesMode = hasFlag("--yes") || hasFlag("-y");
   const force = hasFlag("--force");
 
-  let sourceGlob = getArgValue("--code-glob") || "src/*.py";
-  let docs = getArgValue("--docs") || "Readme.md,docs/Architecture.md";
+  let sourceGlob = getArgValue("--code-glob") || "example: src/*.py";
+  let docs = getArgValue("--docs") || "example: README.md,docs/Architecture.md";
 
   if (!yesMode) {
     const rl = readline.createInterface({ input: stdin, output: stdout });
@@ -148,9 +148,8 @@ async function run() {
   stdout.write(`- ${workflowPath}: ${workflowResult.wrote ? "written" : "skipped (already exists, use --force to overwrite)"}\n`);
 
   stdout.write("\nNext steps:\n");
-  stdout.write("1) Review generated files and adjust doc mappings.\n");
-  stdout.write("2) Replace Cloud Function placeholders in workflow and configure GitHub OIDC/WIF.\n");
-  stdout.write("3) Commit and push to trigger the first scan.\n\n");
+  stdout.write("1) Review generated files and adjust doc mappings if needed.\n");
+  stdout.write("2) Commit and push to trigger the first scan.\n\n");
 }
 
 run().catch((error) => {
