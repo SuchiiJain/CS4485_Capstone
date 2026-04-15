@@ -402,8 +402,6 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
     doc_mappings = get_doc_mappings(config)
     thresholds = get_thresholds(config)
 
-    ai_config = get_ai_config(config)
-
     if not doc_mappings:
         print(
             "[docrot] Warning: no doc_mappings in .docrot-config.json — "
@@ -484,10 +482,25 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
 
     # 8. AI suggestions (skipped if user set "ai": false in config)
     ai_disabled = is_ai_disabled(config)
+    ai_config = None
     ai_suggestions: List[AISuggestion] = []
     ai_context: list = []
 
     if not ai_disabled:
+        # Local in-run AI suggestions are optional. If api_key_env is missing in
+        # this runner environment, keep local suggestions off and rely on
+        # backend/server-side AI using ai_context.
+        ai_block = config.get("ai") if isinstance(config.get("ai"), dict) else {}
+        api_key_env = (ai_block.get("api_key_env") or "").strip()
+        if api_key_env and os.environ.get(api_key_env, "").strip():
+            ai_config = get_ai_config(config)
+        elif api_key_env:
+            print(
+                f"[docrot] Local AI suggestions disabled in runner: "
+                f"environment variable '{api_key_env}' is not set. "
+                "Backend AI context will still be generated."
+            )
+
         # 8a. Local AI suggestions (only runs if provider + API key are configured)
         ai_suggestions = generate_ai_suggestions(
             ai_config=ai_config,
