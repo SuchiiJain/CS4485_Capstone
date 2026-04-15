@@ -383,6 +383,39 @@ def post_pr_comment(
 # PR comment body formatter
 # ---------------------------------------------------------------------------
 
+def _append_flag_location_lines(lines: list, flag: dict) -> None:
+    """
+    Append indented bullet lines describing where a flag was found.
+
+    Surfaces the affected source file, the code symbol, the affected
+    documentation file, and (when present) the referenced doc symbol so
+    reviewers reading the GitHub issue body can jump straight to the
+    right file without opening `.docrot-report.json`.
+
+    This addresses CS4485-50: flags previously showed only the human
+    message + suggestion, leaving reviewers to guess which doc was stale.
+    """
+    code_element = flag.get("code_element") or {}
+    doc_reference = flag.get("doc_reference") or {}
+
+    code_file = code_element.get("file_path")
+    symbol = code_element.get("name")
+    doc_file = doc_reference.get("file_path") if doc_reference else None
+    doc_symbol = doc_reference.get("referenced_symbol") if doc_reference else None
+
+    if code_file:
+        location = f"`{code_file}`"
+        if symbol:
+            location = f"`{code_file}` → `{symbol}`"
+        lines.append(f"  - _Source:_ {location}")
+
+    if doc_file:
+        doc_location = f"`{doc_file}`"
+        if doc_symbol:
+            doc_location = f"`{doc_file}` (referenced symbol: `{doc_symbol}`)"
+        lines.append(f"  - _Affected doc:_ {doc_location}")
+
+
 def format_pr_comment(report_path: str, commit_sha: str) -> Optional[str]:
     """
     Read the .docrot-report.json and build a formatted Markdown comment
@@ -443,6 +476,7 @@ def format_pr_comment(report_path: str, commit_sha: str) -> Optional[str]:
         for f in flags:
             if f.get("severity") == "high":
                 lines.append(f"- **{f.get('message', 'Unknown')}**")
+                _append_flag_location_lines(lines, f)
                 suggestion = f.get("suggestion", "")
                 if suggestion:
                     lines.append(f"  - _Suggestion: {suggestion}_")
@@ -454,6 +488,7 @@ def format_pr_comment(report_path: str, commit_sha: str) -> Optional[str]:
         for f in flags:
             if f.get("severity") == "medium":
                 lines.append(f"- {f.get('message', 'Unknown')}")
+                _append_flag_location_lines(lines, f)
                 suggestion = f.get("suggestion", "")
                 if suggestion:
                     lines.append(f"  - _Suggestion: {suggestion}_")
@@ -465,6 +500,7 @@ def format_pr_comment(report_path: str, commit_sha: str) -> Optional[str]:
         for f in flags:
             if f.get("severity") == "low":
                 lines.append(f"- {f.get('message', 'Unknown')}")
+                _append_flag_location_lines(lines, f)
         lines.append("")
 
     # AI suggestions section

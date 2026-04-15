@@ -80,6 +80,15 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
     for issue in report_json.get("issues", []):
         code_el = issue.get("code_element", {})
         doc_ref = issue.get("doc_reference")
+        # Normalize params: the scanner emits a list[str] of names, but the
+        # deterministic patcher (patch_generator._format_param) expects
+        # list[dict] with a "name" key. Convert here so downstream code
+        # doesn't have to branch on shape.
+        raw_params = code_el.get("params", []) or []
+        normalized_params = [
+            p if isinstance(p, dict) else {"name": str(p)}
+            for p in raw_params
+        ]
         flags.append({
             "reason": issue.get("reason", ""),
             "severity": issue.get("severity", "low"),
@@ -88,7 +97,7 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
             "message": issue.get("message", ""),
             "suggestion": issue.get("suggestion"),
             "signature": code_el.get("signature"),
-            "params": code_el.get("params", []),
+            "params": normalized_params,
             "return_type": code_el.get("return_type"),
             "doc_file": doc_ref["file_path"] if doc_ref else None,
             "doc_symbol": doc_ref["referenced_symbol"] if doc_ref else None,
