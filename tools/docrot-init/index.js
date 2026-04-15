@@ -107,7 +107,7 @@ jobs:
           id_token_audience: https://us-central1-docrot-detector.cloudfunctions.net/ingestScan
           id_token_include_email: true
 
-      - uses: ./
+      - uses: SuchiiJain/CS4485_Capstone@main
         with:
           backend_url: https://us-central1-docrot-detector.cloudfunctions.net/ingestScan
           backend_token: \${{ steps.auth.outputs.id_token }}

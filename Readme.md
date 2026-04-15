@@ -191,7 +191,7 @@ Always-on behavior:
 
 - The wizard always includes backend wiring (`backend_url` + `backend_token`) in workflow output.
 - The wizard always includes the AI block in `.docrot-config.json` output.
-- The wizard always generates `.github/workflows/docrot.yml` from one fixed template (push trigger + Google auth + `uses: ./`).
+- The wizard always generates `.github/workflows/docrot.yml` from one fixed template (push trigger + Google auth + `uses: SuchiiJain/CS4485_Capstone@main`).
 
 ## 1) Clone and install Python dependencies
 
