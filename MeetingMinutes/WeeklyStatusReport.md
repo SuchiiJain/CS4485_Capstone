@@ -134,10 +134,18 @@
 
 ### Samuel Say
 
-- **Hours:** 
+- **Hours: 9**
 - **Tasks Complete:**
+  - Fixed closeIssue to use direct Firestore path lookup instead of scanning every repo — reduced reads from O(n repos) to a single write
+  - Replaced sequential repo queries in getAllScanRuns with parallel Promise.all calls — load time now depends on the slowest single query instead of the sum of all queries
+  - Added 25-row pagination to Issues, Scan History, and Projects tables — only a small slice of data is rendered at a time regardless of total record count
+  - Added in-memory TTL cache for Firestore queries — getRepos, getAllScanRuns, getScanRunsForRepo, and getIssuesForScan are cached for 60 seconds so repeated page navigations skip Firestore reads entirely
+  - Cache updates on issue close so closed status persists if you navigate away and back without waiting for TTL to expire
+  - Cache clears on sign-in/out to prevent stale data across users
 - **Upcoming Tasks:**
+  - Address remaining scalability issues (getScanRunById sequential scan, getIssuesForScan repo loop)
 - **Issues:**
+
 
 ---
 
