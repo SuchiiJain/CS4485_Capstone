@@ -210,13 +210,32 @@ def _change_events_to_flags(
     # Import locally to avoid a circular-import risk at module load.
     from src.config import docs_for_code_path
 
+    # Priority order — prefer reasons the deterministic patch generator can
+    # handle (signature/parameter/return/symbol) over the generic
+    # DOCSTRING_STALE catch-all. Earlier in the list = higher priority.
+    _REASON_PRIORITY = [
+        FlagReason.SYMBOL_REMOVED,
+        FlagReason.SIGNATURE_CHANGED,
+        FlagReason.PARAMETER_REMOVED,
+        FlagReason.PARAMETER_ADDED,
+        FlagReason.PARAMETER_RENAMED,
+        FlagReason.RETURN_TYPE_CHANGED,
+        FlagReason.MARKDOWN_REF_BROKEN,
+        FlagReason.DOCSTRING_STALE,
+        FlagReason.DOCSTRING_MISSING,
+    ]
+
     for event in events:
-        # Resolve best flag reason from the event's reasons list
-        flag_reason = FlagReason.DOCSTRING_STALE  # default fallback
-        for r in event.reasons:
-            if r in _REASON_MAP:
-                flag_reason = _REASON_MAP[r]
-                break
+        # Resolve best flag reason from the event's reasons list.
+        # A single event can carry multiple reason strings (e.g. "literal
+        # changed" AND "public signature changed"). Collect every mapped
+        # FlagReason, then pick the highest-priority one so actionable
+        # reasons (signature/parameter/return) beat DOCSTRING_STALE.
+        matched = {_REASON_MAP[r] for r in event.reasons if r in _REASON_MAP}
+        flag_reason = next(
+            (r for r in _REASON_PRIORITY if r in matched),
+            FlagReason.DOCSTRING_STALE,
+        )
 
         severity = Severity.HIGH if event.critical else _SEVERITY_FROM_REASON.get(
             flag_reason, Severity.MEDIUM
