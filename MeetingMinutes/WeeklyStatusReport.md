@@ -96,8 +96,21 @@
 
 - **Hours: 5** 
 - **Tasks Complete:**
+  - Created and pushed a frontend PR for Issues page UI polish and readability improvements
+  - Updated status labels to clearer wording (Flagged / Under Review / Resolved)
+  - Improved severity label formatting for easier readability
+  - Improved View button styling and overall Issues page usability
+  - Updated detail panel wording for better clarity and consistency
+  - Updated frontend README with cleaner formatting, current architecture details, setup instructions, project features, and recent development progress
+  - Tested all frontend changes locally in the Vite localhost environment to confirm proper rendering
+  - Drafted and updated MOM #9
+  - Updated Week 9 and 10 weekly individual status content 
 - **Upcoming Tasks:**
+  - Assist with final frontend polish and responsiveness fixes
+  - Help with final presentation/demo preparation
+  - Support testing and PR review if needed
 - **Issues:**
+  - N/A
 
 ---
 
