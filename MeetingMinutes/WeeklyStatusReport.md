@@ -60,10 +60,15 @@
 
 ### Portia Hamid
 
-- **Hours:** 
+- **Hours: 5** 
 - **Tasks Complete:**
+  - Investigated a reported AI integration regression following the npm wrapper release. Unable to reproduce the failure in a fresh environment. Conducted exploratory testing across provider configurations and opened a follow-up with the reporting team member to gather reproduction steps.
+  - Provisioned admin access to Firebase/Google Cloud for a teammate to unblock frontend deployment work
+  - Validated the npm wrapper release end-to-end on a clean repository, confirmed correct behavior across the full install and setup flow, and merged the PR.
 - **Upcoming Tasks:**
+  - Implement backend endpoint to persist issue resolve/reopen status updates to Firestore, unlocking the frontend resolve functionality currently awaiting backend support.
 - **Issues:**
+  - Was unable to reproduce the issue with the AI integration, despite testing.
 
 ---
 
