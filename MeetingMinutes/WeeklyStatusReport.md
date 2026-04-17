@@ -15,10 +15,17 @@
 
 ### Marie Liske
 
-- **Hours:** 
+- **Hours:** 6
 - **Tasks Complete:**
+  - Created NPM package install wizard to allow end users to install required files using `npx github:SuchiiJain/CS4485_Capstone`
+  - Troubleshooted yml file creation
 - **Upcoming Tasks:**
+  - Start drafting final presentation slide deck
+  - make issues more intuitive/readable
 - **Issues:**
+  - AI suggestions were not working when using npx install wizard
+  - issues setting flags that user could specify when installing, ended up making simplest so user would not have to indicate many flags in command
+  - Wizard setup issues, errors when running command
 
 ---
 
