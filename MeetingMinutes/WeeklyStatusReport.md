@@ -34,9 +34,11 @@
 
 ### Suchi Jain
 
-- **Hours:**  
+- **Hours: 7**  
 - **Tasks Complete:**
+  - Finished GTM Strategy
 - **Upcoming Tasks:**
+  - Complete any UI Functionalities
 - **Issues:**
 
 ---
