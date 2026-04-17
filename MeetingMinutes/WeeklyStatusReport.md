@@ -74,7 +74,7 @@
 
 **Team Leader for Week 9: Aaron Santhosh** 
 
-**Total Hours Spent: 35** 
+**Total Hours Spent: 40** 
 
 ---
 
