@@ -125,10 +125,17 @@
 
 ### Aaron Santhosh
 
-- **Hours:** 
+- **Hours: 8** 
 - **Tasks Complete:**
+  - Fixed FlagReason priority bug in scanner — `SIGNATURE_CHANGED` now correctly wins over `DOCSTRING_STALE` when multiple reasons match a change event (was breaking the patch generator)
+  - Implemented baseline auto-update on successful auto-fix PR merge — `new_fingerprint` and `stable_id` now flow through the full pipeline (scanner → report → action entrypoint → Cloud Function) and write back to Firestore after PR is merged
+  - Verified end-to-end auto-fix flow: dry run preview, PR creation against demo repo, merge, and idempotency check (re-scan after merge correctly shows no changes)
+  - Identified Firestore dot-path key escaping bug in `applyFix` Cloud Function that silently no-ops the baseline update
 - **Upcoming Tasks:**
+  - Fix Firestore dot-path bug using `FieldPath` so baseline properly updates after auto-fix PR merge
+  - Merge `auto-fix` branch into `main` once flag-clearing is verified end-to-end
 - **Issues:**
+  - Firestore update in `applyFix` treats `.` in key segments as path separators — baseline write no-ops, so resolved flags still reappear on rescan
 
 ---
 
