@@ -9,13 +9,13 @@
 
 **Team Leader for Week 9: Aaron Santhosh** 
 
-**Total Hours Spent:** 
+**Total Hours Spent: 16** 
 
 ---
 
 ### Marie Liske
 
-- **Hours:** 6
+- **Hours: 6** 
 - **Tasks Complete:**
   - Created NPM package install wizard to allow end users to install required files using `npx github:SuchiiJain/CS4485_Capstone`
   - Troubleshooted yml file creation
@@ -31,7 +31,7 @@
 
 ### Anusua Halder
 
-- **Hours:** 
+- **Hours: 5** 
 - **Tasks Complete:**
 - **Upcoming Tasks:**
 - **Issues:**
