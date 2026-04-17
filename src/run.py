@@ -279,14 +279,23 @@ def _change_events_to_flags(
                     snippet=None,
                 )
 
-        flags.append(Flag(
+        flag = Flag(
             reason=flag_reason,
             severity=severity,
             code_element=code_elem,
             doc_reference=doc_ref,
             message=message,
             suggestion=_make_suggestion(flag_reason, event.function_id),
-        ))
+        )
+        # Attach the fresh fingerprint + stable id so the Cloud Function can
+        # update the baseline entry for this function after a successful
+        # auto-fix PR (and only that entry — never touch any other baseline
+        # data). These are dynamic attrs to avoid changing the Flag dataclass.
+        new_fp = new_fps.get(event.code_path, {}).get(event.function_id)
+        if new_fp is not None:
+            flag.new_fingerprint = new_fp.to_dict()
+            flag.stable_id = event.function_id
+        flags.append(flag)
 
     # Sort HIGH → MEDIUM → LOW
     order = {Severity.HIGH: 0, Severity.MEDIUM: 1, Severity.LOW: 2}

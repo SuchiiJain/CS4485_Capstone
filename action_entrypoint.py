@@ -89,7 +89,7 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
             p if isinstance(p, dict) else {"name": str(p)}
             for p in raw_params
         ]
-        flags.append({
+        flag_row = {
             "reason": issue.get("reason", ""),
             "severity": issue.get("severity", "low"),
             "file_path": code_el.get("file_path"),
@@ -101,7 +101,15 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
             "return_type": code_el.get("return_type"),
             "doc_file": doc_ref["file_path"] if doc_ref else None,
             "doc_symbol": doc_ref["referenced_symbol"] if doc_ref else None,
-        })
+        }
+        # Forward the fresh fingerprint + stable id when present so the
+        # Cloud Function can update the baseline entry for this single
+        # function after an auto-fix PR lands.
+        if issue.get("new_fingerprint") is not None:
+            flag_row["new_fingerprint"] = issue["new_fingerprint"]
+        if issue.get("stable_id") is not None:
+            flag_row["stable_id"] = issue["stable_id"]
+        flags.append(flag_row)
 
     fingerprints = None
     fp_path = os.path.join(repo_path, ".docrot-fingerprints.json")

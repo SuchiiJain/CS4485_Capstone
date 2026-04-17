@@ -178,6 +178,10 @@ exports.ingestScan = onRequest(
             return_type: flag.return_type || null,
             doc_file: flag.doc_file || null,
             doc_symbol: flag.doc_symbol || null,
+            // Carried through from the scanner so applyFix can update the
+            // baseline entry for this single function after a successful PR.
+            new_fingerprint: flag.new_fingerprint || null,
+            stable_id: flag.stable_id || null,
           });
         }
       }
@@ -751,6 +755,54 @@ exports.applyFix = onRequest({ cors: true }, async (req, res) => {
       auto_fix_applied_at: admin.firestore.FieldValue.serverTimestamp(),
     });
 
+    // Targeted baseline update: replace the OLD (preserved) fingerprint for
+    // THIS one function with the fresh one the scanner captured at flag
+    // time. On the next scan, the function no longer drifts from baseline,
+    // so the flag naturally clears — no blanket reset, no other entries
+    // touched. CS4485-69's preservation logic is untouched for every other
+    // function. Wrapped so any failure here does not fail the PR response.
+    let baselineUpdated = false;
+    let baselineSkipReason = null;
+    try {
+      const newFingerprint = flag.new_fingerprint;
+      const stableId = flag.stable_id;
+      const baselineFile = flag.file_path;
+      const baselineBranch = scan.branch || baseBranch;
+      if (!newFingerprint || !stableId || !baselineFile) {
+        baselineSkipReason = "flag missing new_fingerprint/stable_id/file_path";
+      } else if (!baselineBranch) {
+        baselineSkipReason = "scan has no branch recorded";
+      } else {
+        const baselineRef = db
+          .collection("repos").doc(repoId)
+          .collection("fingerprint_baselines").doc(baselineBranch);
+        const baselineSnap = await baselineRef.get();
+        if (!baselineSnap.exists) {
+          baselineSkipReason = `no baseline at fingerprint_baselines/${baselineBranch}`;
+        } else {
+          const current = baselineSnap.data().fingerprints || {};
+          const fileEntry = { ...(current[baselineFile] || {}) };
+          fileEntry[stableId] = newFingerprint;
+          await baselineRef.update({
+            [`fingerprints.${baselineFile}.${stableId}`]: newFingerprint,
+            updated_at: admin.firestore.FieldValue.serverTimestamp(),
+          });
+          await flagRef.update({ auto_fix_baseline_updated: true });
+          baselineUpdated = true;
+          console.log(
+            `applyFix: baseline updated for ${baselineFile}::${stableId} ` +
+            `on branch ${baselineBranch} (repo ${repoId})`,
+          );
+        }
+      }
+    } catch (baselineErr) {
+      console.error("applyFix baseline update failed:", baselineErr);
+      baselineSkipReason = baselineErr.message || "baseline update error";
+    }
+    if (!baselineUpdated && baselineSkipReason) {
+      console.log(`applyFix: baseline not updated — ${baselineSkipReason}`);
+    }
+
     res.status(200).json({
       success: true,
       pr_url: pr.html_url,
@@ -759,6 +811,7 @@ exports.applyFix = onRequest({ cors: true }, async (req, res) => {
       doc_path: patch.docPath,
       summary: patch.summary,
       todo_notes: patch.todoNotes,
+      baseline_updated: baselineUpdated,
     });
   } catch (error) {
     console.error("applyFix error:", error);
