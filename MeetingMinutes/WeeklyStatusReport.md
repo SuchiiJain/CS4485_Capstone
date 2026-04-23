@@ -34,12 +34,18 @@
 
 ### Suchi Jain
 
-- **Hours: 7**  
+- **Hours: 10**  
 - **Tasks Complete:**
-  - Finished GTM Strategy
+  - Built and fixed the rot gauge UI and integrated it properly on projects page
+  - Cleaned up projects page by switching to a card + expandable view and showing issues inline instead of cluttered layouts
+  - Restored and fixed key buttons (create project, navigation, actions) so flows actually work end-to-end
+  - Improved scan history and data display to be more readable (less reliance on long scan IDs, better structure)
+  - Fixed multiple TypeScript and data-mapping issues between frontend and Firestore/backend
+  - Spent time debugging UI/layout problems, testing changes, and pushing a stable version for teammates to review
 - **Upcoming Tasks:**
-  - Complete any UI Functionalities
+  - Finish fixing UI layout
 - **Issues:**
+  - UI zoomed in/out needs to be consistent
 
 ---
 
