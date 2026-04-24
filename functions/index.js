@@ -780,13 +780,14 @@ exports.applyFix = onRequest({ cors: true }, async (req, res) => {
         if (!baselineSnap.exists) {
           baselineSkipReason = `no baseline at fingerprint_baselines/${baselineBranch}`;
         } else {
-          const current = baselineSnap.data().fingerprints || {};
-          const fileEntry = { ...(current[baselineFile] || {}) };
-          fileEntry[stableId] = newFingerprint;
-          await baselineRef.update({
-            [`fingerprints.${baselineFile}.${stableId}`]: newFingerprint,
-            updated_at: admin.firestore.FieldValue.serverTimestamp(),
-          });
+          // FieldPath segments are treated literally — dots in baselineFile
+          // (e.g. "src/task_manager.py") are NOT parsed as path separators.
+          await baselineRef.update(
+            new admin.firestore.FieldPath("fingerprints", baselineFile, stableId),
+            newFingerprint,
+            "updated_at",
+            admin.firestore.FieldValue.serverTimestamp(),
+          );
           await flagRef.update({ auto_fix_baseline_updated: true });
           baselineUpdated = true;
           console.log(
