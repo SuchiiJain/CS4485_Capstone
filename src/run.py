@@ -118,15 +118,18 @@ def _fp_to_code_element(fp: FunctionFingerprint) -> CodeElement:
     """
     Convert a FunctionFingerprint into a CodeElement for flagging_threshold.
 
-    The stable_id is used as the element name so both systems share the
-    same key space (file::Class.method or file::function).
+    The bare function name is stored in `name` so downstream consumers
+    (e.g. patch_generator) can match `def name(...)` against doc code
+    blocks. The signature is emitted in standard python form
+    (`def name(params) -> ret:`) so `_fallback_signature` can use it
+    directly without rebuilding from params.
     """
     param_str = ", ".join(fp.signature.params)
     ret = fp.signature.return_annotation or ""
-    signature_str = f"{fp.signature.name}({param_str}){' -> ' + ret if ret else ''}"
+    signature_str = f"def {fp.signature.name}({param_str}){' -> ' + ret if ret else ''}:"
 
     return CodeElement(
-        name=fp.stable_id,
+        name=fp.signature.name or fp.stable_id,
         file_path=fp.file_path,
         signature=signature_str,
         hash=fp.fingerprint_hash,
@@ -194,6 +197,7 @@ def _change_events_to_flags(
     events: List[ChangeEvent],
     old_fps: Dict[str, Dict[str, FunctionFingerprint]],
     new_fps: Dict[str, Dict[str, FunctionFingerprint]],
+    doc_mappings: Optional[List[Dict]] = None,
 ) -> List[Flag]:
     """
     Convert ChangeEvents from the comparator into Flag objects expected by
@@ -203,14 +207,35 @@ def _change_events_to_flags(
     reasons list, then build a Flag with the appropriate severity.
     """
     flags: List[Flag] = []
+    # Import locally to avoid a circular-import risk at module load.
+    from src.config import docs_for_code_path
+
+    # Priority order — prefer reasons the deterministic patch generator can
+    # handle (signature/parameter/return/symbol) over the generic
+    # DOCSTRING_STALE catch-all. Earlier in the list = higher priority.
+    _REASON_PRIORITY = [
+        FlagReason.SYMBOL_REMOVED,
+        FlagReason.SIGNATURE_CHANGED,
+        FlagReason.PARAMETER_REMOVED,
+        FlagReason.PARAMETER_ADDED,
+        FlagReason.PARAMETER_RENAMED,
+        FlagReason.RETURN_TYPE_CHANGED,
+        FlagReason.MARKDOWN_REF_BROKEN,
+        FlagReason.DOCSTRING_STALE,
+        FlagReason.DOCSTRING_MISSING,
+    ]
 
     for event in events:
-        # Resolve best flag reason from the event's reasons list
-        flag_reason = FlagReason.DOCSTRING_STALE  # default fallback
-        for r in event.reasons:
-            if r in _REASON_MAP:
-                flag_reason = _REASON_MAP[r]
-                break
+        # Resolve best flag reason from the event's reasons list.
+        # A single event can carry multiple reason strings (e.g. "literal
+        # changed" AND "public signature changed"). Collect every mapped
+        # FlagReason, then pick the highest-priority one so actionable
+        # reasons (signature/parameter/return) beat DOCSTRING_STALE.
+        matched = {_REASON_MAP[r] for r in event.reasons if r in _REASON_MAP}
+        flag_reason = next(
+            (r for r in _REASON_PRIORITY if r in matched),
+            FlagReason.DOCSTRING_STALE,
+        )
 
         severity = Severity.HIGH if event.critical else _SEVERITY_FROM_REASON.get(
             flag_reason, Severity.MEDIUM
@@ -240,14 +265,37 @@ def _change_events_to_flags(
             f"{', '.join(event.reasons)} (score: {event.score})"
         )
 
-        flags.append(Flag(
+        # Attach a DocReference when the event's source file is mapped to
+        # a doc in .docrot-config.json. Without this, downstream auto-fix
+        # has no doc_file to patch.
+        doc_ref: Optional[DocReference] = None
+        if doc_mappings:
+            mapped_docs = docs_for_code_path(event.code_path, doc_mappings)
+            if mapped_docs:
+                doc_ref = DocReference(
+                    file_path=mapped_docs[0],
+                    referenced_symbol=code_elem.name,
+                    last_verified_hash=code_elem.hash,
+                    snippet=None,
+                )
+
+        flag = Flag(
             reason=flag_reason,
             severity=severity,
             code_element=code_elem,
-            doc_reference=None,
+            doc_reference=doc_ref,
             message=message,
             suggestion=_make_suggestion(flag_reason, event.function_id),
-        ))
+        )
+        # Attach the fresh fingerprint + stable id so the Cloud Function can
+        # update the baseline entry for this function after a successful
+        # auto-fix PR (and only that entry — never touch any other baseline
+        # data). These are dynamic attrs to avoid changing the Flag dataclass.
+        new_fp = new_fps.get(event.code_path, {}).get(event.function_id)
+        if new_fp is not None:
+            flag.new_fingerprint = new_fp.to_dict()
+            flag.stable_id = event.function_id
+        flags.append(flag)
 
     # Sort HIGH → MEDIUM → LOW
     order = {Severity.HIGH: 0, Severity.MEDIUM: 1, Severity.LOW: 2}
@@ -475,7 +523,7 @@ def run(repo_path: str, commit_hash: Optional[str] = None) -> int:
 
     # 7. Flags (flagging_threshold pipeline — richer per-function severity model)
     #    FIX: Also include doc_alerts as flags so they appear in reports.
-    flags = _change_events_to_flags(all_events, old_fps, current_fps)
+    flags = _change_events_to_flags(all_events, old_fps, current_fps, doc_mappings)
     flags += _doc_alerts_to_flags(doc_alerts)
     order = {Severity.HIGH: 0, Severity.MEDIUM: 1, Severity.LOW: 2}
     flags.sort(key=lambda f: order[f.severity])

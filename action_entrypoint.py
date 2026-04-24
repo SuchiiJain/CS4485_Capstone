@@ -80,7 +80,16 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
     for issue in report_json.get("issues", []):
         code_el = issue.get("code_element", {})
         doc_ref = issue.get("doc_reference")
-        flags.append({
+        # Normalize params: the scanner emits a list[str] of names, but the
+        # deterministic patcher (patch_generator._format_param) expects
+        # list[dict] with a "name" key. Convert here so downstream code
+        # doesn't have to branch on shape.
+        raw_params = code_el.get("params", []) or []
+        normalized_params = [
+            p if isinstance(p, dict) else {"name": str(p)}
+            for p in raw_params
+        ]
+        flag_row = {
             "reason": issue.get("reason", ""),
             "severity": issue.get("severity", "low"),
             "file_path": code_el.get("file_path"),
@@ -88,11 +97,19 @@ def _save_to_backend(repo: str, sha: str, branch: str, status: str, report_json:
             "message": issue.get("message", ""),
             "suggestion": issue.get("suggestion"),
             "signature": code_el.get("signature"),
-            "params": code_el.get("params", []),
+            "params": normalized_params,
             "return_type": code_el.get("return_type"),
             "doc_file": doc_ref["file_path"] if doc_ref else None,
             "doc_symbol": doc_ref["referenced_symbol"] if doc_ref else None,
-        })
+        }
+        # Forward the fresh fingerprint + stable id when present so the
+        # Cloud Function can update the baseline entry for this single
+        # function after an auto-fix PR lands.
+        if issue.get("new_fingerprint") is not None:
+            flag_row["new_fingerprint"] = issue["new_fingerprint"]
+        if issue.get("stable_id") is not None:
+            flag_row["stable_id"] = issue["stable_id"]
+        flags.append(flag_row)
 
     fingerprints = None
     fp_path = os.path.join(repo_path, ".docrot-fingerprints.json")

@@ -98,10 +98,11 @@ def extract_signature_features(fn_node: ast.FunctionDef) -> SignatureFeatures:
         else:
             defaults.append("None")
 
-    # Return annotation
+    # Return annotation — ast.unparse produces readable Python (e.g. "Dict[str, int]")
+    # rather than the raw AST node dump that ast.dump() would emit.
     return_annotation: Optional[str] = None
     if fn_node.returns is not None:
-        return_annotation = ast.dump(fn_node.returns)
+        return_annotation = ast.unparse(fn_node.returns)
 
     return SignatureFeatures(
         name=fn_node.name,

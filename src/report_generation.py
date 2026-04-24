@@ -42,7 +42,7 @@ class ScanReport:
 
 # Converts a single Flag object into a dictionary for JSON output
 def _flag_to_dict(flag: Flag) -> dict:
-    return {
+    data = {
         "reason": flag.reason.value,
         "severity": flag.severity.value,
         "code_element": {
@@ -61,6 +61,15 @@ def _flag_to_dict(flag: Flag) -> dict:
         "message": flag.message,
         "suggestion": flag.suggestion,
     }
+    # Optional fields attached by _change_events_to_flags so the Cloud
+    # Function can update the baseline entry after a successful auto-fix PR.
+    new_fingerprint = getattr(flag, "new_fingerprint", None)
+    if new_fingerprint is not None:
+        data["new_fingerprint"] = new_fingerprint
+    stable_id = getattr(flag, "stable_id", None)
+    if stable_id is not None:
+        data["stable_id"] = stable_id
+    return data
 
 
 # --- JSON Report Generator ---
