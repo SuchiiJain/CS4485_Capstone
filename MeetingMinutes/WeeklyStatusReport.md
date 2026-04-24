@@ -75,7 +75,7 @@
 
 ### Samuel Say
 
-- **Hours: 10**  
+- **Hours: 12**  
 - **Tasks Complete:**
   - Prompted Claude Design to generate a full redesign prototype of the frontend UI
   - Implemented the redesigned UI across all major pages: Auth, Dashboard, Projects, Issues, Scan History, Configuration, and User Settings
@@ -85,11 +85,14 @@
   - Fixed sidebar collapse UX so the brand mark acts as the expand button when collapsed
   - Merged origin/main into auth-test, resolving conflicts across 5 files
   - Debugged and fixed 4 failed deployments caused by merge artifacts: duplicate import crash, missing GitHub username helpers, missing page state in ScanHistoryPage, and 6 TypeScript errors flagged by CI
+  - Implemented incremental scanning in `src/run.py` — uses `git diff` to restrict fingerprinting to changed files only, falling back to full scan when git is unavailable
+  - Parallelized file fingerprinting in `src/run.py` using `ThreadPoolExecutor` — all changed files are now parsed concurrently instead of sequentially
+  - Fixed Firestore batch write limit in `functions/index.js` — replaced single `batch.commit()` with a chunked `commitBatches()` helper that splits writes into groups of 400 to stay under Firestore's 500-write hard limit
+  - Parallelized LLM suggestion calls in `src/ai_suggestions.py` and `functions/index.js` — multiple flagged docs now call the AI provider concurrently instead of sequentially
 - **Upcoming Tasks:**
 - **Issues:**
   - Merge conflicts required manual resolution across multiple files due to structural differences between the old and new UI layouts
   - Several declarations lost during conflict resolution only surfaced post-merge on the CI runner, not locally
-
 
 ---
 
