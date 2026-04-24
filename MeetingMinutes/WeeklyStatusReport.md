@@ -16,10 +16,15 @@
 
 ### Marie Liske
 
-- **Hours:**  
+- **Hours:** 4 
 - **Tasks Complete:**
+  - User tested for Suchi & Sammy integrfation branches
+  - Resolved merge conflicts for UI and Rot Gauge PRs
+  - Troubleshooted Github OAuth login error, ended up being a misconfigured env
 - **Upcoming Tasks:**
+  - Review polished UI changes and finalize demo product with team
 - **Issues:**
+  - Spent some time figuring out OAuth login issue, researched how firebase OAuth was implemented and debugged by logging to pinpoint exact fault point
 
 ---
 
