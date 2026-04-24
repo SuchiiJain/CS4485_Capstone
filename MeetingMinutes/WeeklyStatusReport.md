@@ -56,10 +56,20 @@
 
 ### Aaron Santhosh
 
-- **Hours:**  
+- **Hours: 10**  
 - **Tasks Complete:**
+  - Fixed Firestore FieldPath bug causing auto-fixed flags to reappear on rescan
+  - Fixed auto-fix button errors (wrong flag ID, unsupported reason types, doc path display)
+  - Resolved merge conflicts with teammates' UI redesign
+  - Fixed issues page showing flags from all scans instead of latest scan only
+  - Merged auto-fix feature to main on both frontend and backend repos
+  - Verified end-to-end auto-fix works: detects drift → opens PR → merges → flag clears on rescan
 - **Upcoming Tasks:**
+  - Implement auto-fix function for AI Suggestions as well
+  - Add more auto-fix support
 - **Issues:**
+  - Firestore silently failing baseline updates due to dot-path parsing — took time to diagnose
+  - Teammates' UI redesign caused merge conflicts across 4 files
 
 ---
 
