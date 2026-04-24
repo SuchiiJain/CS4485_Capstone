@@ -60,10 +60,21 @@
 
 ### Samuel Say
 
-- **Hours:**  
+- **Hours: 10**  
 - **Tasks Complete:**
+  - Prompted Claude Design to generate a full redesign prototype of the frontend UI
+  - Implemented the redesigned UI across all major pages: Auth, Dashboard, Projects, Issues, Scan History, Configuration, and User Settings
+  - Built a live Tweaks Panel (theme toggle, accent swatches, density, rot score visualization, typeface) backed by a persistent SettingsContext with localStorage
+  - Added three rot score visualizations on the Dashboard: circular gauge, sparkline chart, and dot-colony grid
+  - Redesigned User Settings into a 5-section tabbed layout (Profile, Appearance, Notifications, API Tokens, Billing)
+  - Fixed sidebar collapse UX so the brand mark acts as the expand button when collapsed
+  - Merged origin/main into auth-test, resolving conflicts across 5 files
+  - Debugged and fixed 4 failed deployments caused by merge artifacts: duplicate import crash, missing GitHub username helpers, missing page state in ScanHistoryPage, and 6 TypeScript errors flagged by CI
 - **Upcoming Tasks:**
 - **Issues:**
+  - Merge conflicts required manual resolution across multiple files due to structural differences between the old and new UI layouts
+  - Several declarations lost during conflict resolution only surfaced post-merge on the CI runner, not locally
+
 
 ---
 
