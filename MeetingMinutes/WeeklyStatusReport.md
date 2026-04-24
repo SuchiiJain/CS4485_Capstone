@@ -30,8 +30,10 @@
 
 ### Anusua Halder
 
-- **Hours:**  
+- **Hours: 6**  
 - **Tasks Complete:**
+  - Created and updated MOM
+  - Reviewed open PRs
 - **Upcoming Tasks:**
 - **Issues:**
 
