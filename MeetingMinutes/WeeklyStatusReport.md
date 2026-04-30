@@ -6,9 +6,9 @@
 
 ---
 
-# Week 10 — April 20 - April 24, 2026
+# Week 11 — April 27 - May 1, 2026
 
-**Team Leader for Week 10: Suchi Jain**
+**Team Leader for Week 11: Suchi Jain**
 
 **Total Hours Spent:**
 
@@ -16,7 +16,69 @@
 
 ### Marie Liske
 
-- **Hours:** 4 
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Anusua Halder
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Suchi Jain
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Aaron Santhosh
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Samuel Say
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Portia Hamid
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+# Week 10 — April 20 - April 24, 2026
+
+**Team Leader for Week 10: Suchi Jain**
+
+**Total Hours Spent: 53**
+
+---
+
+### Marie Liske
+
+- **Hours: 4**  
 - **Tasks Complete:**
   - User tested for Suchi & Sammy integrfation branches
   - Resolved merge conflicts for UI and Rot Gauge PRs
@@ -35,7 +97,9 @@
   - Created and updated MOM
   - Reviewed open PRs
 - **Upcoming Tasks:**
+  - Set up MOMs, get back on track and try to help team finalize 
 - **Issues:**
+  - Double car accident and stomach bug health issues, emailed and discussed already
 
 ---
 
