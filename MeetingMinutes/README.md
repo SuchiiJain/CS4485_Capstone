@@ -13,7 +13,7 @@ This folder contains all Minutes of Meeting (MOM) documents and the Individual W
 - MOM #7 - April 3, 2026 
 - MOM #8 - April 10, 2026
 - MOM #9 - April 17, 2026 
-- MOM #10 - April 24, 2026 (UNAVAILABLE, NO MEET)
+- MOM #10 - April 24, 2026 
 - MOM #11 - May 1, 2026
 - MOM #12 - May 8, 2026 (FINAL DEMO DAY)
 - README
