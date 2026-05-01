@@ -83,10 +83,15 @@
 
 ### Portia Hamid
 
-- **Hours:**
+- **Hours: 3**
 - **Tasks Complete:**
+  - Reviewed and provided feedback on a teammate's frontend pull request
+  - Implemented an environment-aware preview mode for local development: the frontend now detects the absence of valid environment variables at dev-server startup and falls back to a self-contained preview state, decoupling visual development from backend and database dependencies. Production builds retain strict environment validation and will error if credentials are missing, preserving deployment safety.
 - **Upcoming Tasks:**
+  - Continue to support frontend UI tweaks
+  - Begin preparing for demo day and completing the project report
 - **Issues:**
+  - None
 
 ---
 
