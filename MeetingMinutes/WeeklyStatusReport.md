@@ -16,10 +16,17 @@
 
 ### Marie Liske
 
-- **Hours:**
+- **Hours:** 4
 - **Tasks Complete:**
-- **Upcoming Tasks:**
+  - Fixed bug where issues were not displaying for a given scan
+  - Scans now populate depending on the context (all scans, scans for a specific repo, etc)
+  - Added functionality for "Add Repo" button that displays steps to set up a new tracked repo
+  - Fixed sidebar extending to the entire page length (UI)
+  - **Upcoming Tasks:**
+     - Start on final presentation slide deck
+     - Polish Spec file
 - **Issues:**
+  - N/A
 
 ---
 
