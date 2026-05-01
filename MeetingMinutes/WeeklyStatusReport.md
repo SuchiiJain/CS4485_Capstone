@@ -41,10 +41,16 @@
 
 ### Suchi Jain
 
-- **Hours:**
+- **Hours: 7**
 - **Tasks Complete:**
+  - Refactored Issues page into expandable row layout
+  - Reworked Scan History from split-view to row layout
+  - Unified UI patterns across pages (cards, pills, stat strips)
+  - Added copy-to-clipboard for repo setup command
 - **Upcoming Tasks:**
-- **Issues:**
+  -  Enable notifications button
+  -  Fix Cnnfiguration Page UI
+- **Issues: None**
 
 ---
 
