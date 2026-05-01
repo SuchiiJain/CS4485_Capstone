@@ -59,10 +59,19 @@
 
 ### Samuel Say
 
-- **Hours:**
+- **Hours:** 4
 - **Tasks Complete:**
+  - Fixed sidebar footer not showing user profile/settings at bottom of screen
+  - Added ErrorBoundary to prevent full-page crashes when a single page errors
+  - Fixed Configuration page inline editing (replaced browser prompt dialogs with in-row inputs)
+  - Fixed Apply Changes button (replaced browser alert with visual "✓ Saved" feedback)
+  - Removed dead notification bell button
 - **Upcoming Tasks:**
-- **Issues:**
+  - Fix Projects page blank state in local preview mode
+  - Fix dead "Configuration" navigation link in Settings page
+  - Fix API token Copy button
+- **Issues:** None
+
 
 ---
 
