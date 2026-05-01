@@ -72,13 +72,13 @@
 
 **Team Leader for Week 10: Suchi Jain**
 
-**Total Hours Spent: 53**
+**Total Hours Spent: 55**
 
 ---
 
 ### Marie Liske
 
-- **Hours: 4**  
+- **Hours: 6**  
 - **Tasks Complete:**
   - User tested for Suchi & Sammy integrfation branches
   - Resolved merge conflicts for UI and Rot Gauge PRs
