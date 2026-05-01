@@ -56,10 +56,17 @@
 
 ### Aaron Santhosh
 
-- **Hours:**
+- **Hours: 3**
 - **Tasks Complete:**
+  - Added some support to autofix
+  - Reviewed code and UI changes from other members
+  - Brainstormed final features for app
+  - Drafted plan to finish remaining autofix features
 - **Upcoming Tasks:**
-- **Issues:**
+  - Complete autofix function for all necessary features
+  - Finalize code and UI for demo day
+  - Assist other team members with prep for demo
+- **Issues:** None 
 
 ---
 
