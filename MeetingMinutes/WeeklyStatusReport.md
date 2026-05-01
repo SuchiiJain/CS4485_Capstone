@@ -10,13 +10,13 @@
 
 **Team Leader for Week 11: Suchi Jain**
 
-**Total Hours Spent:**
+**Total Hours Spent: 24**
 
 ---
 
 ### Marie Liske
 
-- **Hours:** 4
+- **Hours: 4** 
 - **Tasks Complete:**
   - Fixed bug where issues were not displaying for a given scan
   - Scans now populate depending on the context (all scans, scans for a specific repo, etc)
@@ -32,10 +32,13 @@
 
 ### Anusua Halder
 
-- **Hours:**
+- **Hours: 3**
 - **Tasks Complete:**
+  - MOMs done, and updated pull requests updated
 - **Upcoming Tasks:**
+  - Finalizing last minute presentation
 - **Issues:**
+  - N/A
 
 ---
 
@@ -72,7 +75,7 @@
 
 ### Samuel Say
 
-- **Hours:** 4
+- **Hours: 4** 
 - **Tasks Complete:**
   - Fixed sidebar footer not showing user profile/settings at bottom of screen
   - Added ErrorBoundary to prevent full-page crashes when a single page errors
