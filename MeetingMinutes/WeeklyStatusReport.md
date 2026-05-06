@@ -6,6 +6,68 @@
 
 ---
 
+# Week 12 — May 4 - May 8, 2026
+
+**Team Leader for Week 12: No Team Leader**
+
+**Total Hours Spent:**
+
+---
+
+### Marie Liske
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Anusua Halder
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Suchi Jain
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Aaron Santhosh
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Samuel Say
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
+### Portia Hamid
+
+- **Hours:**
+- **Tasks Complete:**
+- **Upcoming Tasks:**
+- **Issues:**
+
+---
+
 # Week 11 — April 27 - May 1, 2026
 
 **Team Leader for Week 11: Suchi Jain**
