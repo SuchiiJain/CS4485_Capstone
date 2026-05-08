@@ -10,7 +10,7 @@
 
 **Team Leader for Week 12: No Team Leader**
 
-**Total Hours Spent:**
+**Total Hours Spent: 4**
 
 ---
 
@@ -25,10 +25,13 @@
 
 ### Anusua Halder
 
-- **Hours:**
+- **Hours: 2**
 - **Tasks Complete:**
+  - Recording finished, finalized all documents and presentation. Completed final MOM and weekly meet.
 - **Upcoming Tasks:**
+  - N/A
 - **Issues:**
+  - N/A
 
 ---
 
