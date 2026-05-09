@@ -47,10 +47,14 @@
 
 ### Aaron Santhosh
 
-- **Hours:**
+- **Hours: 2**
 - **Tasks Complete:**
+  - Wrote demo script for final project recording
+  - Recorded final project demo video
 - **Upcoming Tasks:**
+  - N/A
 - **Issues:**
+  - N/A
 
 ---
 
