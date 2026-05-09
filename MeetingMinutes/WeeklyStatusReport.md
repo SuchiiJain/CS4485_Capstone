@@ -10,7 +10,7 @@
 
 **Team Leader for Week 12: No Team Leader**
 
-**Total Hours Spent: 4**
+**Total Hours Spent: 6**
 
 ---
 
@@ -37,10 +37,11 @@
 
 ### Suchi Jain
 
-- **Hours:**
+- **Hours: 2**
 - **Tasks Complete:**
-- **Upcoming Tasks:**
-- **Issues:**
+  - Recording finished, reviewed final frontend changes and presentation
+- **Upcoming Tasks: N/A**
+- **Issues: N/A**
 
 ---
 
