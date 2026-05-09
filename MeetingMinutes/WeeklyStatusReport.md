@@ -16,7 +16,9 @@
 
 ### Marie Liske
 
-- **Hours:**
+- **Hours:**3
+  - Recorded user demo for final presentation
+  - Met with Adarsh to get approval on presentation flow & questions.
 - **Tasks Complete:**
 - **Upcoming Tasks:**
 - **Issues:**
