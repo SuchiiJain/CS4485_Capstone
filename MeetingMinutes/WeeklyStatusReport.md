@@ -71,8 +71,12 @@
 
 ### Portia Hamid
 
-- **Hours:**
+- **Hours:** 6
 - **Tasks Complete:**
+  - Wrote script for backend demo
+  - Recorded the screen recording and voice recording files for the backend demo
+  - Used Davinci Resolve to not only edit my own recording files, but to splice/edit my team's recordings as well to keep us within the allotted time
+  - Presented a mock demo along with Marie to Adarsh to gather feedback and take note of suggested changes
 - **Upcoming Tasks:**
 - **Issues:**
 
