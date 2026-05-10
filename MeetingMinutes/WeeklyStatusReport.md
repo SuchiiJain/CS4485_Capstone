@@ -10,7 +10,7 @@
 
 **Team Leader for Week 12: No Team Leader**
 
-**Total Hours Spent: 6**
+**Total Hours Spent: 18**
 
 ---
 
